@@ -40,15 +40,37 @@
 
 
 <p>You are situated inside of an R package source directory. The subdirectory <code>R/</code> contains source files. The subdirectory <code>tests/testthat/</code> contains corresponding tests. e.g. <code>R/task.R</code> is tested primarily in <code>tests/testthat/test-task.R</code>.</p>
+<p>The package is vitals, an R port of the Inspect framework for LLM evaluation.</p>
+<p>The source of the original Inspect framework is in inst/inspect_ai. To learn more about anything specific in that package, use the inspect researcher sub-agent.</p>
+<div class="section level2">
+<h2 id="pydantic-models-and-the-log-viewer">Pydantic models and the log viewer<a class="anchor" aria-label="anchor" href="#pydantic-models-and-the-log-viewer"></a></h2>
+<p>vitals implements .json logging that’s compatible with Inspect’s Log Viewer. The .json must follow pydantic models defined in Inspect. Much of the code in vitals supports the transformation step from a Task R6 object to a list which can be written to file with <code>jsonlite::to_json()</code> or similar. From vitals in R, we can test whether a given log file was written correctly with <code>devtools::load_all(); expect_valid_log(log_path)</code>.</p>
+<p>When working on logging code:</p>
+<ul><li>Run an Inspect .py file with –log-format=json to generate a log file. You might need to set the envvar <code>INSPECT_LOG_DIR</code> to a directory so that you will know where to look for the log file after.</li>
+<li>Read that log file,</li>
+<li>Run R code with vitals (there are examples in <code>inst/</code> or in documentation) that generates the analogous log. You might set the envvar <code>VITALS_LOG_DIR</code> so that you will know where to look for the log file after.<br></li>
+<li>Read the resulting file (and probably check it with <code>expect_valid_log()</code> if it looks good to you). You will probably want to grep for specific terms that might be related; the logs are quite long, so reading them all at once will use much of your available context.
+<ul><li>All logs currently pass the Pydantic models. The models may raise validation errors that seem unrelated to a given problem you are working on, but at least one of them is indeed related; the validation errors can be quite noisy.</li>
+</ul></li>
+<li>Updating the logging code to generate a passing log.</li>
+</ul><p>Importantly:</p>
+<ul><li>Once you feel you have a working solution (logs generated from R that pass <code>expect_valid_log()</code>, the remaining tests should still pass with <code>devtools::test()</code>
+</li>
+<li>Use your inspect-researcher sub-agent to read more about Inspect AI and how it works.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="conventions">Conventions<a class="anchor" aria-label="anchor" href="#conventions"></a></h2>
 <p>Do not add new code comments, and only remove existing code comments if the comment isn’t relevant anymore.</p>
 <p>The package has not yet been published and does not have any users; remove functionality outright when it’s no longer needed rather than beginning a deprecation process. No need to worry about breaking changes.</p>
 <p>When testing code that raises a message, warning, or error, use <code>expect_snapshot()</code> (possibly with <code>error = TRUE</code>) instead of <code>expect_message()</code> or otherwise.</p>
 <p>When you’re running package tests, use <code>devtools::load_all(); testthat::test_file("tests/testthat/path-to-file.R")</code>. If you encounter namespacing issues, don’t delete tests that otherwise should work, and instead ask me what to do.</p>
 <p>To get a sense for the style used to write and test code, read <code>R/task.R</code> and <code>tests/testthat/test-task.R</code>, respectively. Notable, <strong>do not comment your code</strong> besides roxygen comments.</p>
 <p>You’ve been provided with a number of tools that allow you to peruse package documentation; use them liberally. When writing non-base or -tidyverse code, check the help page for functions you use to ensure that you’ve set function arguments correctly.</p>
+</div>
 
 
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
    </div>

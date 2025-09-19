@@ -67,7 +67,7 @@ Scorers take the `input`, `target`, and the solver's output, and deliver some ju
 
 When implementing a scorer, you have a few options
 
--   Deterministic scoring: In some specific situations, it's possible to write code that can check correctness without any use of an LLM. For example, if your solver chooses an answer from multiple choices, you could just use a regular expression (as in the scorers `detect_match()` and friends). Or, if your scorer outputs code, you could check if it compiles/parses and then run that code through a unit test.
+-   Deterministic scoring: In some specific situations, it's possible to write code that can check correctness without any use of an LLM. For example, if your solver chooses an answer from multiple choices, you could just use a regular expression (as in the scorers `detect_match()` and friends). Or, if your solver outputs code, you could check if it compiles/parses and then run that code through a unit test.
 -   LLM-as-a-judge: In most situations, you'll want to pass the input, the solver's result, and the grading guidance (`target`) to a model, and ask the model to assign some score. (vitals natively supports factors with levels `I < P < C`, standing for Incorrect, (optional) Partially Correct, and Correct.)
 -   Human grading: In the earliest (before you even develop a scorer) and latest (right before your product goes to production) stages of product development, you should be spending a lot of time looking at the solver's outputs yourself.
 

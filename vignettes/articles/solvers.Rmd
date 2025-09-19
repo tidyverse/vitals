@@ -298,7 +298,7 @@ are_mod
 grade_descriptor <- if (are_mod[["coefficients"]][3] > 0) "higher" else "lower"
 ```
 
-The coefficient for `solver == "btw"` is `r round(are_mod[["coefficients"]][3], 3)`, indicating that allowing the model to peruse documentation tends to be associated with `r grade_descriptor` grades. If a 95% confidence interval for this coefficient contains zero, we can conclude that there is not sufficient evidence to reject the null hypothesis that the difference between GPT-4o and Claude's performance on this eval is zero at the 0.05 significance level.
+The coefficient for `solver == "btw"` is `r round(are_mod[["coefficients"]][3], 3)`, indicating that allowing the model to peruse documentation tends to be associated with `r grade_descriptor` grades. If a 95% confidence interval for this coefficient contains zero, we can conclude that there is not sufficient evidence to reject the null hypothesis that the difference between the btw solver and basic solver's performance on this eval is zero at the 0.05 significance level.
 
 ```{r}
 confint(are_mod)

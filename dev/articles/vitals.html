@@ -272,11 +272,12 @@ reference solutions in the <code>target</code> column.
 <code><a href="../reference/scorer_model.html">model_graded_qa()</a></code> is a model-graded scorer provided by the
 package. This step compares Claude’s solutions against the reference
 solutions in the <code>target</code> column, assigning a score to each
-solution using another model. That score is either <code>1</code> or
-<code>0</code>, though since we’ve set
+solution using another model. That score is either <code>I</code>
+(Incorrect) or <code>C</code> (Correct), though since we’ve set
 <code>partial_credit = TRUE</code>, the model can also choose to allot
-the response <code>.5</code>. vitals will use the same model that
-generated the final response as the model to score solutions.</p>
+the response <code>P</code> (Partially Correct). vitals will use the
+same model that generated the final response as the model to score
+solutions.</p>
 <p>Hold up, though—we’re using an LLM to generate responses to
 questions, and then using the LLM to grade those responses?</p>
 <p><img src="https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp" alt="The meme of 3 spiderman pointing at each other."></p>

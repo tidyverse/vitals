@@ -186,7 +186,7 @@ are_task_data |>
   geom_bar()
 ```
 
-Claude answered fully correctly in `r sum(are_task_data$score == "C")` out of `r nrow(are_task_data)` samples, and partially correctly `r sum(are_task_data$score == "P")` times.For me, this leads to all sorts of questions:
+Claude answered fully correctly in `r sum(are_task_data$score == "C")` out of `r nrow(are_task_data)` samples, and partially correctly `r sum(are_task_data$score == "P")` times. For me, this leads to all sorts of questions:
 
 * Are there any models that are cheaper than Claude that would do just as well? Or even a local model?
 * Are there other models available that would do better out of the box?

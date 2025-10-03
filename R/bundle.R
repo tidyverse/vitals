@@ -39,7 +39,7 @@
 #' crawlers only read the `robots.txt` at the root directory of a package, so
 #' the file will likely be ignored if this folder isn't the root directory of
 #' the deployed page. `assets/` is the bundled source for the viewer. `logs/`
-#' is the `log_dir` as well as a `logs.json`, which is a manifest file for the
+#' is the `log_dir` as well as a `listing.json`, which is a manifest file for the
 #' directory.
 #'
 #' @examples
@@ -173,7 +173,7 @@ copy_log_files <- function(log_dir, target_dir, call = caller_env()) {
 }
 
 write_log_dir_manifest <- function(log_dir) {
-  manifest_file <- file.path(log_dir, "logs.json")
+  manifest_file <- file.path(log_dir, "listing.json")
 
   log_files <- list.files(
     log_dir,
@@ -181,7 +181,7 @@ write_log_dir_manifest <- function(log_dir) {
     recursive = TRUE,
     full.names = TRUE
   )
-  log_files <- setdiff(log_files, file.path(log_dir, "logs.json"))
+  log_files <- setdiff(log_files, file.path(log_dir, "listing.json"))
 
   manifest <- lapply(log_files, eval_log_read_headers)
   manifest <- setNames(manifest, basename(log_files))

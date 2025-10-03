@@ -26,7 +26,7 @@ translate_to_eval <- function(
   task,
   task_id,
   task_version = 0,
-  task_file = active_file(),
+  task_file = "",
   task_attribs = c(),
   task_args = c(),
   dataset,

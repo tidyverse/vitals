@@ -118,7 +118,7 @@ of log files with the following:</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">tsk</span> <span class="op">&lt;-</span> <span class="va"><a href="Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    dataset <span class="op">=</span> <span class="va">simple_addition</span>,</span></span>
-<span class="r-in"><span>    solver <span class="op">=</span> <span class="fu"><a href="generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    solver <span class="op">=</span> <span class="fu"><a href="generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-5-20250929"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    scorer <span class="op">=</span> <span class="fu"><a href="scorer_model.html">model_graded_qa</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -128,15 +128,18 @@ of log files with the following:</p>
 <span class="r-in"><span>  <span class="fu">vitals_bundle</span><span class="op">(</span>output_dir <span class="op">=</span> <span class="va">output_dir</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Solving</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[849ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Solving</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[4.3s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Scoring</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Scoring</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[3.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[4.6s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Bundle <span style="color: #0000BB;">/tmp/RtmpMTfaRv</span> created!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Bundle <span style="color: #0000BB;">/tmp/RtmpVYKWsc</span> created!</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

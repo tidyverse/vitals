@@ -162,7 +162,7 @@ scoring.</p></div>
 <span class="r-in"><span>  <span class="co"># create a new Task</span></span></span>
 <span class="r-in"><span>  <span class="va">tsk</span> <span class="op">&lt;-</span> <span class="va"><a href="Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    dataset <span class="op">=</span> <span class="va">simple_addition</span>,</span></span>
-<span class="r-in"><span>    solver <span class="op">=</span> <span class="fu"><a href="generate.html">generate</a></span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    solver <span class="op">=</span> <span class="fu"><a href="generate.html">generate</a></span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-5-20250929"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    scorer <span class="op">=</span> <span class="fu">detect_includes</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -170,10 +170,13 @@ scoring.</p></div>
 <span class="r-in"><span>  <span class="va">tsk</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Solving</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[1.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Solving</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[4.5s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Scoring</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[54ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[51ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

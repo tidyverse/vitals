@@ -16,11 +16,11 @@ test_that("expect_valid_log fails when log file is nonsense", {
 })
 
 test_that("vitals writes valid eval logs (basic, openai)", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("translate-openai-basic")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -38,11 +38,11 @@ test_that("vitals writes valid eval logs (basic, openai)", {
 })
 
 test_that("vitals writes valid eval logs (basic, claude)", {
-  skip_if(identical(Sys.getenv("ANTHROPIC_API_KEY"), ""))
+  vcr::local_cassette("translate-anthropic-basic")
+  key_get("ANTHROPIC_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -53,7 +53,7 @@ test_that("vitals writes valid eval logs (basic, claude)", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = generate(ellmer::chat_anthropic(
-      model = "claude-3-7-sonnet-latest"
+      model = "claude-sonnet-4-5-20250929"
     )),
     scorer = model_graded_qa()
   )
@@ -62,11 +62,11 @@ test_that("vitals writes valid eval logs (basic, claude)", {
 })
 
 test_that("vitals writes valid eval logs (basic, gemini)", {
-  skip_if(identical(Sys.getenv("GOOGLE_API_KEY"), ""))
+  vcr::local_cassette("translate-google-basic")
+  key_get("GOOGLE_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -85,11 +85,11 @@ test_that("vitals writes valid eval logs (basic, gemini)", {
 
 
 test_that("vitals writes valid eval logs (solver tool calls, claude)", {
-  skip_if(identical(Sys.getenv("ANTHROPIC_API_KEY"), ""))
+  vcr::local_cassette("translate-anthropic-tool-calls")
+  key_get("ANTHROPIC_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -98,8 +98,12 @@ test_that("vitals writes valid eval logs (solver tool calls, claude)", {
     target = c("2024-01-01")
   )
 
-  ch <- chat_anthropic(model = "claude-3-7-sonnet-latest")
-  ch$register_tool(tool(function() "2024-01-01", "Return the current date"))
+  ch <- chat_anthropic(model = "claude-sonnet-4-5-20250929")
+  ch$register_tool(tool(
+    function() "2024-01-01",
+    name = "get_current_date",
+    description = "Return the current date"
+  ))
 
   tsk <- Task$new(
     dataset = current_date,
@@ -113,11 +117,10 @@ test_that("vitals writes valid eval logs (solver tool calls, claude)", {
 })
 
 test_that("vitals writes valid eval logs (solver errors on tool call, claude)", {
-  skip_if(identical(Sys.getenv("ANTHROPIC_API_KEY"), ""))
+  key_get("ANTHROPIC_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -126,9 +129,13 @@ test_that("vitals writes valid eval logs (solver errors on tool call, claude)", 
     target = c("2024-01-01")
   )
 
-  ch <- chat_anthropic(model = "claude-3-7-sonnet-latest")
+  ch <- chat_anthropic(model = "claude-sonnet-4-5-20250929")
   ch$register_tool(
-    tool(function() stop("Couldn't find the date"), "Return the current date")
+    tool(
+      function() stop("Couldn't find the date"),
+      name = "get_current_date",
+      description = "Return the current date"
+    )
   )
 
   tsk <- Task$new(
@@ -147,6 +154,42 @@ test_that("vitals writes valid eval logs (solver errors on tool call, claude)", 
   expect_gte(length(log_file), 1)
 
   expect_valid_log(log_file[1])
+})
+
+test_that("vitals writes valid logs with numeric solver results (#145)", {
+  vcr::local_cassette("translate-numeric-results")
+  key_get("ANTHROPIC_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  simple_dataset <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  chat <- ellmer::chat_anthropic(model = "claude-sonnet-4-5-20250929")
+  chat$chat("Hey!", echo = FALSE)
+
+  simple_solver <- function(inputs) {
+    list(
+      result = rep(1.5, length(inputs)),
+      solver_chat = lapply(inputs, function(x) {
+        chat
+      })
+    )
+  }
+
+  tsk <- Task$new(
+    dataset = simple_dataset,
+    solver = simple_solver,
+    scorer = model_graded_qa()
+  )
+
+  tsk$eval()
+  log_path <- tsk$log()
+  expect_valid_log(log_path)
 })
 
 test_that("as_metadata can make lists into a named vector (#69)", {

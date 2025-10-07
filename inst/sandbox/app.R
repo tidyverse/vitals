@@ -103,7 +103,7 @@ edit_eval_sample <- function(json_path) {
           value = data$input,
           rows = 12,
           width = "100%",
-          placeholder = "A request that a user could make of an LLM. This should be something that's quite hard for e.g. an instance of `ellmer::chat_anthropic(model = "claude-3-7-sonnet-latest")` with no system prompt."
+          placeholder = "A request that a user could make of an LLM. This should be something that's quite hard for e.g. an instance of `ellmer::chat_anthropic(model = "claude-sonnet-4-5-20250929")` with no system prompt."
         ),
         shiny::textAreaInput(
           "target",

@@ -26,7 +26,7 @@ translate_to_eval <- function(
   task,
   task_id,
   task_version = 0,
-  task_file = active_file(),
+  task_file = "",
   task_attribs = c(),
   task_args = c(),
   dataset,
@@ -205,7 +205,7 @@ translate_to_score <- function(
   if (is.null(scorer_chat)) {
     return(list(
       value = score,
-      answer = output,
+      answer = as.character(output),
       explanation = scorer,
       metadata = metadata
     ))
@@ -216,7 +216,7 @@ translate_to_score <- function(
 
   list(
     value = score,
-    answer = output,
+    answer = as.character(output),
     explanation = explanation,
     metadata = c(
       list(
@@ -278,25 +278,31 @@ input_string <- function(x) {
 
 # metadata entries must ultimately be a "flattened", named list.
 # note `c()` is interpreted as a named list by jsonlite.
+# we're not interested in recursing here; provide a lossy summary of the object
 as_metadata <- function(x) {
-  if (length(x) == 0) {
-    return(c())
+  result <- if (is.list(x) && !has_class(x)) {
+    x
+  } else if (is.data.frame(x) || (is.atomic(x) && !is.null(names(x)))) {
+    as.list(x)
+  } else {
+    list(capture.output(print(x)))
   }
 
-  if (is.atomic(x)) {
-    return(set_reasonable_names(as.list(x)))
-  }
+  result <- set_reasonable_names(result)
 
-  res <- tryCatch(
-    purrr::list_flatten(as.list(x)),
-    error = function(e) NULL
-  )
+  lapply(result, function(el) {
+    if (!is.list(el)) {
+      el
+    } else if (length(el) == 1 && has_class(el[[1]])) {
+      capture.output(print(el[[1]]))
+    } else {
+      capture.output(if (has_class(el)) print(el) else str(el))
+    }
+  })
+}
 
-  if (is.null(res)) {
-    return(c())
-  }
-
-  set_reasonable_names(res)
+has_class <- function(x) {
+  !is.null(class(x)) && !identical(class(x), "list")
 }
 
 set_reasonable_names <- function(x) {

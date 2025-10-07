@@ -25,3 +25,5 @@ inst/log_dump
 ^vignettes/articles/*_files$
 
 inst/test/inspect/logs
+.claude/
+inst/inspect_ai

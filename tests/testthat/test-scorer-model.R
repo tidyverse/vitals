@@ -1,10 +1,10 @@
 test_that("model_graded_qa works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("scorer-model-graded-qa")
+  key_get("OPENAI_API_KEY")
   skip_on_cran()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)
@@ -40,12 +40,12 @@ test_that("model_graded_qa works", {
 })
 
 test_that("model_graded_fact works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("scorer-model-graded-fact")
+  key_get("OPENAI_API_KEY")
   skip_on_cran()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)
@@ -81,4 +81,41 @@ test_that("model_graded_fact works", {
     tsk$get_samples()$solver_chat[[1]]$get_model(),
     tsk$get_samples()$scorer_chat[[1]]$get_model()
   )
+})
+
+test_that("model_graded_qa respects non-default grading schemes", {
+  vcr::local_cassette("scorer-model-graded-qa-custom-ab")
+  key_get("OPENAI_API_KEY")
+  skip_on_cran()
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  library(ellmer)
+
+  classification_data <- tibble::tibble(
+    input = c("The dog ran quickly", "The cat meowed loudly"),
+    target = c("A", "B")
+  )
+
+  custom_instructions <- "Classify the sentence. Reply with 'GRADE: $LETTER' where LETTER is either A for sentences about dogs or B for sentences about cats."
+  custom_pattern <- "(?i)GRADE\\s*:\\s*([AB])(.*)$"
+
+  tsk <- Task$new(
+    dataset = classification_data,
+    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    scorer = model_graded_qa(
+      instructions = custom_instructions,
+      grade_pattern = custom_pattern
+    )
+  )
+
+  tsk$eval()
+  expect_valid_log(tsk$log())
+
+  scores <- tsk$get_samples()$score
+  expect_type(scores, "character")
+  expect_true(all(scores %in% c("A", "B")))
+  expect_false(is.factor(scores))
 })

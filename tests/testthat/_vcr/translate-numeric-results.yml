@@ -1,0 +1,138 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"Hey!"}]}],"stream":false,"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 06 Oct 2025 15:01:15 GMT
+      content-type: application/json
+      content-encoding: gzip
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:01:15Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:01:15Z'
+      anthropic-ratelimit-requests-limit: '4000'
+      anthropic-ratelimit-requests-remaining: '3999'
+      anthropic-ratelimit-requests-reset: '2025-10-06T15:01:11Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-10-06T15:01:15Z'
+      request-id: req_011CTr9QKqZeWCNhRaro2VeS
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
+      x-envoy-upstream-service-time: '4116'
+      via: 1.1 google
+      cf-cache-status: DYNAMIC
+      x-robots-tag: none
+      server: cloudflare
+      cf-ray: 98a6085abd21706b-ORD
+    body:
+      string: "{\"id\":\"msg_01LKPUCvzZxsbXamAitq7WRk\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"claude-sonnet-4-5-20250929\",\"content\":[{\"type\":\"text\",\"text\":\"Hey!
+        How's it going? \U0001F60A What's on your mind today?\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":9,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"cache_creation\":{\"ephemeral_5m_input_tokens\":0,\"ephemeral_1h_input_tokens\":0},\"output_tokens\":21,\"service_tier\":\"standard\"}}"
+  recorded_at: 2025-10-06 15:01:15
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: 1.5\n***\n[Criterion]:
+        4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it."}]}],"stream":false,"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 06 Oct 2025 15:01:19 GMT
+      content-type: application/json
+      content-encoding: gzip
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:01:17Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:01:19Z'
+      anthropic-ratelimit-requests-limit: '4000'
+      anthropic-ratelimit-requests-remaining: '3999'
+      anthropic-ratelimit-requests-reset: '2025-10-06T15:01:15Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-10-06T15:01:17Z'
+      request-id: req_011CTr9QeUV79ga7bKQDHinR
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
+      x-envoy-upstream-service-time: '4084'
+      via: 1.1 google
+      cf-cache-status: DYNAMIC
+      x-robots-tag: none
+      server: cloudflare
+      cf-ray: 98a60875dca3706b-ORD
+    body:
+      string: '{"id":"msg_01Xa8Uc7Eq3qHFP1kSh45JvD","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"Let
+        me assess whether the submission meets the criterion.\n\n**Task**: What''s
+        2+2?\n**Submission**: 1.5\n**Criterion**: 4\n\nThe task asks for the sum of
+        2+2, which mathematically equals 4. The submission provides the answer \"1.5\",
+        which is incorrect. The criterion appears to be the correct answer, which
+        is 4.\n\nThe submission (1.5) does not match the criterion (4), and more importantly,
+        1.5 is not the correct answer to the mathematical question \"What''s 2+2?\"\n\nTherefore,
+        the submission does not meet the criterion.\n\nGRADE: I"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":169,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":146,"service_tier":"standard"}}'
+  recorded_at: 2025-10-06 15:01:19
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: 1.5\n***\n[Criterion]:
+        5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it."}]}],"stream":false,"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 06 Oct 2025 15:01:23 GMT
+      content-type: application/json
+      content-encoding: gzip
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:01:21Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:01:23Z'
+      anthropic-ratelimit-requests-limit: '4000'
+      anthropic-ratelimit-requests-remaining: '3999'
+      anthropic-ratelimit-requests-reset: '2025-10-06T15:01:20Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-10-06T15:01:21Z'
+      request-id: req_011CTr9QxLmwa63dJyK9V8jx
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
+      x-envoy-upstream-service-time: '3734'
+      via: 1.1 google
+      cf-cache-status: DYNAMIC
+      x-robots-tag: none
+      server: cloudflare
+      cf-ray: 98a60890080a706b-ORD
+    body:
+      string: '{"id":"msg_01Ax3NhjxhwxLKEeRsbpxEmJ","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"Let
+        me assess this step by step.\n\n**Task Analysis:**\nThe task asks for the
+        sum of 2+3, which equals 5.\n\n**Submission Analysis:**\nThe submitted answer
+        is 1.5.\n\n**Criterion Analysis:**\nThe criterion is \"5\", which appears
+        to be the correct answer to the mathematical problem.\n\n**Evaluation:**\nThe
+        submission (1.5) does not match the criterion (5). The correct answer to 2+3
+        is 5, but the submission provided 1.5, which is incorrect.\n\nThe submission
+        does not meet the criterion.\n\nGRADE: I"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":169,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":136,"service_tier":"standard"}}'
+  recorded_at: 2025-10-06 15:01:23
+recorded_with: VCR-vcr/2.0.0

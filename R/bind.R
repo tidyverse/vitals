@@ -29,14 +29,14 @@
 #'
 #'   tsk1 <- Task$new(
 #'     dataset = simple_addition,
-#'     solver = generate(chat_anthropic(model = "claude-3-7-sonnet-latest")),
+#'     solver = generate(chat_anthropic(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = model_graded_qa()
 #'   )
 #'   tsk1$eval()
 #'
 #'   tsk2 <- Task$new(
 #'     dataset = simple_addition,
-#'     solver = generate(chat_anthropic(model = "claude-3-7-sonnet-latest")),
+#'     solver = generate(chat_anthropic(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = detect_includes()
 #'   )
 #'   tsk2$eval()

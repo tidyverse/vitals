@@ -37,7 +37,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   # create a new Task
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_anthropic(model = "claude-3-7-sonnet-latest")),
+    solver = generate(chat_anthropic(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_qa()
   )
 
@@ -302,7 +302,7 @@ Log the task to a directory.
 Note that, if an \code{VITALS_LOG_DIR} envvar is set, this will happen
 automatically in \verb{$eval()}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Task$log(dir = vitals_log_dir())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Task$log(dir = self$dir)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

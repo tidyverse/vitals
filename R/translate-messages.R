@@ -20,7 +20,7 @@ translate_to_message <- function(turn, model) {
         inherits(turn@contents[[1]], "ellmer::ContentToolResult")
     ) {
       tool_result <- turn@contents[[1]]
-      message$content <- tool_result@value %||% as.character(tool_result@error)
+      message$content <- collapse_tool_result(tool_result)
       message$tool_call_id <- tool_result@request@id
       message$`function` <- tool_result@request@name
       return(message)
@@ -53,4 +53,34 @@ translate_to_message <- function(turn, model) {
   message$role <- role
 
   message
+}
+
+collapse_tool_result <- function(tool_result) {
+  if (!is.null(tool_result@error)) {
+    return(as.character(tool_result@error))
+  }
+
+  paste0(
+    purrr::map_chr(tool_result@value, collapse_tool_result_value),
+    collapse = "\n"
+  )
+}
+
+collapse_tool_result_value <- function(x) {
+  if (is.atomic(x)) {
+    return(paste0(x, collapse = "\n"))
+  }
+
+  switch(
+    x$type,
+    text = x$text,
+    image = paste0("data:", x$source$media_type, ";base64,", x$source$data),
+    collapse_modal_result(x$source, type = x$type)
+  )
+}
+
+collapse_modal_result <- function(x, type) {
+  x_tbl <- tibble::as_tibble(x)
+  x_tbl$data <- paste0("<TRUNCATED>", type, " tool result.<\\TRUNCATED>")
+  input_string(x_tbl)
 }

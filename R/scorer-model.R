@@ -46,7 +46,7 @@
 #'
 #'   tsk <- Task$new(
 #'     dataset = simple_addition,
-#'     solver = generate(solver_chat = chat_anthropic(model = "claude-3-7-sonnet-latest")),
+#'     solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = model_graded_qa()
 #'   )
 #'
@@ -71,7 +71,7 @@
 #'
 #'   tsk <- Task$new(
 #'     dataset = r_history,
-#'     solver = generate(solver_chat = chat_anthropic(model = "claude-3-7-sonnet-latest")),
+#'     solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = model_graded_fact()
 #'   )
 #'
@@ -134,19 +134,7 @@ model_graded_qa_impl <- function(
     qa_extract_grade(response_text, grade_pattern, partial_credit)
   })
 
-  if (partial_credit) {
-    scores <- factor(
-      grades,
-      levels = c("I", "P", "C"),
-      ordered = TRUE
-    )
-  } else {
-    scores <- factor(
-      grades,
-      levels = c("I", "C"),
-      ordered = TRUE
-    )
-  }
+  scores <- process_grades(grades, partial_credit)
 
   metadata <- purrr::map(seq_along(prompts), function(i) {
     list(
@@ -184,6 +172,32 @@ qa_extract_grade <- function(response, pattern, partial_credit = FALSE) {
   }
 
   toupper(grade_letter)
+}
+
+process_grades <- function(grades, partial_credit) {
+  unique_grades <- unique(grades)
+  is_ipc_grading <- (
+    any(c("I", "C") %in% unique_grades) &&
+    all(unique_grades %in% c("I", "P", "C"))
+  )
+
+  if (!is_ipc_grading) {
+    return(grades)
+  }
+
+  if (partial_credit) {
+    factor(
+      grades,
+      levels = c("I", "P", "C"),
+      ordered = TRUE
+    )
+  } else {
+    factor(
+      grades,
+      levels = c("I", "C"),
+      ordered = TRUE
+    )
+  }
 }
 
 qa_default_instructions <- function(partial_credit = FALSE) {

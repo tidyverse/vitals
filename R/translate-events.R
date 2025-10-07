@@ -291,7 +291,7 @@ create_tool_event <- function(turn, tool_result, timestamps) {
     id = tool_result@request@id,
     `function` = tool_result@request@name,
     arguments = tool_result@request@arguments,
-    result = tool_result@value %||% as.character(tool_result@error),
+    result = if (!is.null(tool_result@error)) as.character(tool_result@error) else collapse_tool_result(tool_result),
     events = list(),
     completed = events_timestamp(timestamp),
     working_time = attr(turn, "working_time")
@@ -332,7 +332,11 @@ create_model_event <- function(turn, sample) {
         tool_result <- prev_turn@contents[[1]]
         return(list(
           id = generate_id(),
-          content = tool_result@value %||% as.character(tool_result@error),
+          content = if (!is.null(tool_result@error)) {
+            as.character(tool_result@error)
+          } else {
+            collapse_tool_result(tool_result)
+          },
           role = "tool",
           tool_call_id = tool_result@request@id,
           `function` = tool_result@request@name
@@ -434,10 +438,25 @@ create_model_event <- function(turn, sample) {
         content = list(list(
           tool_use_id = msg$tool_call_id,
           type = "tool_result",
-          content = list(list(type = "text", text = msg$content)),
+          content = if (is.character(msg$content)) {
+            list(list(type = "text", text = msg$content))
+          } else {
+            # Handle tool results that may contain image objects
+            lapply(msg$content, function(item) {
+              if (is.list(item) && identical(item$type, "image") && !is.null(item$source)) {
+                # Convert image object to ContentImage format
+                list(
+                  type = "image",
+                  image = paste0("data:", item$source$media_type, ";base64,", item$source$data)
+                )
+              } else {
+                item
+              }
+            })
+          },
           # This depends specifically on previous helpers using
           # `as_character()` on conditions to extract error messages
-          is_error = grepl("Error in", msg$content)
+          is_error = if (is.character(msg$content)) grepl("Error in", msg$content) else FALSE
         ))
       ))
     } else if (msg$role == "user") {
@@ -466,9 +485,26 @@ create_model_event <- function(turn, sample) {
           content = combined_content
         ))
       } else {
+        # Handle content that may contain image objects
+        processed_content <- if (is.list(msg$content)) {
+          lapply(msg$content, function(item) {
+            if (is.list(item) && identical(item$type, "image") && !is.null(item$source)) {
+              # Convert image object to ContentImage format
+              list(
+                type = "image",
+                image = paste0("data:", item$source$media_type, ";base64,", item$source$data)
+              )
+            } else {
+              item
+            }
+          })
+        } else {
+          msg$content
+        }
+        
         return(list(
           role = "assistant",
-          content = msg$content
+          content = processed_content
         ))
       }
     }

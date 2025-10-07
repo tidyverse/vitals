@@ -16,12 +16,7 @@
       res
     Output
       $x
-      $x$a
-      [1] 1
-      
-      $x$b
-      [1] 2
-      
+      [1] "List of 1"      " $ :List of 2"  "  ..$ a: num 1" "  ..$ b: num 2"
       
       $y
       [1] 3

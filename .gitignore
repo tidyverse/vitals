@@ -11,3 +11,4 @@ inst/log_dump
 /.quarto/
 inst/doc
 **/.quarto/
+inst/inspect_ai/

@@ -1,0 +1,324 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"What''s
+        2+2?"}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a607848dc9e153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 15:00:37 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '363'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=RInqzRPqH2YA2e6FMRxOoWItymujZtSmrc4FH5Nu1cM-1759762837-1.0.1.1-x_d51w0U7AQaD5XHauPmpVHotJYGpjzK4VL4E0Y0X0UNxsCXIuLrm7LnlrXcRY5lofNHss5kjlkTiR4cWEAdZahvYD0iueEB9dPMgwLHu48;
+        path=/; expires=Mon, 06-Oct-25 15:30:37 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=ybhHu2hhrFj.Nyg48uZne8bqYThrS1yUY8J9dtl7Kk0-1759762837676-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '394'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199995'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_6a5c5f84f81b41b7abf8270847bf964c
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgzViYmcxvtvhUhohP574dTi3Fm6",
+          "object": "chat.completion",
+          "created": 1759762837,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "2 + 2 equals 4.",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 13,
+            "completion_tokens": 8,
+            "total_tokens": 21,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 15:00:37
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"What''s
+        2+3?"}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a60787a92de153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 15:00:38 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '508'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=ec48vzQRS6s4zCz_hUqtVHr.lb6Q4hex.2pBFjRg4Mw-1759762838-1.0.1.1-n9S4LLhlqqS1zZWdxJAKI9gaocuuuQzf4FNsjFnPCfW.o5yGdM76G5xgNBtZJuaAXod__7QlXG3hJ69nvgG_Qk9MNl09SxatjRuPPz.rRGY;
+        path=/; expires=Mon, 06-Oct-25 15:30:38 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=tKHKAxqtXzvatwzAwFl7WAKhzQrL_NYwj7c6dMq71uc-1759762838299-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '523'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199995'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_d8f2317bbf064f678e38cf957ae2f516
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgzVbqTgPGs4L8C2hUfB8G6BC53i",
+          "object": "chat.completion",
+          "created": 1759762837,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "2 + 3 equals 5.",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 13,
+            "completion_tokens": 8,
+            "total_tokens": 21,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 15:00:38
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
+        assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: 2 + 2 equals 4.\n***\n[Criterion]:
+        4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a6078c0e6ce153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 15:00:39 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '919'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=s08fDXCTAtYDqXDYCowLzZBnzmYmihdB6zRlvEHEjlk-1759762839-1.0.1.1-Cfz4ew_5mdIiVpf15PfdSp9lw_SRwkNIVXw2Wli.nq1skKeD3QpDTyNEKP1ZI83vr.1uimpjwYGObACzdRA.uhOgFQ1nK12ljGxRTBAwPFQ;
+        path=/; expires=Mon, 06-Oct-25 15:30:39 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=GJMiDRwxPXOR_zExqlMOK2zhNXSmkmBJPpHUNJSlJBA-1759762839407-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '930'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199858'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 42ms
+      x-request-id: req_056ab481106b4eeca573bb4d49cfc0e9
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgzW4R9yH8tMy6iOX1ZWYQvoEIlo",
+          "object": "chat.completion",
+          "created": 1759762838,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "The submitted answer states \"2 + 2 equals 4,\" which correctly provides the sum of 2 and 2. The criterion specified is 4, which matches the answer given. Since the answer aligns perfectly with the criterion, it is correct and meets the requirement. \n\nGRADE: C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 147,
+            "completion_tokens": 59,
+            "total_tokens": 206,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 15:00:39
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
+        assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: 2 + 3 equals 5.\n***\n[Criterion]:
+        5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a60792be17e153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 15:00:40 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '1369'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=AWLYDKiUARZoZj1DkfQDo5UZayFel4OCjyTx70VFh2E-1759762840-1.0.1.1-dX8GtmFcFCwOaEkMkcrkIt5N7aCxqJbZ.O5QcFQn9qyZLr_aNxLM5uryoUatJW7uFvf24qDz__18qvor6Usn4NjuCUwamk3wtLK.D_n0IpA;
+        path=/; expires=Mon, 06-Oct-25 15:30:40 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=qDoZJVvRNWDHpUfX_2DgYCE.QmI.bIPBj_MQvph1CkY-1759762840943-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '1380'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199858'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 42ms
+      x-request-id: req_291c955dc3d3478483fd78da8f245205
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgzXotP9gRlGk3BhD1G3oZNV8cmY",
+          "object": "chat.completion",
+          "created": 1759762839,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "The submission states that 2 + 3 equals 5, which is mathematically correct. The criterion provided is 5, indicating that the expected answer is 5. Since the submitted answer matches the criterion exactly, it meets the criteria for correctness. Therefore, the answer is correct according to the given criterion.\n\nGRADE: C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 147,
+            "completion_tokens": 66,
+            "total_tokens": 213,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 15:00:40
+recorded_with: VCR-vcr/2.0.0

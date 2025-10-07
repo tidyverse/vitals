@@ -131,14 +131,16 @@ After evaluation, the task contains information from the solving and scoring ste
 cat(are_task$get_samples()$result[1])
 ```
 
-The task also contains score information from the scoring step. We've used `model_graded_qa()` as our scorer, which uses another model to evaluate the quality of our solver's solutions against the reference solutions in the `target` column. `model_graded_qa()` is a model-graded scorer provided by the package. This step compares Claude's solutions against the reference solutions in the `target` column, assigning a score to each solution using another model. That score is either `1` or `0`, though since we've set `partial_credit = TRUE`, the model can also choose to allot the response `.5`. vitals will use the same model that generated the final response as the model to score solutions.
+The task also contains score information from the scoring step. We've used `model_graded_qa()` as our scorer, which uses another model to evaluate the quality of our solver's solutions against the reference solutions in the `target` column. `model_graded_qa()` is a model-graded scorer provided by the package. This step compares Claude's solutions against the reference solutions in the `target` column, assigning a score to each solution using another model. That score is either `I` (Incorrect) or `C` (Correct), though since we've set `partial_credit = TRUE`, the model can also choose to allot the response `P` (Partially Correct). vitals will use the same model that generated the final response as the model to score solutions.
 
 Hold up, though—we're using an LLM to generate responses to questions, and then using the LLM to grade those responses?
 
 ```{r}
 #| echo: false
 #| fig-alt: "The meme of 3 spiderman pointing at each other."
-knitr::include_graphics("https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp")
+knitr::include_graphics(
+  "https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp"
+)
 ```
 
 This technique is called "model grading" or "LLM-as-a-judge." Done correctly, model grading is an effective and scalable solution to scoring. That said, it's not without its faults. Here's what the grading model thought of the response:
@@ -158,10 +160,10 @@ Especially the first few times you run an eval, you'll want to inspect (ha!) its
 if (identical(Sys.getenv("IN_PKGDOWN"), "true")) {
   htmltools::tags$iframe(
     src = "../example-logs/vitals/index.html",
-    width = "100%", 
+    width = "100%",
     height = "600px",
     style = "border-radius: 10px; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);"
-  ) 
+  )
 } else {
   knitr::include_graphics("data/are_viewer.png")
 }
@@ -186,7 +188,7 @@ are_task_data |>
   geom_bar()
 ```
 
-Claude answered fully correctly in `r sum(are_task_data$score == "C")` out of `r nrow(are_task_data)` samples, and partially correctly `r sum(are_task_data$score == "P")` times.For me, this leads to all sorts of questions:
+Claude answered fully correctly in `r sum(are_task_data$score == "C")` out of `r nrow(are_task_data)` samples, and partially correctly `r sum(are_task_data$score == "P")` times. For me, this leads to all sorts of questions:
 
 * Are there any models that are cheaper than Claude that would do just as well? Or even a local model?
 * Are there other models available that would do better out of the box?
@@ -273,8 +275,8 @@ This vignette demonstrated the simplest possible evaluation based on the `are` d
 # `pkgdown/assets/`
 dest_dir <- here::here("pkgdown/assets/example-logs/vitals")
 vitals_bundle(
-  log_dir = here::here("vignettes/data/logs"), 
-  output_dir = dest_dir, 
+  log_dir = here::here("vignettes/data/logs"),
+  output_dir = dest_dir,
   overwrite = TRUE
 )
 ```

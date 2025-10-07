@@ -111,3 +111,19 @@
       Error in `$score()`:
       ! Elements in the scorer_chat output from `scorer` must be ellmer Chat objects, not a string.
 
+# eval errors with unnamed arguments
+
+    Code
+      tsk$eval("unnamed_arg")
+    Condition
+      Error in `$eval()`:
+      ! All arguments in `...` must be named.
+
+# eval errors when argument matches neither function and neither has ellipses
+
+    Code
+      tsk$eval(unmatched_param = "error")
+    Condition
+      Error in `$eval()`:
+      ! Argument `unmatched_param` does not match any parameter in the solver or scorer functions.
+

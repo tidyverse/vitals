@@ -1,0 +1,333 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"Who created
+        R?"}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a605eb0d7ce153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 14:59:32 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '746'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=Blk8IloxL7UqR8npCkugWSul66nrajwwTouM1o9beJs-1759762772-1.0.1.1-ZlS2MYuGiSKFPTsx4gvhlzzlMGziH6lNV.ZGSuI.xkaD.TVjO27KUKy6wuzfgEEhmUCSu06ZkdpwIjtSvkZSpV70MCXvMPrd87RJAsUjT3c;
+        path=/; expires=Mon, 06-Oct-25 15:29:32 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=32JqdcnJ97p67ZybK00hJ.yKT4Xr.pThwO.0VAz9go8-1759762772513-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '766'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199994'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_4776c56e32954b0f85f4d068259fd58e
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgyR9gty094QiFGrcFQMZHfCDnlC",
+          "object": "chat.completion",
+          "created": 1759762771,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "R was created by Ross Ihaka and Robert Gentleman at the University of Auckland in New Zealand. The development of R began in the early 1990s as a language and environment for statistical computing and graphics, inspired by the S language developed at Bell Laboratories.",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 11,
+            "completion_tokens": 52,
+            "total_tokens": 63,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 14:59:32
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"In what
+        year was version 1.0.0 of R released?"}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a605f05b06e153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 14:59:34 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '481'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=7IlgFA413wBYuH195IZ4k1I1j9OJUDIo9dbjxZJpYAQ-1759762774-1.0.1.1-mnMsZz5MUR5H.LJgloefzSr9mGyd4RiPUtiKSmQhGRc_ta0slhWxbwjuNgx0FXx2bKycSIh34r8pXN7_DblqnFeptEY7NqfwMoHZWwFJAmk;
+        path=/; expires=Mon, 06-Oct-25 15:29:34 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=3A4xPBLMkJyd5joBh61qJm4UNgRCDO9OKRefeg1DKm8-1759762774457-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '1860'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199986'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 4ms
+      x-request-id: req_53e81096b1aa4fbfac7f5701644372fa
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgyUuf5ERNyYwA407x5AEfYoGT27",
+          "object": "chat.completion",
+          "created": 1759762774,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "R version 1.0.0 was released in the year 2000.",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 22,
+            "completion_tokens": 17,
+            "total_tokens": 39,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 14:59:34
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
+        comparing a submitted answer to an expert answer on a given question.\n[BEGIN
+        DATA]\n************\n[Question]: Who created R?\n************\n[Expert]: Ross
+        Ihaka and Robert Gentleman.\n************\n[Submission]: R was created by
+        Ross Ihaka and Robert Gentleman at the University of Auckland in New Zealand.
+        The development of R began in the early 1990s as a language and environment
+        for statistical computing and graphics, inspired by the S language developed
+        at Bell Laboratories.\n************\n[END DATA]\nCompare the factual content
+        of the submitted answer with the expert answer.\nIgnore any differences in
+        style, grammar, or punctuation.\nDoes the submission contain the content in
+        the expert answer?\nAfter assessing the submitted answer, reply with ''GRADE:
+        $LETTER'' where\nLETTER is one of C or I.\nPlease choose ONE option: either
+        ''C'' for correct answers, \nor ''I'' for incorrect answers.\nFirst explain
+        your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string
+        and do not include any punctuation or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a605fd38cde153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 14:59:36 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '2036'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=nUMZGBlBTVk8nnjjaHMtPKvzkH31yJu7d2PQgiCOCWg-1759762776-1.0.1.1-wI35GglMtpfP3rvrIoRp.KRRrHiwkau6LMt_bIkb14dopTqb0gYYSaxqiXAWpZ_ooIeMlC9yAtGq0MSon.q4oKJdYuJgfBicAkBPNiSnQ0s;
+        path=/; expires=Mon, 06-Oct-25 15:29:36 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=oHnO1apTsTHlO_gscBV0fxDEXT9ILS7U.MtYhUYXE1c-1759762776742-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '2071'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199736'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 78ms
+      x-request-id: req_36e8d74c7f1544638eb0306628ccc39a
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgyU3jjv4rmYlwRUfpzaMEKGgL23",
+          "object": "chat.completion",
+          "created": 1759762774,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "The expert answer states that R was created by Ross Ihaka and Robert Gentleman. The submission includes this information, specifying the creators as Ross Ihaka and Robert Gentleman at the University of Auckland in New Zealand, and adds additional context about the development beginning in the early 1990s, as well as inspiration from the S language at Bell Laboratories. All the key factual points made by the expert are included in the submission, although the submission provides more detail.\n\nSince the core information—who created R—is exactly the same in both, and the extra details do not contradict or omit the basic facts, the submission contains all the essential content of the expert answer.\n\nGRADE: C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 224,
+            "completion_tokens": 134,
+            "total_tokens": 358,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 14:59:36
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
+        comparing a submitted answer to an expert answer on a given question.\n[BEGIN
+        DATA]\n************\n[Question]: In what year was version 1.0.0 of R released?\n************\n[Expert]:
+        2000.\n************\n[Submission]: R version 1.0.0 was released in the year
+        2000.\n************\n[END DATA]\nCompare the factual content of the submitted
+        answer with the expert answer.\nIgnore any differences in style, grammar,
+        or punctuation.\nDoes the submission contain the content in the expert answer?\nAfter
+        assessing the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER
+        is one of C or I.\nPlease choose ONE option: either ''C'' for correct answers,
+        \nor ''I'' for incorrect answers.\nFirst explain your reasoning, then end
+        with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false}'
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers: X-Request-ID
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 98a6060ac80ae153-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Mon, 06 Oct 2025 14:59:37 GMT
+      openai-organization: simon-ab895m
+      openai-processing-ms: '996'
+      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=dtQP3azbYYlWOY_rY.0w2ARhL7bRptp8_fkhotKouM4-1759762777-1.0.1.1-HIhJYZlUrkhCw4CMV8w28OXN2HaX2lwaPuQI1qPdlyMO.nVjyGxy.Rzp_YAV8Yl0apfvjBbhyw10rK7_vbmH9Wy8Hp8g557brPMhowrOJyY;
+        path=/; expires=Mon, 06-Oct-25 15:29:37 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=PP2vjlG8a9AAgb_BVhxN50o9rtF28bUGe_EDWAnzjUQ-1759762777865-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '1023'
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '500'
+      x-ratelimit-limit-tokens: '200000'
+      x-ratelimit-remaining-requests: '499'
+      x-ratelimit-remaining-tokens: '199792'
+      x-ratelimit-reset-requests: 120ms
+      x-ratelimit-reset-tokens: 62ms
+      x-request-id: req_b617c6729064477e929cdc8497f769bc
+    body:
+      string: |
+        {
+          "id": "chatcmpl-CNgyWOFGBSj0wmJALOICtnUkZKI6n",
+          "object": "chat.completion",
+          "created": 1759762776,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "The expert answer states that R version 1.0.0 was released in 2000. The submitted answer also indicates that R version 1.0.0 was released in the year 2000. Both answers are factually consistent and contain the same information regarding the year of release. Therefore, the submission includes the content in the expert answer.\n\nGRADE: C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 197,
+            "completion_tokens": 75,
+            "total_tokens": 272,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_7c233bf9d1"
+        }
+  recorded_at: 2025-10-06 14:59:37
+recorded_with: VCR-vcr/2.0.0

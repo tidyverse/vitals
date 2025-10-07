@@ -1,9 +1,9 @@
 test_that("Task R6 class works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-basic")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -49,11 +49,11 @@ test_that("Task R6 class works", {
 })
 
 test_that("Task with epochs works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-epochs")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)
@@ -92,11 +92,11 @@ test_that("Task with epochs works", {
 })
 
 test_that("Task respects `$new(epochs)`", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-new-epochs")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)
@@ -120,11 +120,11 @@ test_that("Task respects `$new(epochs)`", {
 })
 
 test_that("`$eval(epochs)` takes precedence over `$new(epochs)`", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-eval-epochs-precedence")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)
@@ -151,30 +151,24 @@ test_that("check_dataset works", {
   expect_snapshot(
     Task$new(
       dataset = data.frame(input = 1),
-      solver = function() {
-      },
-      scorer = function() {
-      }
+      solver = function() {},
+      scorer = function() {}
     ),
     error = TRUE
   )
   expect_snapshot(
     Task$new(
       dataset = data.frame(target = 1),
-      solver = function() {
-      },
-      scorer = function() {
-      }
+      solver = function() {},
+      scorer = function() {}
     ),
     error = TRUE
   )
   expect_snapshot(
     Task$new(
       dataset = data.frame(x = 1),
-      solver = function() {
-      },
-      scorer = function() {
-      }
+      solver = function() {},
+      scorer = function() {}
     ),
     error = TRUE
   )
@@ -223,10 +217,8 @@ test_that("Task preserves existing id column", {
 
   tsk <- Task$new(
     dataset = d,
-    solver = function() {
-    },
-    scorer = function() {
-    }
+    solver = function() {},
+    scorer = function() {}
   )
 
   expect_equal(tsk$get_samples()$id, c(10, 20))
@@ -244,10 +236,8 @@ test_that("Task errors informatively with duplicate ids", {
   expect_snapshot(
     Task$new(
       dataset = d,
-      solver = function() {
-      },
-      scorer = function() {
-      }
+      solver = function() {},
+      scorer = function() {}
     ),
     error = TRUE
   )
@@ -255,11 +245,10 @@ test_that("Task errors informatively with duplicate ids", {
 
 # solver ------------------------------------------------------------------
 test_that("set_solver works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -270,10 +259,8 @@ test_that("set_solver works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = function() {
-    },
-    scorer = function() {
-    }
+    solver = function() {},
+    scorer = function() {}
   )
 
   new_solver <- function(inputs) {
@@ -312,11 +299,10 @@ test_that("set_solver works", {
 })
 
 test_that("set_solver works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -327,10 +313,8 @@ test_that("set_solver works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = function() {
-    },
-    scorer = function() {
-    }
+    solver = function() {},
+    scorer = function() {}
   )
 
   new_solver <- function(inputs) {
@@ -370,11 +354,10 @@ test_that("set_solver works", {
 
 # scorer ------------------------------------------------------------------
 test_that("set_scorer works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -396,8 +379,7 @@ test_that("set_scorer works", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = solver,
-    scorer = function() {
-    }
+    scorer = function() {}
   )
 
   tsk$solve()
@@ -453,11 +435,11 @@ test_that("set_scorer works", {
 
 # metrics ------------------------------------------------------------------
 test_that("default metrics are applied effectively", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-default-metrics")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -483,11 +465,11 @@ test_that("default metrics are applied effectively", {
 })
 
 test_that("task applies non-default metrics", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-non-default-metrics")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -525,11 +507,11 @@ test_that("task applies non-default metrics", {
 })
 
 test_that("task errors informatively with bad metrics", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-bad-metrics")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -588,7 +570,7 @@ test_that("task errors informatively with bad metrics", {
 
 # misc ------------------------------------------------------------------
 test_that("task ids are deterministic", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  key_get("OPENAI_API_KEY")
 
   tsk_1 <-
     Task$new(
@@ -612,11 +594,11 @@ test_that("task ids are deterministic", {
 })
 
 test_that("Task completeness is tracked and preserved", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-completeness")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -690,8 +672,7 @@ test_that("Task completeness is tracked and preserved", {
 
 test_that("Task errors informatively with bad solver output", {
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -709,8 +690,7 @@ test_that("Task errors informatively with bad solver output", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = bad_solver_missing_fields,
-    scorer = function() {
-    }
+    scorer = function() {}
   )
 
   expect_snapshot(tsk$solve(), error = TRUE)
@@ -718,8 +698,7 @@ test_that("Task errors informatively with bad solver output", {
 
 test_that("Task detects non-Chat objects in solver_chat", {
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   simple_addition <- tibble::tibble(
@@ -737,18 +716,17 @@ test_that("Task detects non-Chat objects in solver_chat", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = bad_solver_wrong_type,
-    scorer = function() {
-    }
+    scorer = function() {}
   )
 
   expect_snapshot(tsk$solve(), error = TRUE)
 })
 
 test_that("Task errors informatively with bad scorer output", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-bad-scorer-output")
+  key_get("OPENAI_API_KEY")
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -769,10 +747,10 @@ test_that("Task errors informatively with bad scorer output", {
 })
 
 test_that("Task detects non-Chat objects in scorer_chat", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-non-chat-scorer")
+  key_get("OPENAI_API_KEY")
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -796,10 +774,10 @@ test_that("Task detects non-Chat objects in scorer_chat", {
 })
 
 test_that("token usage is logged correctly", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("task-token-usage")
+  key_get("OPENAI_API_KEY")
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -854,11 +832,11 @@ test_that("token usage is logged correctly", {
 
 
 test_that("token usage is logged correctly (with unrelated token usage)", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
-  skip_if(identical(Sys.getenv("ANTHROPIC_API_KEY"), ""))
+  vcr::local_cassette("task-token-usage-unrelated")
+  key_get("OPENAI_API_KEY")
+  key_get("ANTHROPIC_API_KEY")
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
   library(ellmer)
 
@@ -869,7 +847,10 @@ test_that("token usage is logged correctly (with unrelated token usage)", {
 
   # use a couple tokens to ensure non-NULL
   chat_openai(model = "gpt-4.1-nano")$chat("hey!", echo = "none")
-  chat_anthropic(model = "claude-3-7-sonnet-latest")$chat("hey!", echo = "none")
+  chat_anthropic(model = "claude-sonnet-4-5-20250929")$chat(
+    "hey!",
+    echo = "none"
+  )
   usage_before <- ellmer::token_usage()
   usage_before <- dplyr::filter(usage_before, model == "gpt-4.1-nano")
 
@@ -892,4 +873,196 @@ test_that("token usage is logged correctly (with unrelated token usage)", {
     cost_after_solve$output,
     usage_after_solve$output - usage_before$output
   )
+})
+
+# argument routing --------------------------------------------------------
+test_that("eval routes arguments correctly to solver and scorer", {
+  vcr::local_cassette("task-eval-routes-args")
+  key_get("OPENAI_API_KEY")
+  withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  solver_arg_tracker <- NULL
+  scorer_arg_tracker <- NULL
+
+  ch <- chat_openai(model = "gpt-4.1-nano")
+  ch$chat("Hey!", echo = FALSE)
+
+  custom_solver <- function(inputs, solver_param = "default_solver") {
+    solver_arg_tracker <<- solver_param
+    list(
+      result = c("4", "5"),
+      solver_chat = list(ch, ch)
+    )
+  }
+
+  custom_scorer <- function(samples, scorer_param = "default_scorer") {
+    scorer_arg_tracker <<- scorer_param
+    list(score = c(1, 1))
+  }
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = custom_solver,
+    scorer = custom_scorer
+  )
+
+  tsk$eval(solver_param = "passed_to_solver", scorer_param = "passed_to_scorer")
+
+  expect_equal(solver_arg_tracker, "passed_to_solver")
+  expect_equal(scorer_arg_tracker, "passed_to_scorer")
+})
+
+test_that("eval routes arguments to functions with ellipses", {
+  vcr::local_cassette("task-eval-routes-ellipses")
+  key_get("OPENAI_API_KEY")
+  withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  solver_dots_tracker <- NULL
+  scorer_dots_tracker <- NULL
+
+  ch <- chat_openai(model = "gpt-4.1-nano")
+  ch$chat("Hey!", echo = FALSE)
+
+  solver_with_dots <- function(inputs, ...) {
+    dots <- list(...)
+    solver_dots_tracker <<- dots
+    list(
+      result = c("4", "5"),
+      solver_chat = list(ch, ch)
+    )
+  }
+
+  scorer_with_dots <- function(samples, ...) {
+    dots <- list(...)
+    scorer_dots_tracker <<- dots
+    list(score = c(1, 1))
+  }
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = solver_with_dots,
+    scorer = scorer_with_dots
+  )
+
+  tsk$eval(unmatched_param = "goes_to_both")
+
+  expect_equal(solver_dots_tracker$unmatched_param, "goes_to_both")
+  expect_equal(scorer_dots_tracker$unmatched_param, "goes_to_both")
+})
+
+test_that("eval routes unmatched arguments to solver with ellipses only", {
+  vcr::local_cassette("task-eval-routes-unmatched")
+  key_get("OPENAI_API_KEY")
+  withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  solver_dots_tracker <- NULL
+
+  ch <- chat_openai(model = "gpt-4.1-nano")
+  ch$chat("Hey!", echo = FALSE)
+
+  solver_with_dots <- function(inputs, ...) {
+    dots <- list(...)
+    solver_dots_tracker <<- dots
+    list(
+      result = c("4", "5"),
+      solver_chat = list(ch, ch)
+    )
+  }
+
+  scorer_no_dots <- function(samples) {
+    list(score = c(1, 1))
+  }
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = solver_with_dots,
+    scorer = scorer_no_dots
+  )
+
+  tsk$eval(unmatched_param = "goes_to_solver")
+
+  expect_equal(solver_dots_tracker$unmatched_param, "goes_to_solver")
+})
+
+test_that("eval errors with unnamed arguments", {
+  withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = function(inputs) {
+      list(result = c("4", "5"), solver_chat = list(NULL, NULL))
+    },
+    scorer = function(samples) {
+      list(score = c(1, 1))
+    }
+  )
+
+  expect_snapshot(tsk$eval("unnamed_arg"), error = TRUE)
+})
+
+test_that("eval errors when argument matches neither function and neither has ellipses", {
+  vcr::local_cassette("task-eval-errors-bad-arg")
+  key_get("OPENAI_API_KEY")
+  withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  ch <- chat_openai(model = "gpt-4.1-nano")
+  ch$chat("Hey!", echo = FALSE)
+
+  solver_no_dots <- function(inputs, solver_param = "default") {
+    list(
+      result = c("4", "5"),
+      solver_chat = list(ch, ch)
+    )
+  }
+
+  scorer_no_dots <- function(samples, scorer_param = "default") {
+    list(score = c(1, 1))
+  }
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = solver_no_dots,
+    scorer = scorer_no_dots
+  )
+
+  expect_snapshot(tsk$eval(unmatched_param = "error"), error = TRUE)
 })

@@ -1,0 +1,256 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    body:
+      string: '{"contents":[{"role":"user","parts":[{"text":"What''s 2+2?"}]}],"systemInstruction":{"parts":{"text":""}}}'
+  response:
+    status: 200
+    headers:
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-encoding: gzip
+      content-length: '321'
+      content-type: application/json; charset=UTF-8
+      date: Mon, 06 Oct 2025 15:00:57 GMT
+      server: scaffolding on HTTPServer2
+      server-timing: gfet4t7; dur=453
+      vary:
+      - Origin
+      - X-Origin
+      - Referer
+      x-content-type-options: nosniff
+      x-frame-options: SAMEORIGIN
+      x-xss-protection: '0'
+    body:
+      string: |
+        {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "2 + 2 = 4\n"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "avgLogprobs": -3.0608847737312317e-05
+            }
+          ],
+          "usageMetadata": {
+            "promptTokenCount": 8,
+            "candidatesTokenCount": 8,
+            "totalTokenCount": 16,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 8
+              }
+            ],
+            "candidatesTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 8
+              }
+            ]
+          },
+          "modelVersion": "gemini-2.0-flash",
+          "responseId": "qNnjaLKBJ6WljMcPzbmKiQI"
+        }
+  recorded_at: 2025-10-06 15:00:57
+- request:
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    body:
+      string: '{"contents":[{"role":"user","parts":[{"text":"What''s 2+3?"}]}],"systemInstruction":{"parts":{"text":""}}}'
+  response:
+    status: 200
+    headers:
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-encoding: gzip
+      content-length: '319'
+      content-type: application/json; charset=UTF-8
+      date: Mon, 06 Oct 2025 15:00:57 GMT
+      server: scaffolding on HTTPServer2
+      server-timing: gfet4t7; dur=456
+      vary:
+      - Origin
+      - X-Origin
+      - Referer
+      x-content-type-options: nosniff
+      x-frame-options: SAMEORIGIN
+      x-xss-protection: '0'
+    body:
+      string: |
+        {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "2 + 3 = 5\n"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "avgLogprobs": -5.1281997002661228e-05
+            }
+          ],
+          "usageMetadata": {
+            "promptTokenCount": 8,
+            "candidatesTokenCount": 8,
+            "totalTokenCount": 16,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 8
+              }
+            ],
+            "candidatesTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 8
+              }
+            ]
+          },
+          "modelVersion": "gemini-2.0-flash",
+          "responseId": "qdnjaMmPCNegjMcPl4XHyQE"
+        }
+  recorded_at: 2025-10-06 15:00:57
+- request:
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    body:
+      string: '{"contents":[{"role":"user","parts":[{"text":"You are assessing a submitted
+        answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What''s
+        2+2?\n***\n[Submission]: 2 + 2 = 4\n\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes
+        the submission meet the criterion?\nAfter assessing the submitted answer,
+        reply with ''GRADE: $LETTER'' where\nLETTER is one of C or I.\nPlease choose
+        ONE option: either ''C'' for correct answers, \nor ''I'' for incorrect answers.\nFirst
+        explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading
+        string and do not include any punctuation or\nexposition after it."}]}],"systemInstruction":{"parts":{"text":""}}}'
+  response:
+    status: 200
+    headers:
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-encoding: gzip
+      content-length: '393'
+      content-type: application/json; charset=UTF-8
+      date: Mon, 06 Oct 2025 15:00:58 GMT
+      server: scaffolding on HTTPServer2
+      server-timing: gfet4t7; dur=658
+      vary:
+      - Origin
+      - X-Origin
+      - Referer
+      x-content-type-options: nosniff
+      x-frame-options: SAMEORIGIN
+      x-xss-protection: '0'
+    body:
+      string: |
+        {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "The task is to evaluate if \"2 + 2 = 4\" meets the criterion \"4\".\nThe submission \"2 + 2 = 4\" indeed results in \"4\".\nGRADE: C"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "avgLogprobs": -0.48409581738849017
+            }
+          ],
+          "usageMetadata": {
+            "promptTokenCount": 153,
+            "candidatesTokenCount": 43,
+            "totalTokenCount": 196,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 153
+              }
+            ],
+            "candidatesTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 43
+              }
+            ]
+          },
+          "modelVersion": "gemini-2.0-flash",
+          "responseId": "qdnjaJrNKtaPjMcPwKqIuAk"
+        }
+  recorded_at: 2025-10-06 15:00:58
+- request:
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    body:
+      string: '{"contents":[{"role":"user","parts":[{"text":"You are assessing a submitted
+        answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What''s
+        2+3?\n***\n[Submission]: 2 + 3 = 5\n\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes
+        the submission meet the criterion?\nAfter assessing the submitted answer,
+        reply with ''GRADE: $LETTER'' where\nLETTER is one of C or I.\nPlease choose
+        ONE option: either ''C'' for correct answers, \nor ''I'' for incorrect answers.\nFirst
+        explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading
+        string and do not include any punctuation or\nexposition after it."}]}],"systemInstruction":{"parts":{"text":""}}}'
+  response:
+    status: 200
+    headers:
+      alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      content-encoding: gzip
+      content-length: '402'
+      content-type: application/json; charset=UTF-8
+      date: Mon, 06 Oct 2025 15:00:58 GMT
+      server: scaffolding on HTTPServer2
+      server-timing: gfet4t7; dur=644
+      vary:
+      - Origin
+      - X-Origin
+      - Referer
+      x-content-type-options: nosniff
+      x-frame-options: SAMEORIGIN
+      x-xss-protection: '0'
+    body:
+      string: |
+        {
+          "candidates": [
+            {
+              "content": {
+                "parts": [
+                  {
+                    "text": "The criterion is 5, which is the correct answer to 2+3. The submission also arrives at the answer 5. Therefore, the submission meets the criterion.\nGRADE: C"
+                  }
+                ],
+                "role": "model"
+              },
+              "finishReason": "STOP",
+              "avgLogprobs": -0.27230448600573415
+            }
+          ],
+          "usageMetadata": {
+            "promptTokenCount": 153,
+            "candidatesTokenCount": 39,
+            "totalTokenCount": 192,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 153
+              }
+            ],
+            "candidatesTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 39
+              }
+            ]
+          },
+          "modelVersion": "gemini-2.0-flash",
+          "responseId": "qtnjaN_kGLKOjMcPzMSVQQ"
+        }
+  recorded_at: 2025-10-06 15:00:59
+recorded_with: VCR-vcr/2.0.0

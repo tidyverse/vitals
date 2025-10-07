@@ -1,5 +1,6 @@
 test_that("generate works", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("solver-generate")
+  key_get("OPENAI_API_KEY")
   library(ellmer)
 
   res <- generate(chat_openai(model = "gpt-4.1-nano"))

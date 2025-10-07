@@ -68,6 +68,7 @@ vitals_view_impl <- function(
               # GET /api/logs
               if (req$PATH_INFO == "/api/logs") {
                 files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
+                files <- files[basename(files) != "listing.json"]
                 files <- sort(files, decreasing = TRUE)
                 log_files <- lapply(files, function(f) {
                   file_path <- file.path(dir, f)

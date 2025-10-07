@@ -119,16 +119,10 @@ eval_log_filename <- function(eval_log) {
   )
 }
 
-active_file <- function() {
-  if (!rstudioapi::isAvailable()) {
-    return("")
-  }
-
-  active_document <- rstudioapi::getActiveDocumentContext()
-  active_document$path
-}
-
 results_scores <- function(name, metrics) {
+  if (length(metrics) == 0) {
+    metrics <- c()
+  }
   list(list(
     name = name,
     scorer = name,

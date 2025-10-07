@@ -32,19 +32,19 @@ Imports:
     purrr,
     R6,
     rlang,
-    rstudioapi,
     S7,
     tibble,
     tidyr,
     withr
-Suggests: 
+Suggests:
     ggplot2,
     here,
     htmltools,
     knitr,
     ordinal,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    vcr (>= 2.0.0)
 VignetteBuilder: knitr
 Config/Needs/website: tidyverse/tidytemplate, rmarkdown, posit-dev/btw,
     tidyverse, gt, brms, RcppEigen, broom

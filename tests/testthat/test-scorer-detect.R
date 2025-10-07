@@ -342,7 +342,8 @@ test_that("detect_answer works", {
 # as that would require solver chats. Do a "live" test once to ensure that we
 # don't assume scorer chats are available while logging. (#77)
 test_that("vitals writes valid eval logs (basic, claude)", {
-  skip_if(identical(Sys.getenv("OPENAI_API_KEY"), ""))
+  vcr::local_cassette("scorer-detect-valid-log")
+  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {

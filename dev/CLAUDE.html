@@ -67,6 +67,31 @@
 <p>To get a sense for the style used to write and test code, read <code>R/task.R</code> and <code>tests/testthat/test-task.R</code>, respectively. Notable, <strong>do not comment your code</strong> besides roxygen comments.</p>
 <p>You’ve been provided with a number of tools that allow you to peruse package documentation; use them liberally. When writing non-base or -tidyverse code, check the help page for functions you use to ensure that you’ve set function arguments correctly.</p>
 </div>
+<div class="section level2">
+<h2 id="refreshing-stored-tasks-with-updated-log-logic">Refreshing stored Tasks with updated <code>$log()</code> logic<a class="anchor" aria-label="anchor" href="#refreshing-stored-tasks-with-updated-log-logic"></a></h2>
+<p>Historical task objects capture the version of <code>$log()</code> that existed when they were serialized. When the implementation changes, regenerate their logs by temporarily swapping in the current method from <code>Task$public_methods</code>:</p>
+<ol style="list-style-type: decimal"><li><p><code>devtools::load_all("inst/sandbox/vitals")</code> so the latest <code>Task</code> definition is on the search path.</p></li>
+<li><p><code>load("path/to/tsk_example.rda")</code>; the task object is stored under the same name as the file.</p></li>
+<li>
+<p>Unlock the existing public <code>$log</code> binding, attach the current method, and restore the lock:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/bindenv.html" class="external-link">unlockBinding</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="va">task</span><span class="op">$</span><span class="va">.__enclos_env__</span><span class="op">$</span><span class="va">self</span><span class="op">)</span></span>
+<span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="va">Task</span><span class="op">$</span><span class="va">public_methods</span><span class="op">$</span><span class="va">log</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="va">fn</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">task</span><span class="op">$</span><span class="va">.__enclos_env__</span></span>
+<span><span class="va">task</span><span class="op">$</span><span class="va">.__enclos_env__</span><span class="op">$</span><span class="va">self</span><span class="op">$</span><span class="va">log</span> <span class="op">&lt;-</span> <span class="va">fn</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/bindenv.html" class="external-link">lockBinding</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="va">task</span><span class="op">$</span><span class="va">.__enclos_env__</span><span class="op">$</span><span class="va">self</span><span class="op">)</span></span></code></pre></div>
+<p>(The <code>environment(fn)</code> assignment ensures the method executes in the task’s private environment.)</p>
+</li>
+<li>
+<p>Point the task at the log directory and call the refreshed method:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">task</span><span class="op">$</span><span class="va">dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html" class="external-link">normalizePath</a></span><span class="op">(</span><span class="st">"path/to/logs"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="va">task</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>You’ll probably want to remove the old log resulting from the same object, if there is one.</p>
+</li>
+<li><p>Repeat for each serialized task whose logs need updating.</p></li>
+</ol><p>This pattern lets the stored tasks emit logs with the current translation pipeline without having to rebuild them from scratch.</p>
+</div>
 
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -91,7 +91,21 @@
 </li>
 <li><p>Repeat for each serialized task whose logs need updating.</p></li>
 </ol><p>This pattern lets the stored tasks emit logs with the current translation pipeline without having to rebuild them from scratch.</p>
-</div>
+<p>To regenerate and validate logs using the Python virtualenv that bundles <code>inspect_ai</code> + <code>pydantic</code> (e.g. <code>~/.virtualenvs/pyvenv</code>):</p>
+<ol style="list-style-type: decimal"><li>
+<p>Export the interpreter and bypass flag before launching R (or call <code><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv()</a></code> immediately after entering R):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">VITALS_PYTHON</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/.virtualenvs/pyvenv/bin/python"</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">NOT_CRAN</span><span class="op">=</span>true</span></code></pre></div>
+</li>
+<li><p><code>devtools::load_all()</code>.</p></li>
+<li>
+<p>For each saved task (following the rebinding steps above):</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="va">task</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">expect_valid_log</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
+<p><code>expect_valid_log()</code> will now invoke the Pydantic models via the specified virtualenv to confirm the regenerated JSON is valid.</p>
+</li>
+</ol></div>
 
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

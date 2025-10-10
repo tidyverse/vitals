@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p>Fixed bug where non-default grading systems in model-graded evals would result in scores being wiped during logging (<a href="https://github.com/tidyverse/vitals/issues/139" class="external-link">#139</a>).</p></li>
+<ul><li><p>The default <code>accuracy()</code> metric will now report a score of 0 rather than <code>NaN</code> when all scores are 0.</p></li>
+<li><p>Fixed bug where non-default grading systems in model-graded evals would result in scores being wiped during logging (<a href="https://github.com/tidyverse/vitals/issues/139" class="external-link">#139</a>).</p></li>
 <li><p>The full suite of package tests can now be ran without active API keys via the vcr package (<a href="https://github.com/tidyverse/vitals/issues/163" class="external-link">#163</a>).</p></li>
 <li><p>Internal <code>expect_valid_log()</code> now styles Pydantic output for readability (<a href="https://github.com/tidyverse/vitals/issues/159" class="external-link">#159</a> by howardbaik).</p></li>
 <li><p><code>$eval()</code> and <code>$log()</code> will now write log files to the same default directory–the one specified when initializing the Task object. Previously, <code>$eval()</code> wrote to that directory, while <code>$log()</code> wrote to <code><a href="../reference/vitals_log_dir.html">vitals_log_dir()</a></code> (<a href="https://github.com/tidyverse/vitals/issues/158" class="external-link">#158</a> by <a href="https://github.com/SokolovAnatoliy" class="external-link">@SokolovAnatoliy</a>).</p></li>

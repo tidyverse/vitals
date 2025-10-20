@@ -1,5 +1,11 @@
 # vitals (development version)
 
+
+* The log viewer previously reported the solver's response as the answer provided
+  to the scorer. However, these two texts can differ when post-processing of
+  the solver's response is performed. This is now fixed in the log 
+  viewer (#166, #169 by @mattwarkentin).
+
 * The default `accuracy()` metric will now report a score of 0 rather than 
   `NaN` when all scores are 0.
 

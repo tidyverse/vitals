@@ -171,13 +171,23 @@ create_init_begin_event <- function(timestamp) {
 
 create_sample_init_event <- function(turn, sample, timestamp) {
   user_message_id <- generate_id()
+  message_content <- message_content_from_turn(turn)
+  sample_input <- if (is_content_list(message_content)) {
+    list(list(
+      content = message_content,
+      source = "input",
+      role = "user"
+    ))
+  } else {
+    message_content
+  }
 
   list(list(
     timestamp = events_timestamp(timestamp),
     working_start = attr(turn, "working_start"),
     event = "sample_init",
     sample = list(
-      input = input_string(sample$input[[1]]),
+      input = sample_input,
       target = sample$target,
       id = sample$id
     ),
@@ -185,7 +195,7 @@ create_sample_init_event <- function(turn, sample, timestamp) {
       messages = list(
         list(
           id = user_message_id,
-          content = input_string(sample$input[[1]]),
+          content = message_content,
           source = "input",
           role = "user"
         )
@@ -348,7 +358,7 @@ create_model_event <- function(turn, sample) {
       } else {
         return(list(
           id = generate_id(),
-          content = prev_turn@text,
+          content = message_content_from_turn(prev_turn),
           source = "input",
           role = "user"
         ))
@@ -479,7 +489,7 @@ create_model_event <- function(turn, sample) {
     } else if (msg$role == "user") {
       return(list(
         role = "user",
-        content = list(list(type = "text", text = msg$content))
+        content = ensure_content_list(msg$content)
       ))
     } else if (msg$role == "assistant") {
       if ("tool_calls" %in% names(msg)) {

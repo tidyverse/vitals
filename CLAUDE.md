@@ -22,6 +22,10 @@ Importantly:
 * Once you feel you have a working solution (logs generated from R that pass `expect_valid_log()`, the remaining tests should still pass with `devtools::test()`
 * Use your inspect-researcher sub-agent to read more about Inspect AI and how it works.
 
+## Testing
+
+The package uses `vcr` in its testing suite to reduce costs and runtime of unit tests. Snaps and vcr outputs are generated (and read from) automatically when the test suite is ran. When writing unit testing code, do so as usual and then run the tests to generate logs.
+
 ## Conventions
 
 Do not add new code comments, and only remove existing code comments if the comment isn't relevant anymore.

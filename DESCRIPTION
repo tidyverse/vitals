@@ -41,6 +41,7 @@ Suggests:
     here,
     htmltools,
     knitr,
+    magick,
     ordinal,
     rmarkdown,
     testthat (>= 3.0.0),

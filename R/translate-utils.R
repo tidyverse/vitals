@@ -91,6 +91,75 @@ first_text_contents <- function(turn) {
   turn_contents[[which(is_text)[1]]]
 }
 
+message_content_from_turn <- function(turn) {
+  contents <- turn@contents
+  if (length(contents) == 0) {
+    return(turn@text)
+  }
+
+  entries <- lapply(contents, translate_ellmer_content)
+  if (length(entries) > 0) {
+    only_text <- all(vapply(
+      entries,
+      function(entry) {
+        is.list(entry) && identical(entry$type, "text")
+      },
+      logical(1)
+    ))
+    if (only_text) {
+      return(turn@text)
+    }
+  }
+
+  entries
+}
+
+translate_ellmer_content <- function(content) {
+  if (inherits(content, "ellmer::ContentText")) {
+    return(list(type = "text", text = content@text))
+  }
+
+  if (inherits(content, "ellmer::ContentImageInline")) {
+    media_type <- content@type %||% "image/png"
+    return(list(
+      type = "image",
+      image = paste0("data:", media_type, ";base64,", content@data)
+    ))
+  }
+
+  if (inherits(content, "ellmer::ContentImageRemote")) {
+    detail <- content@detail %||% "auto"
+    result <- list(type = "image", image = content@url)
+    if (!is.null(detail)) {
+      result$detail <- detail
+    }
+    return(result)
+  }
+
+  fallback <- paste0(
+    utils::capture.output(content),
+    collapse = "\n"
+  )
+  list(type = "text", text = fallback)
+}
+
+is_content_list <- function(x) {
+  if (!is.list(x) || length(x) == 0) {
+    return(FALSE)
+  }
+
+  first <- x[[1]]
+  is.list(first) && !is.null(first$type)
+}
+
+ensure_content_list <- function(content) {
+  if (is_content_list(content)) {
+    return(content)
+  }
+
+  list(list(type = "text", text = as.character(content)))
+}
+
 has_tool_calls <- function(turns) {
   any(sapply(turns, function(turn) {
     any(sapply(turn@contents, function(content) {

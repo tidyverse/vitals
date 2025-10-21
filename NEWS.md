@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* Images passed in user messages will now be logged compatibly with the log 
+  viewer (#171).
 
 * The log viewer previously reported the solver's response as the answer provided
   to the scorer. However, these two texts can differ when post-processing of

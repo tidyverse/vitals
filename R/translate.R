@@ -149,6 +149,17 @@ translate_to_sample <- function(sample, scores, timestamps) {
     )
   }
   turns <- chat$get_turns()
+  first_turn <- turns[[1]]
+  input_value <- message_content_from_turn(first_turn)
+  sample_input <- if (is_content_list(input_value)) {
+    list(list(
+      content = input_value,
+      source = "input",
+      role = "user"
+    ))
+  } else {
+    input_value
+  }
   list(
     id = sample$id,
     epoch = if ("epoch" %in% colnames(sample)) {
@@ -156,7 +167,7 @@ translate_to_sample <- function(sample, scores, timestamps) {
     } else {
       1
     },
-    input = input_string(sample$input[[1]]),
+    input = sample_input,
     target = as.character(sample$target),
     messages = translate_to_messages(chat),
     output = translate_to_output(chat),

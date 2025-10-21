@@ -15,14 +15,46 @@ test_that("translate_to_messages works with example turns", {
   )
 })
 
+test_that("translate_to_messages handles image inputs", {
+  key_get("ANTHROPIC_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  dataset <- tibble::tibble(
+    input = "What does this image show?",
+    target = "The image shows a bike."
+  )
+
+  image_solver <- function(
+    inputs,
+    solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")
+  ) {
+    image_file <- system.file("test/x.png", package = "vitals")
+    ch <- solver_chat$clone()
+    ch$chat(inputs[1], content_image_file(image_file), echo = FALSE)
+    list(result = ch$last_turn()@text, solver_chat = list(ch))
+  }
+
+  tsk <- Task$new(
+    dataset = dataset,
+    solver = image_solver,
+    scorer = model_graded_qa()
+  )
+
+  tsk$eval()
+  expect_valid_log(tsk$log())
+})
+
 
 test_that("logs including system prompts are compatible with inspect", {
   vcr::local_cassette("translate-messages-system-prompts")
   key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {
-  })
+  withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
   library(ellmer)

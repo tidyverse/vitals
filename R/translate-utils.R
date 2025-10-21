@@ -137,7 +137,7 @@ translate_ellmer_content <- function(content) {
   }
 
   fallback <- paste0(
-    utils::capture.output(methods::show(content)),
+    utils::capture.output(content),
     collapse = "\n"
   )
   list(type = "text", text = fallback)

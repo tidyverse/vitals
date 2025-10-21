@@ -99,9 +99,13 @@ message_content_from_turn <- function(turn) {
 
   entries <- lapply(contents, translate_ellmer_content)
   if (length(entries) > 0) {
-    only_text <- all(vapply(entries, function(entry) {
-      is.list(entry) && identical(entry$type, "text")
-    }, logical(1)))
+    only_text <- all(vapply(
+      entries,
+      function(entry) {
+        is.list(entry) && identical(entry$type, "text")
+      },
+      logical(1)
+    ))
     if (only_text) {
       return(turn@text)
     }
@@ -132,7 +136,10 @@ translate_ellmer_content <- function(content) {
     return(result)
   }
 
-  fallback <- paste0(utils::capture.output(methods::show(content)), collapse = "\n")
+  fallback <- paste0(
+    utils::capture.output(methods::show(content)),
+    collapse = "\n"
+  )
   list(type = "text", text = fallback)
 }
 

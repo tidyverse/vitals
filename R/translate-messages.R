@@ -70,7 +70,10 @@ collapse_tool_result <- function(tool_result) {
   all_text <- all(purrr::map_lgl(content_list, function(x) x$type == "text"))
 
   if (all_text) {
-    return(paste0(purrr::map_chr(content_list, function(x) x$text), collapse = "\n"))
+    return(paste0(
+      purrr::map_chr(content_list, function(x) x$text),
+      collapse = "\n"
+    ))
   }
 
   content_list

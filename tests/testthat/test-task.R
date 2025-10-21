@@ -1066,3 +1066,40 @@ test_that("eval errors when argument matches neither function and neither has el
 
   expect_snapshot(tsk$eval(unmatched_param = "error"), error = TRUE)
 })
+
+test_that("$log() respects dir argument", {
+  vcr::local_cassette("task-log-dir-argument")
+  key_get("OPENAI_API_KEY")
+  tmp_dir_env <- withr::local_tempdir()
+  tmp_dir_arg <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir_env))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    scorer = model_graded_qa()
+  )
+
+  tsk$solve()
+  tsk$score()
+  tsk$measure()
+
+  log_path <- tsk$log(dir = tmp_dir_arg)
+
+  expect_true(file.exists(log_path))
+  expect_true(grepl(tmp_dir_arg, log_path, fixed = TRUE))
+
+  files_in_env_dir <- list.files(tmp_dir_env, pattern = "\\.json$")
+  files_in_arg_dir <- list.files(tmp_dir_arg, pattern = "\\.json$")
+
+  expect_equal(length(files_in_arg_dir), 1)
+  expect_equal(length(files_in_env_dir), 0)
+})

@@ -419,10 +419,10 @@ Task <- R6::R6Class(
       )
 
       if (is.na(dir)) {
-        self$dir <- tempdir()
+        dir <- tempdir()
       }
 
-      log_path <- eval_log_write(eval_log, dir = self$dir)
+      log_path <- eval_log_write(eval_log, dir = dir)
 
       invisible(log_path)
     },

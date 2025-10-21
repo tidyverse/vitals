@@ -1,4 +1,7 @@
 library(ellmer)
+devtools::load_all()
+
+vitals_log_dir_set("image_test")
 
 dataset <- data.frame(
   input = "What does this image show?",
@@ -24,3 +27,7 @@ tsk <- Task$new(
 )
 
 tsk$eval()
+
+log <- list.files("image_test", full.names = TRUE)
+expect_valid_log(log)
+unlink("image_test", recursive = TRUE)

@@ -25,7 +25,7 @@ translate_to_message <- function(turn, model) {
       message$`function` <- tool_result@request@name
       return(message)
     } else {
-      message$content <- turn@text
+      message$content <- message_content_from_turn(turn)
       message$source <- source
     }
   } else {

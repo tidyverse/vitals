@@ -46,6 +46,7 @@ test_that("translate_to_messages handles image inputs", {
 
   tsk$eval()
   expect_valid_log(tsk$log())
+  expect_true(any(grepl("data:image", readLines(tsk$log()), fixed = TRUE)))
 })
 
 

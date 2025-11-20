@@ -2,5 +2,8 @@
     "[r]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "Posit.air-vscode"
+    },
+    "search.exclude": {
+        "**/*[0-9][0-9][0-9][0-9]-*.json": true
     }
 }

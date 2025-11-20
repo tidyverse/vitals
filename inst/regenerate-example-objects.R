@@ -32,7 +32,7 @@ regenerate_example_task <- function() {
     target = c("4", "5")
   )
 
-  ch <- chat_anthropic(model = "claude-sonnet-4-5-20250929")
+  ch <- chat_claude(model = "claude-sonnet-4-5-20250929")
   tsk <- Task$new(
     dataset = simple_addition,
     solver = generate(ch$set_system_prompt("Respond in the format 'a+b=c'.")),
@@ -46,7 +46,7 @@ regenerate_example_task <- function() {
 regenerate_example_solver <- function() {
   library(ellmer)
 
-  solver <- chat_anthropic(
+  solver <- chat_claude(
     "Respond in the format 'a+b=c'.",
     model = "claude-sonnet-4-5-20250929"
   )

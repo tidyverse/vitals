@@ -30,7 +30,7 @@ test_that("translate_to_messages handles image inputs", {
 
   image_solver <- function(
     inputs,
-    solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")
+    solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")
   ) {
     image_file <- system.file("test/x.png", package = "vitals")
     ch <- solver_chat$clone()

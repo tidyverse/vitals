@@ -37,7 +37,7 @@ if (!should_eval) {
 At their core, LLM evals are composed of three pieces:
 
 1) **Datasets** contain a set of labelled samples. Datasets are just a tibble with columns `input` and `target`, where `input` is a prompt and `target` is either literal value(s) or grading guidance.
-2) **Solvers** evaluate the `input` in the dataset and produce a final result (hopefully) approximating `target`. In vitals, the simplest solver is just an ellmer chat (e.g. `ellmer::chat_anthropic()`) wrapped in `generate()`, i.e. `generate(ellmer::chat_anthropic()`), which will call the Chat object's `$chat()` method and return whatever it returns.
+2) **Solvers** evaluate the `input` in the dataset and produce a final result (hopefully) approximating `target`. In vitals, the simplest solver is just an ellmer chat (e.g. `ellmer::chat_claude()`) wrapped in `generate()`, i.e. `generate(ellmer::chat_claude()`), which will call the Chat object's `$chat()` method and return whatever it returns.
 3) **Scorers** evaluate the final output of solvers. They may use text
 comparisons, model grading, or other custom schemes to determine how well the solver approximated the `target` based on the `input`. 
 
@@ -100,7 +100,7 @@ LLM evaluation with vitals happens in two main steps:
 #| eval: !expr identical(Sys.getenv("VITALS_SHOULD_EVAL"), "true")
 are_task <- Task$new(
   dataset = are,
-  solver = generate(chat_anthropic(model = "claude-3-7-sonnet-latest")),
+  solver = generate(chat_claude(model = "claude-3-7-sonnet-latest")),
   scorer = model_graded_qa(partial_credit = TRUE),
   name = "An R Eval"
 )

@@ -34,7 +34,7 @@ judge model's response.}
 \item{partial_credit}{Whether to allow partial credit.}
 
 \item{scorer_chat}{An ellmer chat used to grade the model output, e.g.
-\code{\link[ellmer:chat_anthropic]{ellmer::chat_anthropic()}}.}
+\code{\link[ellmer:chat_claude]{ellmer::chat_claude()}}.}
 }
 \value{
 A function that will grade model responses according to the given instructions.
@@ -72,7 +72,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_qa()
   )
 
@@ -97,7 +97,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 
   tsk <- Task$new(
     dataset = r_history,
-    solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_fact()
   )
 

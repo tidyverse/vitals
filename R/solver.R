@@ -9,7 +9,7 @@
 #' can be passed directory to the `solver` argument of [Task]'s `$new()`
 #' method.
 #'
-#' @param solver_chat An ellmer chat object, such as from [ellmer::chat_anthropic()].
+#' @param solver_chat An ellmer chat object, such as from [ellmer::chat_claude()].
 #'
 #' @returns
 #' The output of `generate()` is another function. That function takes in

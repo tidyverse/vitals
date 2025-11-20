@@ -8,7 +8,7 @@ dataset <- data.frame(
   target = "The image shows a bike."
 )
 
-image_solver <- function(inputs, solver_chat = chat_anthropic()) {
+image_solver <- function(inputs, solver_chat = chat_claude()) {
   image_file <- system.file("test/x.png", package = "vitals")
 
   ch <- solver_chat$clone()

@@ -15,7 +15,7 @@ NULL
 utils::globalVariables(c(
   "any_of",
   "capture.output",
-  "chat_anthropic",
+  "chat_claude",
   "everything",
   "head",
   "input",

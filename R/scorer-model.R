@@ -17,7 +17,7 @@
 #' judge model's response.
 #' @param partial_credit Whether to allow partial credit.
 #' @param scorer_chat An ellmer chat used to grade the model output, e.g.
-#' [ellmer::chat_anthropic()].
+#' [ellmer::chat_claude()].
 #'
 #' @returns
 #' A function that will grade model responses according to the given instructions.
@@ -46,7 +46,7 @@
 #'
 #'   tsk <- Task$new(
 #'     dataset = simple_addition,
-#'     solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+#'     solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = model_graded_qa()
 #'   )
 #'
@@ -71,7 +71,7 @@
 #'
 #'   tsk <- Task$new(
 #'     dataset = r_history,
-#'     solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+#'     solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
 #'     scorer = model_graded_fact()
 #'   )
 #'
@@ -176,10 +176,8 @@ qa_extract_grade <- function(response, pattern, partial_credit = FALSE) {
 
 process_grades <- function(grades, partial_credit) {
   unique_grades <- unique(grades)
-  is_ipc_grading <- (
-    any(c("I", "C") %in% unique_grades) &&
-    all(unique_grades %in% c("I", "P", "C"))
-  )
+  is_ipc_grading <- (any(c("I", "C") %in% unique_grades) &&
+    all(unique_grades %in% c("I", "P", "C")))
 
   if (!is_ipc_grading) {
     return(grades)

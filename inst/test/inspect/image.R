@@ -10,16 +10,16 @@ plt <- tibble(
 tsk <- Task$new(
   dataset = plt,
   solver = generate(
-    solver_chat = chat_anthropic()$register_tool(predictive:::tool_run_r_code)
+    solver_chat = chat_claude()$register_tool(predictive:::tool_run_r_code)
   ),
-  scorer = model_graded_qa(scorer_chat = chat_anthropic())
+  scorer = model_graded_qa(scorer_chat = chat_claude())
 )
 
 tsk$eval()
 
 # ------------------------------------------------------------------
 
-# ch <- chat_anthropic()$register_tool(predictive:::tool_run_r_code)
+# ch <- chat_claude()$register_tool(predictive:::tool_run_r_code)
 # ch$chat(
 #   "Please make a ggplot of mpg vs hp in mtcars and tell me what you see.",
 #   echo = FALSE

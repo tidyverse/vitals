@@ -847,7 +847,7 @@ test_that("token usage is logged correctly (with unrelated token usage)", {
 
   # use a couple tokens to ensure non-NULL
   chat_openai(model = "gpt-4.1-nano")$chat("hey!", echo = "none")
-  chat_anthropic(model = "claude-sonnet-4-5-20250929")$chat(
+  chat_claude(model = "claude-sonnet-4-5-20250929")$chat(
     "hey!",
     echo = "none"
   )

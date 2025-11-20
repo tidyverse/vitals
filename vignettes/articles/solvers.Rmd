@@ -77,7 +77,7 @@ To help us better understand how solvers work, lets look at the implementation o
 
 ```{r}
 #| label: generate-output
-sonnet_3_7 <- chat_anthropic(model = "claude-3-7-sonnet-latest")
+sonnet_3_7 <- chat_claude(model = "claude-3-7-sonnet-latest")
 generate(solver_chat = sonnet_3_7$clone())
 ```
 

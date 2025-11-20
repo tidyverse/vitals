@@ -64,7 +64,7 @@ simple_addition <- tibble(
 
 tsk <- Task$new(
   dataset = simple_addition, 
-  solver = generate(chat_anthropic(model = "claude-sonnet-4-20250514")), 
+  solver = generate(chat_claude(model = "claude-sonnet-4-20250514")), 
   scorer = model_graded_qa()
 )
 ```
@@ -92,7 +92,7 @@ tsk$eval()
 knitr::include_graphics("man/figures/log_viewer.png")
 ```
 
-Any arguments to the solver or scorer can be passed to `$eval()`, allowing for straightforward parameterization of tasks. For example, if I wanted to evaluate `chat_openai()` on this task rather than `chat_anthropic()`, I could write:
+Any arguments to the solver or scorer can be passed to `$eval()`, allowing for straightforward parameterization of tasks. For example, if I wanted to evaluate `chat_openai()` on this task rather than `chat_claude()`, I could write:
 
 ```{r}
 #| label: tsk-openai

@@ -194,7 +194,14 @@ calling `$new()` and then this method on the resulting object.
 
 - `...`:
 
-  Additional arguments passed to the solver and scorer functions.
+  Additional arguments passed to the solver and scorer functions. All
+  arguments must be named. Arguments are routed based on function
+  signatures: if an argument name matches a parameter in the solver, it
+  goes to the solver; if it matches a parameter in the scorer, it goes
+  to the scorer. Arguments matching both go to both. Unmatched arguments
+  are passed to any function with `...` in its signature. An error is
+  raised if an argument matches neither function and neither accepts
+  `...`.
 
 - `epochs`:
 
@@ -512,18 +519,18 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [5.1s]
+#> ✔ Solving [3.6s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [4.8s]
+#> ✔ Scoring [5.4s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:7576>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:7576>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:24900>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:41296>
 ```

@@ -31,4 +31,5 @@ Other contributors:
 - Mine Cetinkaya-Rundel <mine@posit.co>
   ([ORCID](https://orcid.org/0000-0001-6452-2420)) \[contributor\]
 
-- Posit Software, PBC (03wc8by49) \[copyright holder, funder\]
+- Posit Software, PBC ([ROR](https://ror.org/03wc8by49)) \[copyright
+  holder, funder\]

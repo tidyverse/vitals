@@ -41,7 +41,7 @@ Invisibly returns the output directory path. That directory contains:
 crawlers only read the `robots.txt` at the root directory of a package,
 so the file will likely be ignored if this folder isn't the root
 directory of the deployed page. `assets/` is the bundled source for the
-viewer. `logs/` is the `log_dir` as well as a `logs.json`, which is a
+viewer. `logs/` is the `log_dir` as well as a `listing.json`, which is a
 manifest file for the directory.
 
 ## Deployment
@@ -85,13 +85,13 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.5s]
+#> ✔ Solving [3.3s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [6.9s]
+#> ✔ Scoring [6.7s]
 #> 
-#> ✔ Bundle /tmp/RtmpCC05fy created!
+#> ✔ Bundle /tmp/RtmpVz6G0M created!
 ```

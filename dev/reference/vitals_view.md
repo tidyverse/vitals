@@ -9,7 +9,7 @@ the `$view()` method instead.
 ## Usage
 
 ``` r
-vitals_view(dir = vitals_log_dir(), host = "127.0.0.1", port = 7576)
+vitals_view(dir = vitals_log_dir(), host = "127.0.0.1", port = NULL)
 ```
 
 ## Arguments
@@ -24,8 +24,7 @@ vitals_view(dir = vitals_log_dir(), host = "127.0.0.1", port = 7576)
 
 - port:
 
-  Port to serve on. Defaults to 7576, one greater than the Python
-  implementation.
+  Port to serve on. If NULL, will find a random available port.
 
 ## Value
 
@@ -74,18 +73,18 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3s]
+#> ✔ Solving [3.3s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [6.2s]
+#> ✔ Scoring [7.6s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:7576>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:7576>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:39220>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:44086>
 ```

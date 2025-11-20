@@ -2,6 +2,10 @@
 
 ## vitals (development version)
 
+- [`vitals_view()`](https://vitals.tidyverse.org/dev/reference/vitals_view.md)
+  will now pick a random available port rather than its previous default
+  port, 7576.
+
 - Images passed in user messages will now be logged compatibly with the
   log viewer ([\#171](https://github.com/tidyverse/vitals/issues/171)).
 

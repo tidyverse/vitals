@@ -2,6 +2,10 @@
 
 ## vitals (development version)
 
+- Assistant turns now have precise durations in generated logs.
+  Previously, their timings were averaged across the course of the
+  evaluation ([\#115](https://github.com/tidyverse/vitals/issues/115)).
+
 - [`vitals_view()`](https://vitals.tidyverse.org/dev/reference/vitals_view.md)
   will now pick a random available port rather than its previous default
   port, 7576.

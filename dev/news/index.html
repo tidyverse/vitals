@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
+<ul><li><p>Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (<a href="https://github.com/tidyverse/vitals/issues/115" class="external-link">#115</a>).</p></li>
+<li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
 <li><p>Images passed in user messages will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>
 <li><p>The log viewer previously reported the solver’s response as the answer provided to the scorer. However, these two texts can differ when post-processing of the solver’s response is performed. This is now fixed in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/166" class="external-link">#166</a>, <a href="https://github.com/tidyverse/vitals/issues/169" class="external-link">#169</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
 <li><p>The default <code>accuracy()</code> metric will now report a score of 0 rather than <code>NaN</code> when all scores are 0.</p></li>

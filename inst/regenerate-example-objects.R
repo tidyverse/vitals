@@ -97,7 +97,7 @@ regenerate_are_3e_analysis <- function() {
   }
 
   withr::local_envvar(VITALS_SHOULD_EVAL = "true")
-  rmarkdown::render("vignettes/articles/analysis.qmd")
+  rmarkdown::render("vignettes/articles/analysis.Rmd")
 }
 
 regenerate_example_objects()

@@ -1,14 +1,14 @@
 {
-  "2025-06-18T10-17-23-05-00_An-R-Eval_1da30c33406baede90d819.json": {
+  "2025-11-20T13-53-40-06-00_An-R-Eval_67b0731deab666f5ea6eee.json": {
     "version": 2,
     "status": "success",
     "eval": {
-      "run_id": "XszRjPDS02VlbFIVKj31Yx",
-      "created": "2025-06-18T10:17:23-05:00",
+      "run_id": "zmj5uSQO2gfSusXcsw4Cto",
+      "created": "2025-11-20T13:53:40-06:00",
       "task": "An-R-Eval",
-      "task_id": "1da30c33406baede90d819",
+      "task_id": "67b0731deab666f5ea6eee",
       "task_version": 0,
-      "task_file": "/Users/simoncouch/Documents/rrr/vitals/inst/regenerate-example-objects.R",
+      "task_file": "",
       "task_attribs": {},
       "task_args": {},
       "dataset": {
@@ -16,7 +16,7 @@
         "sample_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
         "shuffled": false
       },
-      "model": "btw_solver (claude-3-7-sonnet-latest)",
+      "model": "generate(chat_claude()) (claude-3-7-sonnet-latest)",
       "model_args": {},
       "config": {},
       "revision": {
@@ -29,7 +29,7 @@
       },
       "scorers": [
         {
-          "name": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone())",
+          "name": "model_graded_qa(partial_credit = TRUE)",
           "options": {},
           "metrics": [
             {
@@ -45,10 +45,9 @@
       "name": "plan",
       "steps": [
         {
-          "solver": "btw_solver (claude-3-7-sonnet-latest)",
+          "solver": "generate(chat_claude()) (claude-3-7-sonnet-latest)",
           "params": {
-            "1": "self$get_samples()$input",
-            "solver_chat": "sonnet_3_7$clone()"
+            "1": "self$get_samples()$input"
           }
         }
       ],
@@ -59,8 +58,8 @@
       "completed_samples": 29,
       "scores": [
         {
-          "name": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
-          "scorer": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
+          "name": "model_graded_qa(partial_credit = TRUE) (claude-3-7-sonnet-latest)",
+          "scorer": "model_graded_qa(partial_credit = TRUE) (claude-3-7-sonnet-latest)",
           "params": {},
           "metrics": {
             "accuracy": {
@@ -75,29 +74,29 @@
       ]
     },
     "stats": {
-      "started_at": "2025-06-18T10:13:01-05:00",
-      "completed_at": "2025-06-18T10:17:23-05:00",
+      "started_at": "2025-11-20T13:53:04-06:00",
+      "completed_at": "2025-11-20T13:53:40-06:00",
       "model_usage": {
         "claude-3-7-sonnet-latest": {
-          "input_tokens": 137643,
+          "input_tokens": 9887,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 0,
-          "output_tokens": 22204,
-          "total_tokens": 159847
+          "output_tokens": 10699,
+          "total_tokens": 20586
         }
       }
     }
   },
-  "2025-06-18T10-18-29-05-00_An-R-Eval_db267f5e7251238aac6d76.json": {
+  "2025-11-20T13-54-49-06-00_An-R-Eval_67b0731deab666f5ea6eee.json": {
     "version": 2,
     "status": "success",
     "eval": {
-      "run_id": "u3RHgi454lJEemDgztPdBB",
-      "created": "2025-06-18T10:18:29-05:00",
+      "run_id": "ej7sToo6D1UOwQlEqX5eT0",
+      "created": "2025-11-20T13:54:49-06:00",
       "task": "An-R-Eval",
-      "task_id": "db267f5e7251238aac6d76",
+      "task_id": "67b0731deab666f5ea6eee",
       "task_version": 0,
-      "task_file": "/Users/simoncouch/Documents/rrr/vitals/inst/regenerate-example-objects.R",
+      "task_file": "",
       "task_attribs": {},
       "task_args": {},
       "dataset": {
@@ -105,7 +104,7 @@
         "sample_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
         "shuffled": false
       },
-      "model": "generate(solver_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
+      "model": "generate(chat_claude(\"claude-3-7-sonnet-latest\")) (gpt-4.1)",
       "model_args": {},
       "config": {},
       "revision": {
@@ -118,7 +117,7 @@
       },
       "scorers": [
         {
-          "name": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone())",
+          "name": "model_graded_qa(partial_credit = TRUE)",
           "options": {},
           "metrics": [
             {
@@ -134,9 +133,10 @@
       "name": "plan",
       "steps": [
         {
-          "solver": "generate(solver_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
+          "solver": "generate(chat_claude(\"claude-3-7-sonnet-latest\")) (gpt-4.1)",
           "params": {
-            "1": "self$get_samples()$input"
+            "1": "self$get_samples()$input",
+            "solver_chat": "<Chat>"
           }
         }
       ],
@@ -147,13 +147,13 @@
       "completed_samples": 29,
       "scores": [
         {
-          "name": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
-          "scorer": "model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()) (claude-3-7-sonnet-latest)",
+          "name": "model_graded_qa(partial_credit = TRUE) (gpt-4.1)",
+          "scorer": "model_graded_qa(partial_credit = TRUE) (gpt-4.1)",
           "params": {},
           "metrics": {
             "accuracy": {
               "name": "accuracy",
-              "value": 60.3448,
+              "value": 58.6207,
               "params": {
                 "1": "numeric_scores"
               }
@@ -163,15 +163,15 @@
       ]
     },
     "stats": {
-      "started_at": "2025-06-18T10:17:25-05:00",
-      "completed_at": "2025-06-18T10:18:29-05:00",
+      "started_at": "2025-11-20T13:53:41-06:00",
+      "completed_at": "2025-11-20T13:54:49-06:00",
       "model_usage": {
-        "claude-3-7-sonnet-latest": {
-          "input_tokens": 9626,
+        "gpt-4.1": {
+          "input_tokens": 8718,
           "cache_creation_input_tokens": 0,
           "cache_read_input_tokens": 0,
-          "output_tokens": 11206,
-          "total_tokens": 20832
+          "output_tokens": 14113,
+          "total_tokens": 22831
         }
       }
     }

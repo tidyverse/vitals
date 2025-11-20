@@ -1,4 +1,5 @@
 test_that("translate_to_messages works with example turns", {
+  skip_on_cran()
   ellmer_messages <- translate_to_messages(example_ellmer_solver()$set_system_prompt(
     NULL
   ))

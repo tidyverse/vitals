@@ -34,6 +34,7 @@ test_that("check_inherits works", {
 })
 
 test_that("solver_chat works", {
+  skip_on_cran()
   example_sample <- example_task()$get_samples()[1, , drop = FALSE]
 
   res <- solver_chat(example_sample)
@@ -46,10 +47,8 @@ test_that("check_log_dir warns informatively", {
   expect_snapshot(
     res <- Task$new(
       tibble(input = 1, target = 1),
-      function() {
-      },
-      function() {
-      }
+      function() {},
+      function() {}
     )
   )
 })

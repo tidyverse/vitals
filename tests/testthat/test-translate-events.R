@@ -1,4 +1,5 @@
 test_that("translate_turns works", {
+  skip_on_cran()
   example_sample <- example_task()$get_samples()[1, , drop = FALSE]
   timestamps <- list(started_at = Sys.time(), completed_at = Sys.time())
   chat_translated <- translate_to_events(

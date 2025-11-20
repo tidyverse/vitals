@@ -397,7 +397,7 @@ are_mod
     ## data:    are_task_eval
     ## 
     ##  link  threshold nobs logLik AIC    niter max.grad cond.H 
-    ##  logit flexible  58   -60.05 126.10 4(0)  3.53e-12 1.2e+01
+    ##  logit flexible  58   -60.05 126.10 4(0)  3.52e-12 1.2e+01
     ## 
     ## Coefficients:
     ## modelgpt-4.1 

@@ -108,9 +108,9 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.5s]
+#> ✔ Solving [2.9s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [47ms]
+#> ✔ Scoring [46ms]
 #> 
 ```

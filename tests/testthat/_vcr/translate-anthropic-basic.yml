@@ -4,75 +4,69 @@ http_interactions:
     uri: https://api.anthropic.com/v1/messages
     body:
       string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"What''s
-        2+2?"}]}],"stream":false,"max_tokens":4096}'
+        2+2?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:
     status: 200
     headers:
-      date: Mon, 06 Oct 2025 15:00:43 GMT
+      date: Thu, 20 Nov 2025 16:54:39 GMT
       content-type: application/json
       content-encoding: gzip
       anthropic-ratelimit-input-tokens-limit: '2000000'
       anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:00:43Z'
+      anthropic-ratelimit-input-tokens-reset: '2025-11-20T16:54:38Z'
       anthropic-ratelimit-output-tokens-limit: '400000'
       anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:00:43Z'
-      anthropic-ratelimit-requests-limit: '4000'
-      anthropic-ratelimit-requests-remaining: '3999'
-      anthropic-ratelimit-requests-reset: '2025-10-06T15:00:42Z'
+      anthropic-ratelimit-output-tokens-reset: '2025-11-20T16:54:39Z'
+      retry-after: '24'
       anthropic-ratelimit-tokens-limit: '2400000'
       anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-10-06T15:00:43Z'
-      request-id: req_011CTr9NA8cK79T1pzMwMFPH
+      anthropic-ratelimit-tokens-reset: '2025-11-20T16:54:38Z'
+      request-id: req_011CVKVTBAQhEbn1awNcfEAR
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
-      x-envoy-upstream-service-time: '1750'
-      via: 1.1 google
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      x-envoy-upstream-service-time: '2796'
       cf-cache-status: DYNAMIC
       x-robots-tag: none
       server: cloudflare
-      cf-ray: 98a607a26c74706b-ORD
+      cf-ray: 9a19785f0aa721af-ORD
     body:
-      string: '{"id":"msg_01SCVW986BcfGaymSUqVQN7h","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"2+2
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01QvtgehMC2eJFv3WMiMX97r","type":"message","role":"assistant","content":[{"type":"text","text":"2+2
         = 4"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":14,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":11,"service_tier":"standard"}}'
-  recorded_at: 2025-10-06 15:00:43
+  recorded_at: 2025-11-20 16:54:39
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
     body:
       string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"What''s
-        2+3?"}]}],"stream":false,"max_tokens":4096}'
+        2+3?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:
     status: 200
     headers:
-      date: Mon, 06 Oct 2025 15:00:46 GMT
+      date: Thu, 20 Nov 2025 16:54:43 GMT
       content-type: application/json
       content-encoding: gzip
       anthropic-ratelimit-input-tokens-limit: '2000000'
       anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:00:45Z'
+      anthropic-ratelimit-input-tokens-reset: '2025-11-20T16:54:42Z'
       anthropic-ratelimit-output-tokens-limit: '400000'
       anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:00:46Z'
-      anthropic-ratelimit-requests-limit: '4000'
-      anthropic-ratelimit-requests-remaining: '3999'
-      anthropic-ratelimit-requests-reset: '2025-10-06T15:00:43Z'
+      anthropic-ratelimit-output-tokens-reset: '2025-11-20T16:54:42Z'
+      retry-after: '18'
       anthropic-ratelimit-tokens-limit: '2400000'
       anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-10-06T15:00:45Z'
-      request-id: req_011CTr9NHrwrbobZZmt2rRAe
+      anthropic-ratelimit-tokens-reset: '2025-11-20T16:54:42Z'
+      request-id: req_011CVKVTPcmDs1Q1bYAT4WBU
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
-      x-envoy-upstream-service-time: '2205'
-      via: 1.1 google
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      x-envoy-upstream-service-time: '3399'
       cf-cache-status: DYNAMIC
       x-robots-tag: none
       server: cloudflare
-      cf-ray: 98a607ae393f706b-ORD
+      cf-ray: 9a1978718ea821af-ORD
     body:
-      string: '{"id":"msg_01P5FXzPRWu5fzPt6V1dnAk5","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"2
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01Ff4cctawbFfYBZdQbFbPNo","type":"message","role":"assistant","content":[{"type":"text","text":"2
         + 3 = 5"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":14,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":13,"service_tier":"standard"}}'
-  recorded_at: 2025-10-06 15:00:46
+  recorded_at: 2025-11-20 16:54:43
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -85,43 +79,43 @@ http_interactions:
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
         ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]}],"stream":false,"max_tokens":4096}'
+        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:
     status: 200
     headers:
-      date: Mon, 06 Oct 2025 15:00:50 GMT
+      date: Thu, 20 Nov 2025 16:54:48 GMT
       content-type: application/json
       content-encoding: gzip
       anthropic-ratelimit-input-tokens-limit: '2000000'
       anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:00:48Z'
+      anthropic-ratelimit-input-tokens-reset: '2025-11-20T16:54:45Z'
       anthropic-ratelimit-output-tokens-limit: '400000'
       anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:00:50Z'
-      anthropic-ratelimit-requests-limit: '4000'
-      anthropic-ratelimit-requests-remaining: '3999'
-      anthropic-ratelimit-requests-reset: '2025-10-06T15:00:46Z'
+      anthropic-ratelimit-output-tokens-reset: '2025-11-20T16:54:48Z'
+      retry-after: '15'
       anthropic-ratelimit-tokens-limit: '2400000'
       anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-10-06T15:00:48Z'
-      request-id: req_011CTr9NTuwPrqtkwibnraEb
+      anthropic-ratelimit-tokens-reset: '2025-11-20T16:54:45Z'
+      request-id: req_011CVKVTefdfqjN2qLPmbkLe
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
-      x-envoy-upstream-service-time: '4451'
-      via: 1.1 google
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      x-envoy-upstream-service-time: '5397'
       cf-cache-status: DYNAMIC
       x-robots-tag: none
       server: cloudflare
-      cf-ray: 98a607bcedad706b-ORD
+      cf-ray: 9a197887ccad21af-ORD
     body:
-      string: '{"id":"msg_017hdC3S5TYS4znBvsem4tpj","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"I
-        need to assess whether the submission meets the criterion.\n\n**Task**: What''s
-        2+2?\n**Submission**: 2+2 = 4\n**Criterion**: 4\n\nThe submission states that
-        2+2 = 4, which is mathematically correct. The criterion appears to be checking
-        if the answer is \"4\".\n\nThe submission correctly identifies that 2+2 equals
-        4, which matches the criterion of \"4\".\n\nTherefore, the submission meets
-        the criterion.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":173,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":115,"service_tier":"standard"}}'
-  recorded_at: 2025-10-06 15:00:50
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_012MYoeWNVV3kqBpgySVMJvk","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe
+        task asks \"What''s 2+2?\"\n\n**Submission Analysis:**\nThe submission states
+        \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe
+        submission correctly answers that 2+2 = 4. The criterion appears to be checking
+        whether the answer is \"4\", which it is. The submission provides the correct
+        mathematical answer to the addition problem.\n\nThe submission meets the criterion
+        because:\n1. It provides the correct answer to the mathematical question\n2.
+        The answer \"4\" matches the criterion \"4\"\n3. The mathematical statement
+        is accurate\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":173,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":159,"service_tier":"standard"}}'
+  recorded_at: 2025-11-20 16:54:48
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -134,42 +128,39 @@ http_interactions:
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
         ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]}],"stream":false,"max_tokens":4096}'
+        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:
     status: 200
     headers:
-      date: Mon, 06 Oct 2025 15:00:55 GMT
+      date: Thu, 20 Nov 2025 16:54:53 GMT
       content-type: application/json
       content-encoding: gzip
       anthropic-ratelimit-input-tokens-limit: '2000000'
       anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-10-06T15:00:52Z'
+      anthropic-ratelimit-input-tokens-reset: '2025-11-20T16:54:51Z'
       anthropic-ratelimit-output-tokens-limit: '400000'
       anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-10-06T15:00:55Z'
-      anthropic-ratelimit-requests-limit: '4000'
-      anthropic-ratelimit-requests-remaining: '3999'
-      anthropic-ratelimit-requests-reset: '2025-10-06T15:00:50Z'
+      anthropic-ratelimit-output-tokens-reset: '2025-11-20T16:54:53Z'
+      retry-after: '9'
       anthropic-ratelimit-tokens-limit: '2400000'
       anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-10-06T15:00:52Z'
-      request-id: req_011CTr9Nod6uCKrYozd9vh1w
+      anthropic-ratelimit-tokens-reset: '2025-11-20T16:54:51Z'
+      request-id: req_011CVKVU482A24CrL44wCnEk
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 8c30f736-a965-4f16-8e5c-6804dc337e3b
-      x-envoy-upstream-service-time: '4561'
-      via: 1.1 google
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      x-envoy-upstream-service-time: '5285'
       cf-cache-status: DYNAMIC
       x-robots-tag: none
       server: cloudflare
-      cf-ray: 98a607d99cda706b-ORD
+      cf-ray: 9a1978aa0d7a21af-ORD
     body:
-      string: '{"id":"msg_01QhsjCNfwPYKMs3SgUUsGLC","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250929","content":[{"type":"text","text":"Let
-        me analyze this step by step.\n\n**Task**: What''s 2+3?\n**Submission**: 2
-        + 3 = 5\n**Criterion**: 5\n\nThe task asks for the sum of 2 and 3. The mathematical
-        answer is indeed 5.\n\nThe submission states that \"2 + 3 = 5\", which is
-        mathematically correct.\n\nThe criterion given is \"5\", which appears to
-        be the expected correct answer.\n\nThe submission matches the criterion -
-        both indicate that the answer is 5.\n\nTherefore, the submission meets the
-        criterion.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":175,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":136,"service_tier":"standard"}}'
-  recorded_at: 2025-10-06 15:00:55
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01FA3CkQEjy8dBNL7hKCPSrB","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe
+        task asks for the result of 2+3.\n\n**Submission Analysis:**\nThe submission
+        states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe
+        criterion is simply \"5\".\n\n**Evaluation:**\nThe submission correctly calculates
+        that 2 + 3 = 5. The criterion appears to be checking whether the answer is
+        5, which it is. The submission meets the criterion by providing the correct
+        answer.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":175,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":129,"service_tier":"standard"}}'
+  recorded_at: 2025-11-20 16:54:53
 recorded_with: VCR-vcr/2.0.0

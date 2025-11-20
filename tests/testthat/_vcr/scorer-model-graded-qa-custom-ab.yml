@@ -1,318 +1,442 @@
 http_interactions:
 - request:
     method: POST
-    uri: https://api.openai.com/v1/chat/completions
+    uri: https://api.openai.com/v1/responses
     body:
-      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"The dog
-        ran quickly"}]}],"model":"gpt-4.1-nano","stream":false}'
+      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"The
+        dog ran quickly"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
-      access-control-expose-headers: X-Request-ID
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 98a679827886e544-ORD
+      cf-ray: 9a197883bd8de157-ORD
       content-encoding: gzip
       content-type: application/json
-      date: Mon, 06 Oct 2025 16:18:26 GMT
-      openai-organization: simon-ab895m
-      openai-processing-ms: '365'
-      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      date: Thu, 20 Nov 2025 16:54:44 GMT
+      openai-organization: posit-esfrkf
+      openai-processing-ms: '1745'
+      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
       openai-version: '2020-10-01'
       server: cloudflare
       set-cookie:
-      - __cf_bm=a768I30Npl4WbTksN_1DJVou3zkp6Kk3MXHymvtKxu8-1759767506-1.0.1.1-ufbB9PHj1r62enAzOKUdDqaK.vyhP73Y8sMOiB2CzN9XkjAFtNG4qbI8DawNWqPKcIMOrxYJtMVAYyQez2RFY4LI6Kv4oB84AvLT9AJiUpE;
-        path=/; expires=Mon, 06-Oct-25 16:48:26 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=5Uciua7jUlzY1TShEKzR8LtNxGW1PKELnFWpqQuA4A8-1763657684-1.0.1.1-MTCfieQilzU_MKA0k4thz0KrAmS4ExK68T0trlnY_NGRybxR2j7M868tcVU9mLrGOfqOliUgU5MztUR81Fit9XUC9_NOUJcTD3vDZj.JIsg;
+        path=/; expires=Thu, 20-Nov-25 17:24:44 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=KfAcBVOEEYGhrENoG1VH9s_8OvGW5ePb58Mssf1MdPA-1759767506783-0.0.1.1-604800000;
+      - _cfuvid=fjRnOUM2ko1RBf6TifJMGrX0.PosYlBJx2oYKdRwrlA-1763657684324-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '394'
-      x-openai-proxy-wasm: v0.1
-      x-ratelimit-limit-requests: '500'
-      x-ratelimit-limit-tokens: '200000'
-      x-ratelimit-remaining-requests: '499'
-      x-ratelimit-remaining-tokens: '199993'
-      x-ratelimit-reset-requests: 120ms
-      x-ratelimit-reset-tokens: 2ms
-      x-request-id: req_addff2cf107a48b7bdc9293c5c5b155e
+      x-envoy-upstream-service-time: '1748'
+      x-ratelimit-limit-requests: '30000'
+      x-ratelimit-limit-tokens: '150000000'
+      x-ratelimit-remaining-requests: '29999'
+      x-ratelimit-remaining-tokens: '149999970'
+      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_ff6b37dc19ac42d39dc39f632d96afd1
     body:
-      string: |
+      string: |-
         {
-          "id": "chatcmpl-CNiCo4LfZzZfJmugGNbNuVQMifLnq",
-          "object": "chat.completion",
-          "created": 1759767506,
+          "id": "resp_0301991ab120c0b901691f47d2901081968fc62c53bc872200",
+          "object": "response",
+          "created_at": 1763657682,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4.1-nano-2025-04-14",
-          "choices": [
+          "output": [
             {
-              "index": 0,
-              "message": {
-                "role": "assistant",
-                "content": "The dog ran quickly.",
-                "refusal": null,
-                "annotations": []
-              },
-              "logprobs": null,
-              "finish_reason": "stop"
+              "id": "msg_0301991ab120c0b901691f47d34d008196a72692a304570dfd",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "The sentence \"The dog ran quickly\" describes an action where the dog ran at a fast pace. Would you like me to analyze the sentence further or help with something else related to it?"
+                }
+              ],
+              "role": "assistant"
             }
           ],
-          "usage": {
-            "prompt_tokens": 11,
-            "completion_tokens": 5,
-            "total_tokens": 16,
-            "prompt_tokens_details": {
-              "cached_tokens": 0,
-              "audio_tokens": 0
-            },
-            "completion_tokens_details": {
-              "reasoning_tokens": 0,
-              "audio_tokens": 0,
-              "accepted_prediction_tokens": 0,
-              "rejected_prediction_tokens": 0
-            }
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
           },
+          "safety_identifier": null,
           "service_tier": "default",
-          "system_fingerprint": "fp_7c233bf9d1"
+          "store": false,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 11,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 39,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 50
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: 2025-10-06 16:18:26
+  recorded_at: 2025-11-20 16:54:44
 - request:
     method: POST
-    uri: https://api.openai.com/v1/chat/completions
+    uri: https://api.openai.com/v1/responses
     body:
-      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"The cat
-        meowed loudly"}]}],"model":"gpt-4.1-nano","stream":false}'
+      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"The
+        cat meowed loudly"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
-      access-control-expose-headers: X-Request-ID
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 98a67985bacae544-ORD
+      cf-ray: 9a19788f29c7e157-ORD
       content-encoding: gzip
       content-type: application/json
-      date: Mon, 06 Oct 2025 16:18:27 GMT
-      openai-organization: simon-ab895m
-      openai-processing-ms: '294'
-      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      date: Thu, 20 Nov 2025 16:54:45 GMT
+      openai-organization: posit-esfrkf
+      openai-processing-ms: '576'
+      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
       openai-version: '2020-10-01'
       server: cloudflare
       set-cookie:
-      - __cf_bm=oSWVXm3xxNZ3I9ZXyseH9yUKPJM0KR751NW_974zKfw-1759767507-1.0.1.1-7MiHl4bDO7oCkkr8Tpsg5xb9KS9pVuchBnnQqeoRaOM_o3meNicuz8blvWjT6PMCrszY48kiJV3Tyv18L5Zp6bldF7f0FVv.8vRMmVCbRkU;
-        path=/; expires=Mon, 06-Oct-25 16:48:27 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=m9.W7RhCK1sCgrLV42teb_ulZotloKkc71iFM3BE6kM-1763657685-1.0.1.1-7nvAzU95a3iA_s2ku.S8xW9UmpuztoGnuT2z39C6Oaa5HzpA0OZSZpQY63U5v96ntmNy2QdMLebu_rfhR.eg.don3bjwi9VTXuTJl_nr1Cg;
+        path=/; expires=Thu, 20-Nov-25 17:24:45 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=S9vroiqLIRtjIAV05UF57rQfrkr6PcotRSSSrUpIDzw-1759767507656-0.0.1.1-604800000;
+      - _cfuvid=ubiWuwQW0G9ElMXEcNcef_2vPglI8aD9hBs7Gy0Fq4s-1763657685054-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '448'
-      x-openai-proxy-wasm: v0.1
-      x-ratelimit-limit-requests: '500'
-      x-ratelimit-limit-tokens: '200000'
-      x-ratelimit-remaining-requests: '499'
-      x-ratelimit-remaining-tokens: '199992'
-      x-ratelimit-reset-requests: 120ms
-      x-ratelimit-reset-tokens: 2ms
-      x-request-id: req_3dcd1a223a3b466e9ae604fc9085d174
+      x-envoy-upstream-service-time: '580'
+      x-ratelimit-limit-requests: '30000'
+      x-ratelimit-limit-tokens: '150000000'
+      x-ratelimit-remaining-requests: '29999'
+      x-ratelimit-remaining-tokens: '149999970'
+      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_052c2f9ff5d74448a87d7d64986f2950
     body:
-      string: |
+      string: |-
         {
-          "id": "chatcmpl-CNiCpXqYwEdyynOp7rQNpHdIOkMqr",
-          "object": "chat.completion",
-          "created": 1759767507,
+          "id": "resp_027f2732b803aab201691f47d4733881959545b99f023df49e",
+          "object": "response",
+          "created_at": 1763657684,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4.1-nano-2025-04-14",
-          "choices": [
+          "output": [
             {
-              "index": 0,
-              "message": {
-                "role": "assistant",
-                "content": "The cat meowed loudly.",
-                "refusal": null,
-                "annotations": []
-              },
-              "logprobs": null,
-              "finish_reason": "stop"
+              "id": "msg_027f2732b803aab201691f47d4c08881958942084b1e693ecc",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "It sounds like the cat is trying to get your attention. Do you know what might have caused it to meow loudly?"
+                }
+              ],
+              "role": "assistant"
             }
           ],
-          "usage": {
-            "prompt_tokens": 12,
-            "completion_tokens": 6,
-            "total_tokens": 18,
-            "prompt_tokens_details": {
-              "cached_tokens": 0,
-              "audio_tokens": 0
-            },
-            "completion_tokens_details": {
-              "reasoning_tokens": 0,
-              "audio_tokens": 0,
-              "accepted_prediction_tokens": 0,
-              "rejected_prediction_tokens": 0
-            }
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
           },
+          "safety_identifier": null,
           "service_tier": "default",
-          "system_fingerprint": "fp_7c233bf9d1"
+          "store": false,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 12,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 26,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 38
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: 2025-10-06 16:18:27
+  recorded_at: 2025-11-20 16:54:45
 - request:
     method: POST
-    uri: https://api.openai.com/v1/chat/completions
+    uri: https://api.openai.com/v1/responses
     body:
-      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
-        assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: The dog ran quickly\n***\n[Submission]: The dog ran quickly.\n***\n[Criterion]:
-        A\n***\n[END DATA]\nDoes the submission meet the criterion?\nClassify the
-        sentence. Reply with ''GRADE: $LETTER'' where LETTER is either A for sentences
-        about dogs or B for sentences about cats."}]}],"model":"gpt-4.1-nano","stream":false}'
-  response:
-    status: 200
-    headers:
-      access-control-expose-headers: X-Request-ID
-      alt-svc: h3=":443"; ma=86400
-      cf-cache-status: DYNAMIC
-      cf-ray: 98a6798b9c54e544-ORD
-      content-encoding: gzip
-      content-type: application/json
-      date: Mon, 06 Oct 2025 16:18:28 GMT
-      openai-organization: simon-ab895m
-      openai-processing-ms: '265'
-      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
-      openai-version: '2020-10-01'
-      server: cloudflare
-      set-cookie:
-      - __cf_bm=Cw31cLsTDeIkqF0ldyMtFZ_dgtBbXVPFHwyDLfjoF0U-1759767508-1.0.1.1-8mqKceFiJY4aFr5U53Ex7CUAunXzxRGNr5hWR9HcIYicEe8BvYnAPlx8QA37w8CzeoTbyJDqtFzORzUdcm4DJ_UChQS5Qgp4eLOQs5EYPkg;
-        path=/; expires=Mon, 06-Oct-25 16:48:28 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=TejMeod_IQIBFHG4Zn89LUjTtT_lhdPBz_gv1eG5YOE-1759767508150-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
-      strict-transport-security: max-age=31536000; includeSubDomains; preload
-      x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '280'
-      x-openai-proxy-wasm: v0.1
-      x-ratelimit-limit-requests: '500'
-      x-ratelimit-limit-tokens: '200000'
-      x-ratelimit-remaining-requests: '499'
-      x-ratelimit-remaining-tokens: '199907'
-      x-ratelimit-reset-requests: 120ms
-      x-ratelimit-reset-tokens: 27ms
-      x-request-id: req_34e28dd05fce42488d82c44bee83096c
-    body:
-      string: |
-        {
-          "id": "chatcmpl-CNiCpnlBgNmmaPMcxUeqGQoCoiOJQ",
-          "object": "chat.completion",
-          "created": 1759767507,
-          "model": "gpt-4.1-nano-2025-04-14",
-          "choices": [
-            {
-              "index": 0,
-              "message": {
-                "role": "assistant",
-                "content": "GRADE: A",
-                "refusal": null,
-                "annotations": []
-              },
-              "logprobs": null,
-              "finish_reason": "stop"
-            }
-          ],
-          "usage": {
-            "prompt_tokens": 91,
-            "completion_tokens": 3,
-            "total_tokens": 94,
-            "prompt_tokens_details": {
-              "cached_tokens": 0,
-              "audio_tokens": 0
-            },
-            "completion_tokens_details": {
-              "reasoning_tokens": 0,
-              "audio_tokens": 0,
-              "accepted_prediction_tokens": 0,
-              "rejected_prediction_tokens": 0
-            }
-          },
-          "service_tier": "default",
-          "system_fingerprint": "fp_7c233bf9d1"
-        }
-  recorded_at: 2025-10-06 16:18:28
-- request:
-    method: POST
-    uri: https://api.openai.com/v1/chat/completions
-    body:
-      string: '{"messages":[{"role":"user","content":[{"type":"text","text":"You are
-        assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: The cat meowed loudly\n***\n[Submission]: The cat meowed
-        loudly.\n***\n[Criterion]: B\n***\n[END DATA]\nDoes the submission meet the
+      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: The dog ran quickly\n***\n[Submission]: The sentence \"The
+        dog ran quickly\" describes an action where the dog ran at a fast pace. Would
+        you like me to analyze the sentence further or help with something else related
+        to it?\n***\n[Criterion]: A\n***\n[END DATA]\nDoes the submission meet the
         criterion?\nClassify the sentence. Reply with ''GRADE: $LETTER'' where LETTER
-        is either A for sentences about dogs or B for sentences about cats."}]}],"model":"gpt-4.1-nano","stream":false}'
+        is either A for sentences about dogs or B for sentences about cats."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
-      access-control-expose-headers: X-Request-ID
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 98a6798e6ccee544-ORD
+      cf-ray: 9a1978942ec7e157-ORD
       content-encoding: gzip
       content-type: application/json
-      date: Mon, 06 Oct 2025 16:18:28 GMT
-      openai-organization: simon-ab895m
-      openai-processing-ms: '358'
-      openai-project: proj_0Vwvz0TJC0LbEqbMdbaVEZZL
+      date: Thu, 20 Nov 2025 16:54:46 GMT
+      openai-organization: posit-esfrkf
+      openai-processing-ms: '849'
+      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
       openai-version: '2020-10-01'
       server: cloudflare
       set-cookie:
-      - __cf_bm=L1wZZUII6Q0jhYzlkobz5XfyqqtMczl5Fml2YNCbfgE-1759767508-1.0.1.1-W5Wod6l.pHi1aE22fCluZ87GlffmrrxNMOApu5kvbOY81hlKP1hrbVbxDoiuQEz7U5p8uLEccoai1YwWR.lYF66gidQiGWoAiN6K37Eyylg;
-        path=/; expires=Mon, 06-Oct-25 16:48:28 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=fr9kaD8oD.D4oGAtCaqZDb22.WyJzP4wmdwZ30iejfU-1763657686-1.0.1.1-PHd8nytNqVqvyEPQXz7.Dx_Eay4JKAgC7S3Hg01EtnWquRV99Pahv2bpJXzoXCB1Y7nHhGEhCYCKHrX88OhJ7IDMPH5TxEFadf8200bcHpQ;
+        path=/; expires=Thu, 20-Nov-25 17:24:46 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=xpbOPuPe77gm.giYH5Y4LL22uW85ofrkMXjYd6_kTtI-1759767508640-0.0.1.1-604800000;
+      - _cfuvid=gcGtvaNOvOnSlA7zk31veMAbkD0rOnrPS48KAbzRby0-1763657686086-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '372'
-      x-openai-proxy-wasm: v0.1
-      x-ratelimit-limit-requests: '500'
-      x-ratelimit-limit-tokens: '200000'
-      x-ratelimit-remaining-requests: '499'
-      x-ratelimit-remaining-tokens: '199906'
-      x-ratelimit-reset-requests: 120ms
-      x-ratelimit-reset-tokens: 28ms
-      x-request-id: req_263f0e86d9cf470e8290e7f194857dd2
+      x-envoy-upstream-service-time: '852'
+      x-ratelimit-limit-requests: '30000'
+      x-ratelimit-limit-tokens: '150000000'
+      x-ratelimit-remaining-requests: '29999'
+      x-ratelimit-remaining-tokens: '149999857'
+      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_0cc1b72ef29e4b92b0212c7c676adc38
     body:
-      string: |
+      string: |-
         {
-          "id": "chatcmpl-CNiCqb3Fxlt3EMbM2j17iXGznbb2y",
-          "object": "chat.completion",
-          "created": 1759767508,
+          "id": "resp_00ab64b44a4de39001691f47d537a08196b7253718c893a12f",
+          "object": "response",
+          "created_at": 1763657685,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
           "model": "gpt-4.1-nano-2025-04-14",
-          "choices": [
+          "output": [
             {
-              "index": 0,
-              "message": {
-                "role": "assistant",
-                "content": "GRADE: B",
-                "refusal": null,
-                "annotations": []
-              },
-              "logprobs": null,
-              "finish_reason": "stop"
+              "id": "msg_00ab64b44a4de39001691f47d5a620819689ccae0978927edb",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "The submission discusses the action of a dog running quickly, which aligns with a sentence about a dog. \n\nGRADE: A"
+                }
+              ],
+              "role": "assistant"
             }
           ],
-          "usage": {
-            "prompt_tokens": 93,
-            "completion_tokens": 3,
-            "total_tokens": 96,
-            "prompt_tokens_details": {
-              "cached_tokens": 0,
-              "audio_tokens": 0
-            },
-            "completion_tokens_details": {
-              "reasoning_tokens": 0,
-              "audio_tokens": 0,
-              "accepted_prediction_tokens": 0,
-              "rejected_prediction_tokens": 0
-            }
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
           },
+          "safety_identifier": null,
           "service_tier": "default",
-          "system_fingerprint": "fp_7c233bf9d1"
+          "store": false,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 124,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 25,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 149
+          },
+          "user": null,
+          "metadata": {}
         }
-  recorded_at: 2025-10-06 16:18:28
+  recorded_at: 2025-11-20 16:54:46
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+    body:
+      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: The cat meowed loudly\n***\n[Submission]: It sounds like
+        the cat is trying to get your attention. Do you know what might have caused
+        it to meow loudly?\n***\n[Criterion]: B\n***\n[END DATA]\nDoes the submission
+        meet the criterion?\nClassify the sentence. Reply with ''GRADE: $LETTER''
+        where LETTER is either A for sentences about dogs or B for sentences about
+        cats."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+  response:
+    status: 200
+    headers:
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: 9a19789a7d3ce157-ORD
+      content-encoding: gzip
+      content-type: application/json
+      date: Thu, 20 Nov 2025 16:54:46 GMT
+      openai-organization: posit-esfrkf
+      openai-processing-ms: '371'
+      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      openai-version: '2020-10-01'
+      server: cloudflare
+      set-cookie:
+      - __cf_bm=0z8AlHFb_HG_rDI8vINs6wIshPIrJtfGLa0h.RgR2_A-1763657686-1.0.1.1-8TwGLJ.xS6E55bs1jscqOWok_NzLyIQu.VcTIykmwrM2sSKSJ7e4QANkBM1beAgwEyyQnXI7trKLBxh3AejDtxMhyT4oFXFYTINIjWQtyqA;
+        path=/; expires=Thu, 20-Nov-25 17:24:46 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=Hbbl0PSb5uQilBpiXETgkcb8Hmfsb95L_bRvVhXR21w-1763657686649-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-envoy-upstream-service-time: '374'
+      x-ratelimit-limit-requests: '30000'
+      x-ratelimit-limit-tokens: '150000000'
+      x-ratelimit-remaining-requests: '29999'
+      x-ratelimit-remaining-tokens: '149999870'
+      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_60240792e0bc4dd8bf429fe4c4597f8d
+    body:
+      string: |-
+        {
+          "id": "resp_0ad030a10d767d1001691f47d635c481978459c0ed24747c06",
+          "object": "response",
+          "created_at": 1763657686,
+          "status": "completed",
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "error": null,
+          "incomplete_details": null,
+          "instructions": null,
+          "max_output_tokens": null,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-nano-2025-04-14",
+          "output": [
+            {
+              "id": "msg_0ad030a10d767d1001691f47d685288197b521f8ec1685c614",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "GRADE: B"
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": null,
+          "reasoning": {
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": false,
+          "temperature": 1.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tools": [],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 112,
+            "input_tokens_details": {
+              "cached_tokens": 0
+            },
+            "output_tokens": 4,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 116
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2025-11-20 16:54:46
 recorded_with: VCR-vcr/2.0.0

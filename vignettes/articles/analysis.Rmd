@@ -58,7 +58,7 @@ are_task <-
 )
 
 are_claude <- are_task$clone()
-are_claude$eval(solver_chat = chat_claude(model = "claude-sonnet-4-20250514"))
+are_claude$eval(solver_chat = chat_claude(model = "claude-sonnet-4-5"))
 
 are_gpt <- are_task$clone()
 are_gpt$eval(solver_chat = chat_openai(model = "gpt-4.1"))

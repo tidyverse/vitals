@@ -7,13 +7,13 @@ The package uses a number of cached objects during testing in `test/`.
 The `.json` files in `inspect-example/logs` are the resulting log file from running evals in `inst/test/inspect`, e.g. with: 
 
 ```bash
-inspect eval inst/test/inspect/basics.py  --model anthropic/claude-3-5-sonnet-latest --log-format=json
+inspect eval inst/test/inspect/basics.py  --model anthropic/claude-sonnet-4-5 --log-format=json
 ```
 
 ...or:
 
 ```bash
-inspect eval test/inspect/tools.py  --model anthropic/claude-3-5-sonnet-latest --log-format=json
+inspect eval test/inspect/tools.py  --model anthropic/claude-sonnet-4-5 --log-format=json
 ```
 
 **dist/**

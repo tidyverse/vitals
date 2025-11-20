@@ -4,15 +4,14 @@
 \alias{vitals_view}
 \title{Interactively view local evaluation logs}
 \usage{
-vitals_view(dir = vitals_log_dir(), host = "127.0.0.1", port = 7576)
+vitals_view(dir = vitals_log_dir(), host = "127.0.0.1", port = NULL)
 }
 \arguments{
 \item{dir}{Path to a directory containing task eval logs.}
 
 \item{host}{Host to serve on. Defaults to "127.0.0.1".}
 
-\item{port}{Port to serve on. Defaults to 7576, one greater than the Python
-implementation.}
+\item{port}{Port to serve on. If NULL, will find a random available port.}
 }
 \value{
 The server object (invisibly)

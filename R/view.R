@@ -7,8 +7,7 @@
 #'
 #' @param dir Path to a directory containing task eval logs.
 #' @param host Host to serve on. Defaults to "127.0.0.1".
-#' @param port Port to serve on. Defaults to 7576, one greater than the Python
-#' implementation.
+#' @param port Port to serve on. If NULL, will find a random available port.
 #'
 #' @inherit Task examples
 #' @return The server object (invisibly)
@@ -16,7 +15,7 @@
 vitals_view <- function(
   dir = vitals_log_dir(),
   host = "127.0.0.1",
-  port = 7576
+  port = NULL
 ) {
   vitals_view_impl(dir = dir, host = host, port = port)
 }
@@ -24,10 +23,14 @@ vitals_view <- function(
 vitals_view_impl <- function(
   dir = vitals_log_dir(),
   host = "127.0.0.1",
-  port = 7576,
+  port = NULL,
   call = caller_env()
 ) {
   dist_dir <- system.file("dist", package = "vitals")
+
+  if (is.null(port)) {
+    port <- httpuv::randomPort()
+  }
 
   tryCatch(
     {

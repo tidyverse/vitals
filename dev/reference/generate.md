@@ -21,7 +21,7 @@ generate(solver_chat = NULL)
 - solver_chat:
 
   An ellmer chat object, such as from
-  [`ellmer::chat_anthropic()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html).
+  [`ellmer::chat_claude()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html).
 
 ## Value
 
@@ -51,7 +51,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   # create a new Task
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_qa()
   )
 
@@ -76,14 +76,16 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.2s]
+#> ✔ Solving [4.1s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [5.9s]
+#> ✔ Scoring [5.5s]
 #> 
+#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
+#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:7576>

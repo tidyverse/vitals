@@ -55,7 +55,7 @@ simple_addition <- tibble(
 
 tsk <- Task$new(
   dataset = simple_addition, 
-  solver = generate(chat_anthropic(model = "claude-sonnet-4-20250514")), 
+  solver = generate(chat_claude(model = "claude-sonnet-4-20250514")), 
   scorer = model_graded_qa()
 )
 ```
@@ -92,7 +92,7 @@ allowing for straightforward parameterization of tasks. For example, if
 I wanted to evaluate
 [`chat_openai()`](https://ellmer.tidyverse.org/reference/chat_openai.html)
 on this task rather than
-[`chat_anthropic()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html),
+[`chat_claude()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html),
 I could write:
 
 ``` r

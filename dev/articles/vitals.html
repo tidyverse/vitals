@@ -82,10 +82,10 @@ Datasets are just a tibble with columns <code>input</code> and
 <strong>Solvers</strong> evaluate the <code>input</code> in the
 dataset and produce a final result (hopefully) approximating
 <code>target</code>. In vitals, the simplest solver is just an ellmer
-chat (e.g. <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">ellmer::chat_anthropic()</a></code>) wrapped in
+chat (e.g. <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">ellmer::chat_claude()</a></code>) wrapped in
 <code><a href="../reference/generate.html">generate()</a></code>,
-i.e. <code>generate(ellmer::chat_anthropic()</code>), which will call
-the Chat object’s <code>$chat()</code> method and return whatever it
+i.e. <code>generate(ellmer::chat_claude()</code>), which will call the
+Chat object’s <code>$chat()</code> method and return whatever it
 returns.</li>
 <li>
 <strong>Scorers</strong> evaluate the final output of solvers. They
@@ -216,7 +216,7 @@ in a <code>Task</code>.</li>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">are_task</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="va">are</span>,</span>
-<span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  scorer <span class="op">=</span> <span class="fu"><a href="../reference/scorer_model.html">model_graded_qa</a></span><span class="op">(</span>partial_credit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"An R Eval"</span></span>
 <span><span class="op">)</span></span>

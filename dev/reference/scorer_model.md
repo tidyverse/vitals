@@ -54,7 +54,7 @@ model_graded_fact(
 - scorer_chat:
 
   An ellmer chat used to grade the model output, e.g.
-  [`ellmer::chat_anthropic()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html).
+  [`ellmer::chat_claude()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html).
 
 ## Value
 
@@ -92,7 +92,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_qa()
   )
 
@@ -102,13 +102,13 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.5s]
+#> ✔ Solving [5.7s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [7.8s]
+#> ✔ Scoring [5.7s]
 #> 
 
 # Factual response -------------------------------
@@ -129,7 +129,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 
   tsk <- Task$new(
     dataset = r_history,
-    solver = generate(solver_chat = chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_fact()
   )
 
@@ -139,12 +139,12 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [4.5s]
+#> ✔ Solving [5.1s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [7.9s]
+#> ✔ Scoring [6.8s]
 #> 
 ```

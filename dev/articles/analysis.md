@@ -14,7 +14,7 @@ are_task <-
   dataset = are,
   solver = generate(),
   scorer = model_graded_qa(
-    scorer_chat = chat_anthropic(model = "claude-3-7-sonnet-latest"), 
+    scorer_chat = chat_claude(model = "claude-3-7-sonnet-latest"), 
     partial_credit = TRUE
   ),
   name = "An R Eval",
@@ -22,7 +22,7 @@ are_task <-
 )
 
 are_claude <- are_task$clone()
-are_claude$eval(solver_chat = chat_anthropic(model = "claude-sonnet-4-20250514"))
+are_claude$eval(solver_chat = chat_claude(model = "claude-sonnet-4-20250514"))
 
 are_gpt <- are_task$clone()
 are_gpt$eval(solver_chat = chat_openai(model = "gpt-4.1"))

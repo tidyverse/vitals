@@ -80,7 +80,7 @@ is a function factory, meaning that the function itself outputs a
 function.
 
 ``` r
-sonnet_3_7 <- chat_anthropic(model = "claude-3-7-sonnet-latest")
+sonnet_3_7 <- chat_claude(model = "claude-3-7-sonnet-latest")
 generate(solver_chat = sonnet_3_7$clone())
 #> function (inputs, ..., solver_chat = chat) 
 #> {
@@ -90,8 +90,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x55ceb356aeb8>
-#> <environment: 0x55ceb35701d0>
+#> <bytecode: 0x563afe736ce8>
+#> <environment: 0x563afe73c000>
 ```
 
 While, in documentation, I’ve mostly written

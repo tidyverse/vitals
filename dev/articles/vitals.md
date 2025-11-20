@@ -8,10 +8,10 @@ At their core, LLM evals are composed of three pieces:
 2.  **Solvers** evaluate the `input` in the dataset and produce a final
     result (hopefully) approximating `target`. In vitals, the simplest
     solver is just an ellmer chat
-    (e.g. [`ellmer::chat_anthropic()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html))
+    (e.g. [`ellmer::chat_claude()`](https://ellmer.tidyverse.org/reference/chat_anthropic.html))
     wrapped in
     [`generate()`](https://vitals.tidyverse.org/dev/reference/generate.md),
-    i.e. `generate(ellmer::chat_anthropic()`), which will call the Chat
+    i.e. `generate(ellmer::chat_claude()`), which will call the Chat
     object’s `$chat()` method and return whatever it returns.
 3.  **Scorers** evaluate the final output of solvers. They may use text
     comparisons, model grading, or other custom schemes to determine how
@@ -147,7 +147,7 @@ LLM evaluation with vitals happens in two main steps:
 ``` r
 are_task <- Task$new(
   dataset = are,
-  solver = generate(chat_anthropic(model = "claude-3-7-sonnet-latest")),
+  solver = generate(chat_claude(model = "claude-3-7-sonnet-latest")),
   scorer = model_graded_qa(partial_credit = TRUE),
   name = "An R Eval"
 )

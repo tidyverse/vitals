@@ -487,7 +487,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   # create a new Task
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_anthropic(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(chat_claude(model = "claude-sonnet-4-5-20250929")),
     scorer = model_graded_qa()
   )
 
@@ -512,13 +512,13 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.7s]
+#> ✔ Solving [3.5s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [5.2s]
+#> ✔ Scoring [6.2s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%

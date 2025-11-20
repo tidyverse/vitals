@@ -7,6 +7,7 @@ python_cmd <- function() {
     return("python")
   }
   tryCatch(
+    # if needed, reticulate::virtualenv_create("vitals-venv")
     {
       eval_bare(call2("use_virtualenv", "vitals-venv", .ns = "reticulate"))
       eval_bare(call2("py_config", .ns = "reticulate"))$python

@@ -27,3 +27,4 @@ inst/log_dump
 inst/test/inspect/logs
 .claude/
 inst/inspect_ai
+inst/ellmer

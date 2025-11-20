@@ -30,7 +30,7 @@ Invisibly returns the output directory path. That directory contains:
 crawlers only read the \code{robots.txt} at the root directory of a package, so
 the file will likely be ignored if this folder isn't the root directory of
 the deployed page. \verb{assets/} is the bundled source for the viewer. \verb{logs/}
-is the \code{log_dir} as well as a \code{logs.json}, which is a manifest file for the
+is the \code{log_dir} as well as a \code{listing.json}, which is a manifest file for the
 directory.
 }
 \description{

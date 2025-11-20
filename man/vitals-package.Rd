@@ -27,7 +27,7 @@ Other contributors:
   \item Max Kuhn \email{max@posit.co} [contributor]
   \item Hadley Wickham \email{hadley@posit.co} (\href{https://orcid.org/0000-0003-4757-117X}{ORCID}) [contributor]
   \item Mine Cetinkaya-Rundel \email{mine@posit.co} (\href{https://orcid.org/0000-0001-6452-2420}{ORCID}) [contributor]
-  \item Posit Software, PBC (03wc8by49) [copyright holder, funder]
+  \item Posit Software, PBC (\href{https://ror.org/03wc8by49}{ROR}) [copyright holder, funder]
 }
 
 }

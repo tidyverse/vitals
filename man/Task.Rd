@@ -200,7 +200,13 @@ calling \verb{$new()} and then this method on the resulting object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Additional arguments passed to the solver and scorer functions.}
+\item{\code{...}}{Additional arguments passed to the solver and scorer functions.
+All arguments must be named. Arguments are routed based on function
+signatures: if an argument name matches a parameter in the solver, it goes
+to the solver; if it matches a parameter in the scorer, it goes to the
+scorer. Arguments matching both go to both. Unmatched arguments are passed
+to any function with \code{...} in its signature. An error is raised if an
+argument matches neither function and neither accepts \code{...}.}
 
 \item{\code{epochs}}{The number of times to repeat each sample. Evaluate each sample
 multiple times to better quantify variation. Optional, defaults to \code{1L}.

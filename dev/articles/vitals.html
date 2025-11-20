@@ -280,7 +280,7 @@ same model that generated the final response as the model to score
 solutions.</p>
 <p>Hold up, though—we’re using an LLM to generate responses to
 questions, and then using the LLM to grade those responses?</p>
-<p><img src="https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp" alt="The meme of 3 spiderman pointing at each other."></p>
+<p><img src="https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp" class="r-plt" alt="The meme of 3 spiderman pointing at each other."></p>
 <p>This technique is called “model grading” or “LLM-as-a-judge.” Done
 correctly, model grading is an effective and scalable solution to
 scoring. That said, it’s not without its faults. Here’s what the grading
@@ -361,7 +361,7 @@ vs. partially correct vs. incorrect answers:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">score</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vitals_files/figure-html/plot-1-1.png" alt="A ggplot2 bar plot, showing Claude was correct most of the time." width="700"></p>
+<p><img src="vitals_files/figure-html/plot-1-1.png" class="r-plt" alt="A ggplot2 bar plot, showing Claude was correct most of the time." width="700"></p>
 <p>Claude answered fully correctly in 18 out of 29 samples, and
 partially correctly 4 times. For me, this leads to all sorts of
 questions:</p>
@@ -411,7 +411,7 @@ results:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">model</span>, fill <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="va">rev</span>, palette <span class="op">=</span> <span class="st">"RdYlGn"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vitals_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="vitals_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <p>Is this difference in performance just a result of noise, though? We
 can supply the scores to an ordinal regression model to answer this
 question.</p>
@@ -472,7 +472,7 @@ advanced evals, check out the other vignettes in this package!</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>

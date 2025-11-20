@@ -1,0 +1,78 @@
+# Changelog
+
+## vitals (development version)
+
+- Images passed in user messages will now be logged compatibly with the
+  log viewer ([\#171](https://github.com/tidyverse/vitals/issues/171)).
+
+- The log viewer previously reported the solver’s response as the answer
+  provided to the scorer. However, these two texts can differ when
+  post-processing of the solver’s response is performed. This is now
+  fixed in the log viewer
+  ([\#166](https://github.com/tidyverse/vitals/issues/166),
+  [\#169](https://github.com/tidyverse/vitals/issues/169) by
+  [@mattwarkentin](https://github.com/mattwarkentin)).
+
+- The default `accuracy()` metric will now report a score of 0 rather
+  than `NaN` when all scores are 0.
+
+- Fixed bug where non-default grading systems in model-graded evals
+  would result in scores being wiped during logging
+  ([\#139](https://github.com/tidyverse/vitals/issues/139)).
+
+- The full suite of package tests can now be ran without active API keys
+  via the vcr package
+  ([\#163](https://github.com/tidyverse/vitals/issues/163)).
+
+- `$eval()` and `$log()` will now write log files to the same default
+  directory–the one specified when initializing the Task object.
+  Previously, `$eval()` wrote to that directory, while `$log()` wrote to
+  [`vitals_log_dir()`](https://vitals.tidyverse.org/dev/reference/vitals_log_dir.md)
+  ([\#158](https://github.com/tidyverse/vitals/issues/158) by
+  [@SokolovAnatoliy](https://github.com/SokolovAnatoliy)).
+
+- Manifest files for deployed logs are now named `listing.json` rather
+  than `logs.json` for compatibility with newer Inspect versions.
+
+- Removed dependency on the rstudioapi package
+  ([\#146](https://github.com/tidyverse/vitals/issues/146)).
+
+- `$eval()` now routes arguments to solvers and scorers based on their
+  function signatures, allowing users to pass arguments specific to each
+  without requiring ellipses in both functions
+  ([\#152](https://github.com/tidyverse/vitals/issues/152)). `$eval()`
+  now errors when supplied unnamed arguments.
+
+- Solvers and scorers can now return arbitrary R objects in metadata;
+  they will be summarized in a lossy format when logged to .json.
+
+- The package will now set the envvar `IN_VITALS_EVAL` to `"true"`
+  during solving and scoring.
+
+- Numeric task targets will no longer introduce errors in the log
+  viewer.
+
+- Images, audio, and video generated from tool calls will now be logged
+  compatibly with the log viewer
+  ([\#138](https://github.com/tidyverse/vitals/issues/138)).
+
+- Updated the vendored Inspect Log Viewer to Inspect version 0.3.122
+  ([\#138](https://github.com/tidyverse/vitals/issues/138)).
+
+- [`detect_match()`](https://vitals.tidyverse.org/dev/reference/scorer_detect.md)
+  now lists the correct `location` options in its default value
+  ([\#140](https://github.com/tidyverse/vitals/issues/140),
+  [\#142](https://github.com/tidyverse/vitals/issues/142) by
+  [@mattwarkentin](https://github.com/mattwarkentin)).
+
+- The log viewer previously reported the scorer’s response as both the
+  solver’s and scorers response—this is now fixed
+  ([\#141](https://github.com/tidyverse/vitals/issues/141),
+  [\#142](https://github.com/tidyverse/vitals/issues/142) by
+  [@mattwarkentin](https://github.com/mattwarkentin)).
+
+## vitals 0.1.0
+
+CRAN release: 2025-06-24
+
+- Initial CRAN submission.

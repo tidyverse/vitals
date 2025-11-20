@@ -90,8 +90,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x558c2351c8e0>
-#> <environment: 0x558c2351b808>
+#> <bytecode: 0x55b44fe726a0>
+#> <environment: 0x55b44fe715c8>
 ```
 
 While, in documentation, I’ve mostly written
@@ -249,7 +249,7 @@ are_btw_data
 #>  1 are_btw after-stat-bar-heights      I     <tibble [1 × 10]>
 #>  2 are_btw conditional-grouped-summary C     <tibble [1 × 10]>
 #>  3 are_btw correlated-delays-reasoning P     <tibble [1 × 10]>
-#>  4 are_btw curl-http-get               P     <tibble [1 × 10]>
+#>  4 are_btw curl-http-get               C     <tibble [1 × 10]>
 #>  5 are_btw dropped-level-legend        I     <tibble [1 × 10]>
 #>  6 are_btw filter-multiple-conditions  C     <tibble [1 × 10]>
 #>  7 are_btw geocode-req-perform         C     <tibble [1 × 10]>
@@ -259,8 +259,8 @@ are_btw_data
 #> # ℹ 19 more rows
 ```
 
-Claude answered fully correctly in 15 out of 29 samples, and partially
-correctly 8 times. Using the metadata, we can also determine how often
+Claude answered fully correctly in 16 out of 29 samples, and partially
+correctly 7 times. Using the metadata, we can also determine how often
 the model looked at at least one help-page before supplying an answer:
 
 ``` r
@@ -280,7 +280,7 @@ are_btw_data |>
   table()
 #> 
 #> FALSE  TRUE 
-#>     3    26
+#>     2    27
 ```
 
 When equipped with the ability to peruse documentation, the model almost
@@ -323,7 +323,7 @@ are_eval_data
 #>  1 btw    after-stat-bar-heights      I     <tibble [1 × 10]>
 #>  2 btw    conditional-grouped-summary C     <tibble [1 × 10]>
 #>  3 btw    correlated-delays-reasoning P     <tibble [1 × 10]>
-#>  4 btw    curl-http-get               P     <tibble [1 × 10]>
+#>  4 btw    curl-http-get               C     <tibble [1 × 10]>
 #>  5 btw    dropped-level-legend        I     <tibble [1 × 10]>
 #>  6 btw    filter-multiple-conditions  C     <tibble [1 × 10]>
 #>  7 btw    geocode-req-perform         C     <tibble [1 × 10]>
@@ -352,28 +352,29 @@ are_mod
 #> data:    are_eval_data
 #> 
 #>  link  threshold nobs logLik AIC    niter max.grad cond.H 
-#>  logit flexible  58   -60.19 126.38 4(0)  1.25e-09 1.2e+01
+#>  logit flexible  58   -54.60 115.20 5(0)  5.49e-13 1.5e+01
 #> 
 #> Coefficients:
 #> solverbtw 
-#>    0.2159 
+#>   -0.3846 
 #> 
 #> Threshold coefficients:
 #>     I|P     P|C 
-#> -1.0381  0.1101
+#> -1.6589 -0.6189
 ```
 
-The coefficient for `solver == "btw"` is 0.216, indicating that allowing
-the model to peruse documentation tends to be associated with higher
-grades. If a 95% confidence interval for this coefficient contains zero,
-we can conclude that there is not sufficient evidence to reject the null
-hypothesis that the difference between the btw solver and basic solver’s
-performance on this eval is zero at the 0.05 significance level.
+The coefficient for `solver == "btw"` is -0.385, indicating that
+allowing the model to peruse documentation tends to be associated with
+lower grades. If a 95% confidence interval for this coefficient contains
+zero, we can conclude that there is not sufficient evidence to reject
+the null hypothesis that the difference between the btw solver and basic
+solver’s performance on this eval is zero at the 0.05 significance
+level.
 
 ``` r
 confint(are_mod)
-#>                2.5 %   97.5 %
-#> solverbtw -0.7572417 1.196237
+#>               2.5 %    97.5 %
+#> solverbtw -1.429136 0.6379013
 ```
 
 If we had evaluated this model across multiple epochs, the question ID

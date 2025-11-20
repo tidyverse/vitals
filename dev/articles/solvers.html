@@ -158,8 +158,8 @@ function.</p>
 <span><span class="co">#&gt;     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), </span></span>
 <span><span class="co">#&gt;         solver_chat = res)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x558c2351c8e0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x558c2351b808&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55b44fe726a0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55b44fe715c8&gt;</span></span></code></pre></div>
 <p>While, in documentation, I’ve mostly written “<code><a href="../reference/generate.html">generate()</a></code>
 just calls <code>$chat()</code>,” there are a couple extra tricks up
 <code><a href="../reference/generate.html">generate()</a></code>’s sleeves:</p>
@@ -302,7 +302,7 @@ several parameterizations. We’ll just use Claude Sonnet 3.7 for now.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> are_btw after-stat-bar-heights      I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> are_btw conditional-grouped-summary C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> are_btw correlated-delays-reasoning P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> are_btw curl-http-get               P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> are_btw curl-http-get               C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> are_btw dropped-level-legend        I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> are_btw filter-multiple-conditions  C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> are_btw geocode-req-perform         C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
@@ -310,8 +310,8 @@ several parameterizations. We’ll just use Claude Sonnet 3.7 for now.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> are_btw grouped-filter-summarize    P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> are_btw grouped-geom-line           C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 19 more rows</span></span></span></code></pre></div>
-<p>Claude answered fully correctly in 15 out of 29 samples, and
-partially correctly 8 times. Using the metadata, we can also determine
+<p>Claude answered fully correctly in 16 out of 29 samples, and
+partially correctly 7 times. Using the metadata, we can also determine
 how often the model looked at at least one help-page before supplying an
 answer:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -331,7 +331,7 @@ answer:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; FALSE  TRUE </span></span>
-<span><span class="co">#&gt;     3    26</span></span></code></pre></div>
+<span><span class="co">#&gt;     2    27</span></span></code></pre></div>
 <p>When equipped with the ability to peruse documentation, the model
 almost always made use of it. To see the kinds of docs it decided to
 look at, click in a few samples in the log viewer for this eval:</p>
@@ -367,7 +367,7 @@ here if we didn’t want to recreate the task.)</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> btw    after-stat-bar-heights      I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> btw    conditional-grouped-summary C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> btw    correlated-delays-reasoning P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> btw    curl-http-get               P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> btw    curl-http-get               C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> btw    dropped-level-legend        I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> btw    filter-multiple-conditions  C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> btw    geocode-req-perform         C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
@@ -393,26 +393,26 @@ question.</p>
 <span><span class="co">#&gt; data:    are_eval_data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  link  threshold nobs logLik AIC    niter max.grad cond.H </span></span>
-<span><span class="co">#&gt;  logit flexible  58   -60.19 126.38 4(0)  1.25e-09 1.2e+01</span></span>
+<span><span class="co">#&gt;  logit flexible  58   -54.60 115.20 5(0)  5.49e-13 1.5e+01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt; solverbtw </span></span>
-<span><span class="co">#&gt;    0.2159 </span></span>
+<span><span class="co">#&gt;   -0.3846 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Threshold coefficients:</span></span>
 <span><span class="co">#&gt;     I|P     P|C </span></span>
-<span><span class="co">#&gt; -1.0381  0.1101</span></span></code></pre></div>
-<p>The coefficient for <code>solver == "btw"</code> is 0.216, indicating
-that allowing the model to peruse documentation tends to be associated
-with higher grades. If a 95% confidence interval for this coefficient
-contains zero, we can conclude that there is not sufficient evidence to
-reject the null hypothesis that the difference between the btw solver
-and basic solver’s performance on this eval is zero at the 0.05
-significance level.</p>
+<span><span class="co">#&gt; -1.6589 -0.6189</span></span></code></pre></div>
+<p>The coefficient for <code>solver == "btw"</code> is -0.385,
+indicating that allowing the model to peruse documentation tends to be
+associated with lower grades. If a 95% confidence interval for this
+coefficient contains zero, we can conclude that there is not sufficient
+evidence to reject the null hypothesis that the difference between the
+btw solver and basic solver’s performance on this eval is zero at the
+0.05 significance level.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">are_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                2.5 %   97.5 %</span></span>
-<span><span class="co">#&gt; solverbtw -0.7572417 1.196237</span></span></code></pre></div>
+<span><span class="co">#&gt;               2.5 %    97.5 %</span></span>
+<span><span class="co">#&gt; solverbtw -1.429136 0.6379013</span></span></code></pre></div>
 <div class="callout-note">
 <p>If we had evaluated this model across multiple epochs, the question
 ID could become a “nuisance parameter” in a mixed model, e.g. with the

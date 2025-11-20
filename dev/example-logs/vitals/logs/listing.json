@@ -1,0 +1,179 @@
+{
+  "2025-11-20T13-53-40-06-00_An-R-Eval_67b0731deab666f5ea6eee.json": {
+    "version": 2,
+    "status": "success",
+    "eval": {
+      "run_id": "zmj5uSQO2gfSusXcsw4Cto",
+      "created": "2025-11-20T13:53:40-06:00",
+      "task": "An-R-Eval",
+      "task_id": "67b0731deab666f5ea6eee",
+      "task_version": 0,
+      "task_file": "",
+      "task_attribs": {},
+      "task_args": {},
+      "dataset": {
+        "samples": 29,
+        "sample_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+        "shuffled": false
+      },
+      "model": "generate(chat_claude()) (claude-3-7-sonnet-latest)",
+      "model_args": {},
+      "config": {},
+      "revision": {
+        "type": "git",
+        "origin": "https://github.com/UKGovernmentBEIS/inspect_ai.git",
+        "commit": "9140d8a2"
+      },
+      "packages": {
+        "inspect_ai": "0.3.63"
+      },
+      "scorers": [
+        {
+          "name": "model_graded_qa(partial_credit = TRUE)",
+          "options": {},
+          "metrics": [
+            {
+              "name": "mean",
+              "options": {}
+            }
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "plan": {
+      "name": "plan",
+      "steps": [
+        {
+          "solver": "generate(chat_claude()) (claude-3-7-sonnet-latest)",
+          "params": {
+            "1": "self$get_samples()$input"
+          }
+        }
+      ],
+      "config": {}
+    },
+    "results": {
+      "total_samples": 29,
+      "completed_samples": 29,
+      "scores": [
+        {
+          "name": "model_graded_qa(partial_credit = TRUE) (claude-3-7-sonnet-latest)",
+          "scorer": "model_graded_qa(partial_credit = TRUE) (claude-3-7-sonnet-latest)",
+          "params": {},
+          "metrics": {
+            "accuracy": {
+              "name": "accuracy",
+              "value": 65.5172,
+              "params": {
+                "1": "numeric_scores"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "stats": {
+      "started_at": "2025-11-20T13:53:04-06:00",
+      "completed_at": "2025-11-20T13:53:40-06:00",
+      "model_usage": {
+        "claude-3-7-sonnet-latest": {
+          "input_tokens": 9887,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 10699,
+          "total_tokens": 20586
+        }
+      }
+    }
+  },
+  "2025-11-20T13-54-49-06-00_An-R-Eval_67b0731deab666f5ea6eee.json": {
+    "version": 2,
+    "status": "success",
+    "eval": {
+      "run_id": "ej7sToo6D1UOwQlEqX5eT0",
+      "created": "2025-11-20T13:54:49-06:00",
+      "task": "An-R-Eval",
+      "task_id": "67b0731deab666f5ea6eee",
+      "task_version": 0,
+      "task_file": "",
+      "task_attribs": {},
+      "task_args": {},
+      "dataset": {
+        "samples": 29,
+        "sample_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+        "shuffled": false
+      },
+      "model": "generate(chat_claude(\"claude-3-7-sonnet-latest\")) (gpt-4.1)",
+      "model_args": {},
+      "config": {},
+      "revision": {
+        "type": "git",
+        "origin": "https://github.com/UKGovernmentBEIS/inspect_ai.git",
+        "commit": "9140d8a2"
+      },
+      "packages": {
+        "inspect_ai": "0.3.63"
+      },
+      "scorers": [
+        {
+          "name": "model_graded_qa(partial_credit = TRUE)",
+          "options": {},
+          "metrics": [
+            {
+              "name": "mean",
+              "options": {}
+            }
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "plan": {
+      "name": "plan",
+      "steps": [
+        {
+          "solver": "generate(chat_claude(\"claude-3-7-sonnet-latest\")) (gpt-4.1)",
+          "params": {
+            "1": "self$get_samples()$input",
+            "solver_chat": "<Chat>"
+          }
+        }
+      ],
+      "config": {}
+    },
+    "results": {
+      "total_samples": 29,
+      "completed_samples": 29,
+      "scores": [
+        {
+          "name": "model_graded_qa(partial_credit = TRUE) (gpt-4.1)",
+          "scorer": "model_graded_qa(partial_credit = TRUE) (gpt-4.1)",
+          "params": {},
+          "metrics": {
+            "accuracy": {
+              "name": "accuracy",
+              "value": 58.6207,
+              "params": {
+                "1": "numeric_scores"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "stats": {
+      "started_at": "2025-11-20T13:53:41-06:00",
+      "completed_at": "2025-11-20T13:54:49-06:00",
+      "model_usage": {
+        "gpt-4.1": {
+          "input_tokens": 8718,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 14113,
+          "total_tokens": 22831
+        }
+      }
+    }
+  }
+}

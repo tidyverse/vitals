@@ -111,6 +111,6 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> ✔ Solving [4.4s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [51ms]
+#> ✔ Scoring [50ms]
 #> 
 ```

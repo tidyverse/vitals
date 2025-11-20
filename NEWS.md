@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (#115).
+
 * `vitals_view()` will now pick a random available port rather than its previous default port, 7576. 
 
 * Images passed in user messages will now be logged compatibly with the log 

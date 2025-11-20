@@ -795,16 +795,9 @@ turn_tokens <- function(turn) {
   )
 }
 
-# log working_time and working_starts values by pre-computing them from the Chat
-# objects before mapping over turns (#97).
-# `working_start` is the clock time when a turn started minus the clock time
-# when the first chat in the solver or scorer started, in seconds.
-# `working_time` is the duration of the turn (completed time of the turn
-# minus the completed time of the turn preceding it).
-#
-# this was initially added to process `@completed` slots of turns. those were
-# removed in ellmer 0.2.0, so we're temporarily filling them in with
-# the average timing (#112)
+# log working_time values by extracting them from the Turn @duration slots (#115).
+# `working_time` is the duration of the turn in seconds. User turns have NA duration,
+# assistant turns have the actual request duration as measured by httr2.
 add_working_times_to_turns <- function(chat, which, timestamps, n) {
   turns <- chat$get_turns()
 
@@ -812,18 +805,12 @@ add_working_times_to_turns <- function(chat, which, timestamps, n) {
     return(chat)
   }
 
-  average_working_time <-
-    as.numeric(difftime(
-      timestamps[[which]]$completed_at,
-      timestamps[[which]]$started_at,
-      units = "secs"
-    )) /
-    (length(turns) * n)
-
-  attr(turns[[1]], "working_time") <- NA_real_
-  for (i in 2:length(turns)) {
-    # TODO: revisit once durations are added to ellmer turns (#112)
-    attr(turns[[i]], "working_time") <- average_working_time
+  for (i in seq_along(turns)) {
+    if (inherits(turns[[i]], "ellmer::AssistantTurn")) {
+      attr(turns[[i]], "working_time") <- turns[[i]]@duration
+    } else {
+      attr(turns[[i]], "working_time") <- NA_real_
+    }
   }
 
   chat$set_turns(turns)
@@ -831,27 +818,28 @@ add_working_times_to_turns <- function(chat, which, timestamps, n) {
   chat
 }
 
-# this was initially added to process `@completed` slots of turns. those were
-# removed in ellmer 0.2.0, so we're temporarily filling them in with
-# the estimated timing if every sample took the same amount of time (#112)
+# log working_start values by accumulating turn durations (#115).
+# `working_start` is the clock time when a turn started minus the clock time
+# when the first chat started, in seconds. This is computed by accumulating
+# the @duration values from previous turns.
 add_working_start_to_turns <- function(chats, which, timestamps) {
-  total_duration <-
-    as.numeric(difftime(
-      timestamps[[which]]$completed_at,
-      timestamps[[which]]$started_at,
-      units = "secs"
-    ))
-  duration_per_chat <- total_duration / length(chats)
   current_working_start <- 0
 
-  for (i in 1:length(chats)) {
+  for (i in seq_along(chats)) {
     chat <- chats[[i]]
     chat_turns <- chat$get_turns()
-    duration_per_turn <- duration_per_chat / (length(chat_turns) - 1)
-    for (j in 1:length(chat_turns)) {
+
+    for (j in seq_along(chat_turns)) {
       attr(chat_turns[[j]], "working_start") <- current_working_start
-      current_working_start <- current_working_start + duration_per_turn
+
+      if (inherits(chat_turns[[j]], "ellmer::AssistantTurn")) {
+        turn_duration <- chat_turns[[j]]@duration
+        if (!is.na(turn_duration)) {
+          current_working_start <- current_working_start + turn_duration
+        }
+      }
     }
+
     chat$set_turns(chat_turns)
     chats[[i]] <- chat
   }

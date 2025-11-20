@@ -737,8 +737,7 @@ Task <- R6::R6Class(
       )
     },
 
-    # log working_time values by pre-computing durations from the Chat
-    # objects before mapping over turns (#97)
+    # log working_time values by extracting them from Turn @duration slots (#115)
     add_working_times = function(samples) {
       samples$solver_chat <- purrr::map(
         samples$solver_chat,
@@ -761,9 +760,7 @@ Task <- R6::R6Class(
       samples
     },
 
-    # log working_start values by estimating timings as if every turn in every
-    # sample took the same amount of time (#112)
-    #
+    # log working_start values by accumulating Turn @duration values (#115)
     add_working_starts = function(samples) {
       samples$solver_chat <- add_working_start_to_turns(
         samples$solver_chat,

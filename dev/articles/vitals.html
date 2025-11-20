@@ -382,7 +382,7 @@ OpenAI’s GPT-4o, we just need to clone the object and then run
 <code>$eval()</code> with a different solver <code>chat</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">are_task_openai</span> <span class="op">&lt;-</span> <span class="va">are_task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">are_task_openai</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4o"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">are_task_openai</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4.1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Any arguments to solving or scoring functions can be passed directly
 to <code>$eval()</code>, allowing for quickly evaluating tasks across
 several parameterizations.</p>
@@ -392,7 +392,7 @@ results:</p>
 <code class="sourceCode R"><span><span class="va">are_task_eval</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/vitals_bind.html">vitals_bind</a></span><span class="op">(</span><span class="va">are_task</span>, <span class="va">are_task_openai</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    task <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">task</span> <span class="op">==</span> <span class="st">"are_task"</span>, <span class="st">"Claude"</span>, <span class="st">"GPT-4o"</span><span class="op">)</span></span>
+<span>    task <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">task</span> <span class="op">==</span> <span class="st">"are_task"</span>, <span class="st">"Claude"</span>, <span class="st">"gpt-4.1"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">task</span><span class="op">)</span></span>
 <span></span>
@@ -433,13 +433,13 @@ question.</p>
 <span><span class="co">##  logit flexible  58   -60.05 126.10 4(0)  3.53e-12 1.2e+01</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">## modelGPT-4o </span></span>
-<span><span class="co">##     -0.9443 </span></span>
+<span><span class="co">## modelgpt-4.1 </span></span>
+<span><span class="co">##      -0.9443 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Threshold coefficients:</span></span>
 <span><span class="co">##     I|P     P|C </span></span>
 <span><span class="co">## -1.7248 -0.3048</span></span></code></pre>
-<p>The coefficient for <code>model == "GPT-4o"</code> is -0.944,
+<p>The coefficient for <code>model == "gpt-4.1"</code> is -0.944,
 indicating that GPT-4o tends to be associated with lower grades. If a
 95% confidence interval for this coefficient contains zero, we can
 conclude that there is not sufficient evidence to reject the null
@@ -447,8 +447,8 @@ hypothesis that the difference between GPT-4o and Claude’s performance
 on this eval is zero at the 0.05 significance level.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">are_mod</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                 2.5 %     97.5 %</span></span>
-<span><span class="co">## modelGPT-4o -1.967718 0.03831908</span></span></code></pre>
+<pre><code><span><span class="co">##                  2.5 %     97.5 %</span></span>
+<span><span class="co">## modelgpt-4.1 -1.967718 0.03831908</span></span></code></pre>
 <div class="callout-note">
 <p>If we had evaluated this model across multiple epochs, the question
 ID could become a “nuisance parameter” in a mixed model, e.g. with the

@@ -336,7 +336,7 @@ with a different solver `chat`:
 
 ``` r
 are_task_openai <- are_task$clone()
-are_task_openai$eval(solver_chat = chat_openai(model = "gpt-4o"))
+are_task_openai$eval(solver_chat = chat_openai(model = "gpt-4.1"))
 ```
 
 Any arguments to solving or scoring functions can be passed directly to
@@ -349,7 +349,7 @@ Using this data, we can quickly juxtapose those evaluation results:
 are_task_eval <-
   vitals_bind(are_task, are_task_openai) |>
   mutate(
-    task = if_else(task == "are_task", "Claude", "GPT-4o")
+    task = if_else(task == "are_task", "Claude", "gpt-4.1")
   ) |>
   rename(model = task)
 
@@ -400,14 +400,14 @@ are_mod
     ##  logit flexible  58   -60.05 126.10 4(0)  3.53e-12 1.2e+01
     ## 
     ## Coefficients:
-    ## modelGPT-4o 
-    ##     -0.9443 
+    ## modelgpt-4.1 
+    ##      -0.9443 
     ## 
     ## Threshold coefficients:
     ##     I|P     P|C 
     ## -1.7248 -0.3048
 
-The coefficient for `model == "GPT-4o"` is -0.944, indicating that
+The coefficient for `model == "gpt-4.1"` is -0.944, indicating that
 GPT-4o tends to be associated with lower grades. If a 95% confidence
 interval for this coefficient contains zero, we can conclude that there
 is not sufficient evidence to reject the null hypothesis that the
@@ -418,8 +418,8 @@ at the 0.05 significance level.
 confint(are_mod)
 ```
 
-    ##                 2.5 %     97.5 %
-    ## modelGPT-4o -1.967718 0.03831908
+    ##                  2.5 %     97.5 %
+    ## modelgpt-4.1 -1.967718 0.03831908
 
 If we had evaluated this model across multiple epochs, the question ID
 could become a “nuisance parameter” in a mixed model, e.g. with the

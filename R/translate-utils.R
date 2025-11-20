@@ -5,11 +5,11 @@ translate_to_model_usage <- function(chat) {
 
   dots_list(
     !!model := list(
-      input_tokens = sum(tokens$tokens[tokens$role == "user"]),
+      input_tokens = sum(tokens$input, na.rm = TRUE),
       cache_creation_input_tokens = 0,
-      cache_read_input_tokens = 0,
-      output_tokens = sum(tokens$tokens[tokens$role == "assistant"]),
-      total_tokens = sum(tokens$tokens)
+      cache_read_input_tokens = sum(tokens$cached_input, na.rm = TRUE),
+      output_tokens = sum(tokens$output, na.rm = TRUE),
+      total_tokens = sum(tokens$input, tokens$output, na.rm = TRUE)
     )
   )
 }

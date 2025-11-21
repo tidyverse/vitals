@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* Tool uses from scorers will now be visible in the log viewer (#186).
+
 * Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (#115).
 
 * `vitals_view()` will now pick a random available port rather than its previous default port, 7576. 

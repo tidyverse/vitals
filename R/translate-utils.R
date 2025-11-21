@@ -57,7 +57,7 @@ translate_to_output <- function(chat) {
     model = chat$get_model(),
     choices = translate_assistant_choices(last_assistant_turn),
     usage = rename_token_fields(translate_to_model_usage(chat)[[1]]),
-    time = last_assistant_turn@duration
+    time = turn_duration(last_assistant_turn)
   )
 }
 

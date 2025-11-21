@@ -795,6 +795,16 @@ turn_tokens <- function(turn) {
   )
 }
 
+turn_duration <- function(turn) {
+  duration <- 0
+  if (inherits(turn, "ellmer::AssistantTurn")) {
+    if (!is.na(turn@duration)) {
+      duration <- turn@duration
+    }
+  }
+  duration
+}
+
 # log working_time values by extracting them from the Turn @duration slots (#115).
 # `working_time` is the duration of the turn in seconds. User turns have NA duration,
 # assistant turns have the actual request duration as measured by httr2.
@@ -806,11 +816,7 @@ add_working_times_to_turns <- function(chat, which, timestamps, n) {
   }
 
   for (i in seq_along(turns)) {
-    if (inherits(turns[[i]], "ellmer::AssistantTurn")) {
-      attr(turns[[i]], "working_time") <- turns[[i]]@duration
-    } else {
-      attr(turns[[i]], "working_time") <- NA_real_
-    }
+    attr(turns[[i]], "working_time") <- turn_duration(turns[[i]])
   }
 
   chat$set_turns(turns)
@@ -831,13 +837,7 @@ add_working_start_to_turns <- function(chats, which, timestamps) {
 
     for (j in seq_along(chat_turns)) {
       attr(chat_turns[[j]], "working_start") <- current_working_start
-
-      if (inherits(chat_turns[[j]], "ellmer::AssistantTurn")) {
-        turn_duration <- chat_turns[[j]]@duration
-        if (!is.na(turn_duration)) {
-          current_working_start <- current_working_start + turn_duration
-        }
-      }
+      current_working_start <- current_working_start + turn_duration(chat_turns[[j]])
     }
 
     chat$set_turns(chat_turns)

@@ -2,6 +2,9 @@
 
 ## vitals (development version)
 
+- Tool uses from scorers will now be visible in the log viewer
+  ([\#186](https://github.com/tidyverse/vitals/issues/186)).
+
 - Assistant turns now have precise durations in generated logs.
   Previously, their timings were averaged across the course of the
   evaluation ([\#115](https://github.com/tidyverse/vitals/issues/115)).

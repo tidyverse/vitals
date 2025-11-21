@@ -2,6 +2,11 @@
 # invokes Inspect's pydantic models on an eval log file so that
 # we can ensure we're writing files that are compatible with the
 # viewer.
+# first-time setup (requires Python >=3.10):
+#   reticulate::install_python(version = '3.14.0')
+#   # restart R session
+#   reticulate::virtualenv_create(envname = "vitals-venv")
+#   reticulate::py_install("inspect_ai", envname = "vitals-venv")
 python_cmd <- function() {
   if (!is_installed("reticulate")) {
     return("python")

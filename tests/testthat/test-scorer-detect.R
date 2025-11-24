@@ -311,6 +311,36 @@ test_that("detect_answer works", {
   expect_equal(as.character(tsk_letter$get_samples()$score), c("I", "C"))
 })
 
+test_that("detect scorers generate explanations", {
+  skip_on_cran()
+
+  simple_df <- tibble::tibble(
+    input = c("Question 1", "Question 2"),
+    result = c("4", "wrong answer"),
+    target = c("4", "5")
+  )
+
+  tsk_includes <- Task$new(
+    dataset = simple_df,
+    solver = function() {},
+    scorer = function() {}
+  )
+  tsk_includes$.__enclos_env__$private$solved <- TRUE
+  tsk_includes$set_scorer(detect_includes())
+  tsk_includes$score()
+
+  expect_true("scorer_explanation" %in% names(tsk_includes$get_samples()))
+  expect_equal(length(tsk_includes$get_samples()$scorer_explanation), 2)
+  expect_match(
+    tsk_includes$get_samples()$scorer_explanation[[1]],
+    "Target '4' was found"
+  )
+  expect_match(
+    tsk_includes$get_samples()$scorer_explanation[[2]],
+    "was not found"
+  )
+})
+
 # In general, we test these scorers completely offline and thus don't `log()`
 # as that would require solver chats. Do a "live" test once to ensure that we
 # don't assume scorer chats are available while logging. (#77)

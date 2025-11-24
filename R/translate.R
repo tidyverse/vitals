@@ -181,6 +181,11 @@ translate_to_sample <- function(sample, scores, timestamps) {
         } else {
           NULL
         },
+        scorer_explanation = if ("scorer_explanation" %in% names(sample)) {
+          sample$scorer_explanation[[1]]
+        } else {
+          NULL
+        },
         metadata = as_metadata(sample[names(sample) == "scorer_metadata"])
       )
     ),
@@ -188,7 +193,6 @@ translate_to_sample <- function(sample, scores, timestamps) {
     store = c(),
     events = translate_to_events(sample = sample, timestamps = timestamps),
     model_usage = sum_model_usage(list(chat)),
-    # TODO: these seem to be prompts passed to the judges
     attachments = c()
   )
 }
@@ -211,13 +215,19 @@ translate_to_score <- function(
   score,
   scorer,
   scorer_chat = NULL,
+  scorer_explanation = NULL,
   metadata
 ) {
   if (is.null(scorer_chat)) {
+    explanation <- if (!is.null(scorer_explanation)) {
+      scorer_explanation
+    } else {
+      scorer
+    }
     return(list(
       value = score,
       answer = as.character(output),
-      explanation = scorer,
+      explanation = explanation,
       metadata = metadata
     ))
   }

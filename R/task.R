@@ -672,6 +672,9 @@ Task <- R6::R6Class(
       if ("scorer_metadata" %in% names(scorer_res)) {
         private$samples$scorer_metadata <- scorer_res$scorer_metadata
       }
+      if ("explanation" %in% names(scorer_res)) {
+        private$samples$scorer_explanation <- scorer_res$explanation
+      }
 
       private$samples$scorer <- private$scores$name
     },

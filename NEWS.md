@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* Deterministic scorers can now return an `explanation` slot that explains the scoring output. The built-in detect-based scorers now return an `explanation` slot (#189).
+
 * Tool uses from scorers will now be visible in the log viewer (#186).
 
 * Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (#115).

@@ -81,6 +81,7 @@ detect_includes <- function(case_sensitive = FALSE) {
         levels = c("I", "C"),
         ordered = TRUE
       ),
+      explanation = purrr::map_chr(results, "explanation"),
       scorer_metadata = purrr::map(results, "metadata")
     )
   }
@@ -97,8 +98,15 @@ detect_includes_impl <- function(sample, case_sensitive) {
 
   result <- grepl(target, answer, fixed = TRUE)
 
+  explanation <- if (result) {
+    paste0("Target '", sample$target, "' was found in the answer.")
+  } else {
+    paste0("Target '", sample$target, "' was not found in the answer.")
+  }
+
   list(
     result = result,
+    explanation = explanation,
     metadata = list(
       matched = result,
       answer = answer
@@ -133,6 +141,7 @@ detect_match <- function(
         levels = c("I", "C"),
         ordered = TRUE
       ),
+      explanation = purrr::map_chr(results, "explanation"),
       scorer_metadata = purrr::map(results, "metadata")
     )
   }
@@ -156,8 +165,24 @@ detect_match_impl <- function(sample, location, case_sensitive) {
     FALSE
   )
 
+  location_desc <- switch(
+    location,
+    begin = "at the beginning of",
+    end = "at the end of",
+    any = "anywhere in",
+    exact = "exactly matching",
+    "in"
+  )
+
+  explanation <- if (result) {
+    paste0("Target '", sample$target, "' was found ", location_desc, " the answer.")
+  } else {
+    paste0("Target '", sample$target, "' was not found ", location_desc, " the answer.")
+  }
+
   list(
     result = result,
+    explanation = explanation,
     metadata = list(
       matched = result,
       answer = answer
@@ -191,6 +216,7 @@ detect_pattern <- function(pattern, case_sensitive = FALSE, all = FALSE) {
         levels = c("I", "C"),
         ordered = TRUE
       ),
+      explanation = purrr::map_chr(results, "explanation"),
       scorer_metadata = purrr::map(results, "metadata")
     )
   }
@@ -202,6 +228,9 @@ detect_pattern_impl <- function(sample, pattern, case_sensitive, all) {
   if (matches[[1]][1] == -1) {
     return(list(
       result = FALSE,
+      explanation = paste0(
+        "Pattern '", pattern, "' did not match any text in the answer."
+      ),
       metadata = list(
         matched = FALSE,
         answer = NA
@@ -223,8 +252,16 @@ detect_pattern_impl <- function(sample, pattern, case_sensitive, all) {
     any(groups %in% target)
   }
 
+  match_desc <- if (all) "All matches" else "At least one match"
+  explanation <- if (matched) {
+    paste0(match_desc, " from pattern '", pattern, "' matched the target.")
+  } else {
+    paste0(match_desc, " from pattern '", pattern, "' did not match the target.")
+  }
+
   list(
     result = matched,
+    explanation = explanation,
     metadata = list(
       matched = matched,
       answer = groups[1]
@@ -254,6 +291,7 @@ detect_exact <- function(case_sensitive = FALSE) {
         levels = c("I", "C"),
         ordered = TRUE
       ),
+      explanation = purrr::map_chr(results, "explanation"),
       scorer_metadata = purrr::map(results, "metadata")
     )
   }
@@ -270,8 +308,15 @@ detect_exact_impl <- function(sample, case_sensitive) {
 
   matched <- answer == target
 
+  explanation <- if (matched) {
+    paste0("Normalized answer exactly matched target '", sample$target, "'.")
+  } else {
+    paste0("Normalized answer did not exactly match target '", sample$target, "'.")
+  }
+
   list(
     result = matched,
+    explanation = explanation,
     scorer = "exact",
     metadata = list(
       matched = matched,
@@ -302,6 +347,7 @@ detect_answer <- function(format = c("line", "word", "letter")) {
         levels = c("I", "C"),
         ordered = TRUE
       ),
+      explanation = purrr::map_chr(results, "explanation"),
       scorer_metadata = purrr::map(results, "metadata")
     )
   }
@@ -320,6 +366,7 @@ detect_answer_impl <- function(sample, format) {
   if (matches[[1]][1] == -1) {
     return(list(
       result = FALSE,
+      explanation = "No 'ANSWER:' prefix found in the response.",
       metadata = list(
         matched = FALSE,
         answer = NA
@@ -330,8 +377,15 @@ detect_answer_impl <- function(sample, format) {
   answer <- regmatches(sample$result, matches)[[1]][2]
   matched <- tolower(trimws(answer)) == tolower(trimws(sample$target))
 
+  explanation <- if (matched) {
+    paste0("Extracted answer '", answer, "' matched target '", sample$target, "'.")
+  } else {
+    paste0("Extracted answer '", answer, "' did not match target '", sample$target, "'.")
+  }
+
   list(
     result = matched,
+    explanation = explanation,
     metadata = list(
       matched = matched,
       answer = answer

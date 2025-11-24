@@ -2,6 +2,11 @@
 
 ## vitals (development version)
 
+- Deterministic scorers can now return an `explanation` slot that
+  explains the scoring output. The built-in detect-based scorers now
+  return an `explanation` slot
+  ([\#189](https://github.com/tidyverse/vitals/issues/189)).
+
 - Tool uses from scorers will now be visible in the log viewer
   ([\#186](https://github.com/tidyverse/vitals/issues/186)).
 

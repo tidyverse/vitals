@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p>Tool uses from scorers will now be visible in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/186" class="external-link">#186</a>).</p></li>
+<ul><li><p>Deterministic scorers can now return an <code>explanation</code> slot that explains the scoring output. The built-in detect-based scorers now return an <code>explanation</code> slot (<a href="https://github.com/tidyverse/vitals/issues/189" class="external-link">#189</a>).</p></li>
+<li><p>Tool uses from scorers will now be visible in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/186" class="external-link">#186</a>).</p></li>
 <li><p>Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (<a href="https://github.com/tidyverse/vitals/issues/115" class="external-link">#115</a>).</p></li>
 <li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
 <li><p>Images passed in user messages will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>

@@ -11,12 +11,12 @@ python_cmd <- function() {
   if (!is_installed("reticulate")) {
     return("python3")
   }
-  if (reticulate::py_available()) {
-    return(reticulate::py_config()$python)
+  if (asNamespace("reticulate")$py_available()) {
+    return(asNamespace("reticulate")$py_config()$python)
   }
-  reticulate::py_require(c("inspect-ai", "pydantic"))
+  asNamespace("reticulate")$py_require(c("inspect-ai", "pydantic"))
   tryCatch(
-    reticulate::py_config()$python,
+    asNamespace("reticulate")$py_config()$python,
     error = function(e) "python3"
   )
 }

@@ -84,14 +84,20 @@ sonnet_3_7 <- chat_claude(model = "claude-3-7-sonnet-latest")
 generate(solver_chat = sonnet_3_7$clone())
 #> function (inputs, ..., solver_chat = chat) 
 #> {
-#>     check_inherits(solver_chat, "Chat")
-#>     ch <- solver_chat$clone()
+#>     if (is.function(solver_chat)) {
+#>         ch <- solver_chat()
+#>         check_inherits(ch, "Chat")
+#>     }
+#>     else {
+#>         check_inherits(solver_chat, "Chat")
+#>         ch <- solver_chat$clone()
+#>     }
 #>     res <- ellmer::parallel_chat(ch, as.list(inputs), ...)
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x555730a0e260>
-#> <environment: 0x555730a0d188>
+#> <bytecode: 0x5569d8189a40>
+#> <environment: 0x5569d8188508>
 ```
 
 While, in documentation, I’ve mostly written

@@ -152,14 +152,20 @@ function.</p>
 <span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="va">sonnet_3_7</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (inputs, ..., solver_chat = chat) </span></span>
 <span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;     check_inherits(solver_chat, "Chat")</span></span>
-<span><span class="co">#&gt;     ch &lt;- solver_chat$clone()</span></span>
+<span><span class="co">#&gt;     if (is.function(solver_chat)) {</span></span>
+<span><span class="co">#&gt;         ch &lt;- solver_chat()</span></span>
+<span><span class="co">#&gt;         check_inherits(ch, "Chat")</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;     else {</span></span>
+<span><span class="co">#&gt;         check_inherits(solver_chat, "Chat")</span></span>
+<span><span class="co">#&gt;         ch &lt;- solver_chat$clone()</span></span>
+<span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;     res &lt;- ellmer::parallel_chat(ch, as.list(inputs), ...)</span></span>
 <span><span class="co">#&gt;     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), </span></span>
 <span><span class="co">#&gt;         solver_chat = res)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x555730a0e260&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x555730a0d188&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x5569d8189a40&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x5569d8188508&gt;</span></span></code></pre></div>
 <p>While, in documentation, I’ve mostly written “<code><a href="../reference/generate.html">generate()</a></code>
 just calls <code>$chat()</code>,” there are a couple extra tricks up
 <code><a href="../reference/generate.html">generate()</a></code>’s sleeves:</p>

@@ -39,5 +39,5 @@ dir <- tempdir()
 vitals_log_dir_set(dir)
 
 vitals_log_dir()
-#> [1] "/tmp/RtmpO4vxnH"
+#> [1] "/tmp/RtmpYIpXvS"
 ```

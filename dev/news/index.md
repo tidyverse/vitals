@@ -2,6 +2,11 @@
 
 ## vitals (development version)
 
+- [`generate()`](https://vitals.tidyverse.org/dev/reference/generate.md)
+  can now accept a zero-argument chat factory for `solver_chat`,
+  enabling a fresh chat per call instead of cloning an existing chat
+  ([\#190](https://github.com/tidyverse/vitals/issues/190)).
+
 - Deterministic scorers can now return an `explanation` slot that
   explains the scoring output. The built-in detect-based scorers now
   return an `explanation` slot

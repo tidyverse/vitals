@@ -9,7 +9,8 @@
 #' can be passed directory to the `solver` argument of [Task]'s `$new()`
 #' method.
 #'
-#' @param solver_chat An ellmer chat object, such as from [ellmer::chat_claude()].
+#' @param solver_chat An ellmer chat object, such as from
+#'   [ellmer::chat_claude()], or a zero-argument function that returns one.
 #'
 #' @returns
 #' The output of `generate()` is another function. That function takes in
@@ -25,9 +26,14 @@ generate <- function(solver_chat = NULL) {
   chat <- solver_chat
 
   function(inputs, ..., solver_chat = chat) {
-    check_inherits(solver_chat, "Chat")
+    if (is.function(solver_chat)) {
+      ch <- solver_chat()
+      check_inherits(ch, "Chat")
+    } else {
+      check_inherits(solver_chat, "Chat")
+      ch <- solver_chat$clone()
+    }
 
-    ch <- solver_chat$clone()
     res <- ellmer::parallel_chat(ch, as.list(inputs), ...)
 
     list(

@@ -126,7 +126,8 @@ translate_ellmer_content <- function(content) {
 
   if (inherits(content, "ellmer::ContentImageRemote")) {
     detail <- content@detail %||% "auto"
-    result <- list(type = "image", image = content@url)
+    data_uri <- remote_url_to_data_uri(content@url)
+    result <- list(type = "image", image = data_uri)
     if (!is.null(detail)) {
       result$detail <- detail
     }
@@ -138,6 +139,18 @@ translate_ellmer_content <- function(content) {
     collapse = "\n"
   )
   list(type = "text", text = fallback)
+}
+
+remote_url_to_data_uri <- function(url) {
+  resp <- httr2::request(url) |>
+    httr2::req_perform()
+
+  content_type <- httr2::resp_content_type(resp)
+  raw_data <- httr2::resp_body_raw(resp)
+
+  base64_data <- jsonlite::base64_enc(raw_data)
+
+  paste0("data:", content_type, ";base64,", base64_data)
 }
 
 is_content_list <- function(x) {

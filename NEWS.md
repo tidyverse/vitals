@@ -1,23 +1,47 @@
 # vitals (development version)
 
-* `generate()` can now accept a zero-argument chat factory for `solver_chat`,
+## New features
+
+* Images, audio, and video in user messages and tool call results will now be 
+  logged compatibly with the log viewer (#138, #171).
+
+* Solvers and scorers can now return arbitrary R objects in metadata; they
+  will be summarized in a lossy format when logged to .json and available
+  as-is via `$get_samples()`.
+
+* `generate()` now accepts a zero-argument chat factory for `solver_chat`,
   enabling a fresh chat per call instead of cloning an existing chat (#190).
 
-* Deterministic scorers can now return an `explanation` slot that explains the scoring output. The built-in detect-based scorers now return an `explanation` slot (#189).
+* `$eval()` now routes arguments to solvers and scorers based on
+  their function signatures, allowing users to pass arguments specific to each
+  without requiring ellipses in both functions (#152).
+  `$eval()` now errors when supplied unnamed arguments.
 
-* Tool uses from scorers will now be visible in the log viewer (#186).
+* Scorers that don't return `scorer_chat`s can now return an `explanation` slot 
+  that explains the scoring output. The built-in detect-based scorers now return 
+  an `explanation` slot (#189).
 
-* Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (#115).
+## Viewing logs
 
-* `vitals_view()` will now pick a random available port rather than its previous default port, 7576.
+* Updated the vendored Inspect Log Viewer to Inspect version 0.3.122, bringing 
+  all sorts of new features and bug fixes (#138).
 
-* Images passed in user messages will now be logged compatibly with the log
-  viewer (#171).
+* Assistant turns now have precise durations in generated logs. Previously, 
+  their timings were averaged across the course of the evaluation (#115).
 
 * The log viewer previously reported the solver's response as the answer provided
   to the scorer. However, these two texts can differ when post-processing of
   the solver's response is performed. This is now fixed in the log
   viewer (#166, #169 by @mattwarkentin).
+
+* The log viewer previously reported the scorer's response as both the solver's
+  and scorers response—this is now fixed (#141, #142 by @mattwarkentin).
+
+* Tool uses from scorers will now be visible in the log viewer (#186).
+
+## Minor improvements and bug fixes
+
+* `vitals_view()` will now pick a random available port rather than its previous default port, 7576.
 
 * The default `accuracy()` metric will now report a score of 0 rather than
   `NaN` when all scores are 0.
@@ -37,29 +61,13 @@
 
 * Removed dependency on the rstudioapi package (#146).
 
-* `$eval()` now routes arguments to solvers and scorers based on
-  their function signatures, allowing users to pass arguments specific to each
-  without requiring ellipses in both functions (#152).
-  `$eval()` now errors when supplied unnamed arguments.
-
-* Solvers and scorers can now return arbitrary R objects in metadata; they
-  will be summarized in a lossy format when logged to .json.
-
 * The package will now set the envvar `IN_VITALS_EVAL` to `"true"` during
   solving and scoring.
 
 * Numeric task targets will no longer introduce errors in the log viewer.
 
-* Images, audio, and video generated from tool calls will now be logged
-  compatibly with the log viewer (#138).
-
-* Updated the vendored Inspect Log Viewer to Inspect version 0.3.122 (#138).
-
 * `detect_match()` now lists the correct `location` options in its default
   value (#140, #142 by @mattwarkentin).
-
-* The log viewer previously reported the scorer's response as both the solver's
-  and scorers response—this is now fixed (#141, #142 by @mattwarkentin).
 
 # vitals 0.1.0
 

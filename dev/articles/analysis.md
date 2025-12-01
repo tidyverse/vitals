@@ -33,7 +33,7 @@ are_gemini$eval(solver_chat = chat_google_gemini(model = "gemini-2.5-pro-preview
 
 These evaluations look a lot like those from the “Getting started with
 vitals” vignette from
-[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/dev/articles/vitals.md),
+[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/articles/vitals.html),
 except:
 
 - We evaluate three LLMs, rather than two.

@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting started with vitals • vitals</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
@@ -13,7 +18,7 @@
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with vitals">
-<script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -23,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +69,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Getting started with vitals</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/v0.1.0/vignettes/vitals.Rmd" class="external-link"><code>vignettes/vitals.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/main/vignettes/articles/vitals.Rmd" class="external-link"><code>vignettes/articles/vitals.Rmd</code></a></small>
       <div class="d-none name"><code>vitals.Rmd</code></div>
     </div>
 
@@ -81,10 +86,10 @@ Datasets are just a tibble with columns <code>input</code> and
 <strong>Solvers</strong> evaluate the <code>input</code> in the
 dataset and produce a final result (hopefully) approximating
 <code>target</code>. In vitals, the simplest solver is just an ellmer
-chat (e.g. <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">ellmer::chat_anthropic()</a></code>) wrapped in
+chat (e.g. <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">ellmer::chat_claude()</a></code>) wrapped in
 <code><a href="../reference/generate.html">generate()</a></code>,
-i.e. <code>generate(ellmer::chat_anthropic()</code>), which will call
-the Chat object’s <code>$chat()</code> method and return whatever it
+i.e. <code>generate(ellmer::chat_claude()</code>), which will call the
+Chat object’s <code>$chat()</code> method and return whatever it
 returns.</li>
 <li>
 <strong>Scorers</strong> evaluate the final output of solvers. They
@@ -215,7 +220,7 @@ in a <code>Task</code>.</li>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">are_task</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="va">are</span>,</span>
-<span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  scorer <span class="op">=</span> <span class="fu"><a href="../reference/scorer_model.html">model_graded_qa</a></span><span class="op">(</span>partial_credit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"An R Eval"</span></span>
 <span><span class="op">)</span></span>
@@ -233,37 +238,37 @@ scoring steps. Here’s what the model responded to that first question
 with:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">are_task</span><span class="op">$</span><span class="fu">get_samples</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## I'll modify the code to show the proportion of diamonds with</span></span>
-<span><span class="co">## each cut instead of the count, while still stacking by</span></span>
-<span><span class="co">## clarity.</span></span>
+<pre><code><span><span class="co">## # Converting a Bar Chart from Count to Proportion</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## To achieve this, we need to:</span></span>
-<span><span class="co">## 1. Calculate the proportion of each cut from the total number</span></span>
-<span><span class="co">## of diamonds</span></span>
-<span><span class="co">## 2. Use `position = "fill"` which will normalize each bar to</span></span>
-<span><span class="co">## represent 100% (proportion = 1)</span></span>
+<span><span class="co">## To change the bar chart so that it shows proportions of each</span></span>
+<span><span class="co">## cut rather than counts, while still keeping the bars stacked</span></span>
+<span><span class="co">## according to clarity, you need to use the `position = "fill"`</span></span>
+<span><span class="co">## parameter in the `geom_bar()` function.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Here's the updated code:</span></span>
+<span><span class="co">## Here's the modified code:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## ```</span></span>
+<span><span class="co">## ```r</span></span>
 <span><span class="co">## ggplot(data = diamonds) +</span></span>
 <span><span class="co">## geom_bar(mapping = aes(x = cut, fill = clarity), position =</span></span>
 <span><span class="co">## "fill") +</span></span>
-<span><span class="co">## labs(y = "Proportion") # Renaming the y-axis to make it clear</span></span>
-<span><span class="co">## it shows proportions</span></span>
+<span><span class="co">## labs(y = "Proportion") # Add a proper y-axis label</span></span>
 <span><span class="co">## ```</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## This code will:</span></span>
-<span><span class="co">## - Create bars where the height of each bar is 1 (representing</span></span>
-<span><span class="co">## 100%)</span></span>
-<span><span class="co">## - Stack the different clarity groups within each cut</span></span>
-<span><span class="co">## - Show the proportional distribution of clarity within each</span></span>
-<span><span class="co">## cut category</span></span>
-<span><span class="co">## - The y-axis will now show the proportion rather than count</span></span>
+<span><span class="co">## ## Explanation:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Each bar will have the same height (1.0 or 100%), allowing you</span></span>
-<span><span class="co">## to easily compare the proportional distribution of clarity</span></span>
-<span><span class="co">## across different cuts.</span></span></code></pre>
+<span><span class="co">## - The `position = "fill"` argument tells ggplot to normalize</span></span>
+<span><span class="co">## the stacked bars so that each complete bar has a height of 1</span></span>
+<span><span class="co">## (representing 100%)</span></span>
+<span><span class="co">## - Each segment in the bar will now show the proportion of</span></span>
+<span><span class="co">## diamonds of a particular clarity within that cut category</span></span>
+<span><span class="co">## - I added a y-axis label to clarify that the chart shows</span></span>
+<span><span class="co">## proportions rather than counts</span></span>
+<span><span class="co">## - This preserves the stacking by clarity while changing the</span></span>
+<span><span class="co">## vertical scale from counts to proportions</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## This way, all bars will have the same height (1.0), and the</span></span>
+<span><span class="co">## segments within each bar will represent the relative</span></span>
+<span><span class="co">## proportion of each clarity within that cut.</span></span></code></pre>
 <p>The task also contains score information from the scoring step. We’ve
 used <code><a href="../reference/scorer_model.html">model_graded_qa()</a></code> as our scorer, which uses another
 model to evaluate the quality of our solver’s solutions against the
@@ -271,48 +276,49 @@ reference solutions in the <code>target</code> column.
 <code><a href="../reference/scorer_model.html">model_graded_qa()</a></code> is a model-graded scorer provided by the
 package. This step compares Claude’s solutions against the reference
 solutions in the <code>target</code> column, assigning a score to each
-solution using another model. That score is either <code>1</code> or
-<code>0</code>, though since we’ve set
+solution using another model. That score is either <code>I</code>
+(Incorrect) or <code>C</code> (Correct), though since we’ve set
 <code>partial_credit = TRUE</code>, the model can also choose to allot
-the response <code>.5</code>. vitals will use the same model that
-generated the final response as the model to score solutions.</p>
+the response <code>P</code> (Partially Correct). vitals will use the
+same model that generated the final response as the model to score
+solutions.</p>
 <p>Hold up, though—we’re using an LLM to generate responses to
 questions, and then using the LLM to grade those responses?</p>
-<p><img src="https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp" alt="The meme of 3 spiderman pointing at each other."></p>
+<p><img src="https://cdn-useast1.kapwing.com/static/templates/3-spiderman-pointing-meme-template-full-ca8f27e0.webp" class="r-plt" alt="The meme of 3 spiderman pointing at each other."></p>
 <p>This technique is called “model grading” or “LLM-as-a-judge.” Done
 correctly, model grading is an effective and scalable solution to
 scoring. That said, it’s not without its faults. Here’s what the grading
 model thought of the response:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">are_task</span><span class="op">$</span><span class="fu">get_samples</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">scorer_chat</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">last_turn</span><span class="op">(</span><span class="op">)</span><span class="op">@</span><span class="va">text</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## I need to evaluate whether the submission correctly implements</span></span>
-<span><span class="co">## the task of showing the proportion of diamonds with a given</span></span>
-<span><span class="co">## cut (rather than count) while maintaining clarity as the fill</span></span>
-<span><span class="co">## aesthetic.</span></span>
+<pre><code><span><span class="co">## I need to evaluate whether the submission meets the criterion</span></span>
+<span><span class="co">## for changing a bar chart from counts to proportions.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## The submission proposes using `position = "fill"`, which</span></span>
-<span><span class="co">## normalizes each bar to have a height of 1 (or 100%). However,</span></span>
-<span><span class="co">## this approach doesn't meet the criterion because:</span></span>
+<span><span class="co">## The submission recommends using `position = "fill"`:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## 1. With `position = "fill"`, each bar represents the</span></span>
-<span><span class="co">## proportion of clarity categories WITHIN each cut, not the</span></span>
-<span><span class="co">## proportion of each cut relative to the total number of</span></span>
-<span><span class="co">## diamonds.</span></span>
+<span><span class="co">## ```r</span></span>
+<span><span class="co">## ggplot(data = diamonds) +</span></span>
+<span><span class="co">## geom_bar(mapping = aes(x = cut, fill = clarity), position =</span></span>
+<span><span class="co">## "fill") +</span></span>
+<span><span class="co">## labs(y = "Proportion")</span></span>
+<span><span class="co">## ```</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## 2. The criterion explicitly states that "Simply setting</span></span>
-<span><span class="co">## `position = 'fill'` will result in each bar having a height of</span></span>
-<span><span class="co">## 1 and is not correct."</span></span>
+<span><span class="co">## According to the criterion, this is not correct. Using</span></span>
+<span><span class="co">## `position = "fill"` will create stacked bars where each bar</span></span>
+<span><span class="co">## has a height of 1, representing the proportions of clarity</span></span>
+<span><span class="co">## within each cut, but not the overall proportion of each cut</span></span>
+<span><span class="co">## among all diamonds.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## 3. The correct implementations shown in the criterion all</span></span>
-<span><span class="co">## involve calculating the proportion of each cut relative to the</span></span>
-<span><span class="co">## total count of diamonds (using either `after_stat(count) /</span></span>
-<span><span class="co">## sum(after_stat(count))` or the deprecated `..count.. /</span></span>
-<span><span class="co">## sum(..count..)` notation).</span></span>
+<span><span class="co">## The criterion specifies several correct approaches, all of</span></span>
+<span><span class="co">## which involve calculating the proportion of each cut relative</span></span>
+<span><span class="co">## to the total number of diamonds (using expressions like `count</span></span>
+<span><span class="co">## / sum(count)` or `..prop..`). The submission doesn't use any</span></span>
+<span><span class="co">## of these approaches.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## The submission fails to implement the correct calculation to</span></span>
-<span><span class="co">## show the proportion of each cut relative to the total number</span></span>
-<span><span class="co">## of diamonds. It shows the proportional distribution of clarity</span></span>
-<span><span class="co">## within each cut, but that's not what was asked for.</span></span>
+<span><span class="co">## The solution provided in the submission would show the</span></span>
+<span><span class="co">## distribution of clarity types within each cut category, but</span></span>
+<span><span class="co">## would not show the proportion of each cut relative to the</span></span>
+<span><span class="co">## total diamond dataset, which is what the task is asking for.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## GRADE: I</span></span></code></pre>
 </div>
@@ -346,7 +352,7 @@ vs. partially correct vs. incorrect answers:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> are_task after-stat-bar-heights      I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> are_task conditional-grouped-summary C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 3</span> are_task correlated-delays-reasoning P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> are_task curl-http-get               I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> are_task curl-http-get               P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 5</span> are_task dropped-level-legend        I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 6</span> are_task filter-multiple-conditions  C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 7</span> are_task geocode-req-perform         C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
@@ -359,9 +365,9 @@ vs. partially correct vs. incorrect answers:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">score</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vitals_files/figure-html/plot-1-1.png" alt="A ggplot2 bar plot, showing Claude was correct most of the time." width="700"></p>
-<p>Claude answered fully correctly in 18 out of 29 samples, and
-partially correctly 4 times.For me, this leads to all sorts of
+<p><img src="vitals_files/figure-html/plot-1-1.png" class="r-plt" alt="A ggplot2 bar plot, showing Claude was correct most of the time." width="700"></p>
+<p>Claude answered fully correctly in 16 out of 29 samples, and
+partially correctly 6 times. For me, this leads to all sorts of
 questions:</p>
 <ul>
 <li>Are there any models that are cheaper than Claude that would do just
@@ -380,7 +386,7 @@ OpenAI’s GPT-4o, we just need to clone the object and then run
 <code>$eval()</code> with a different solver <code>chat</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">are_task_openai</span> <span class="op">&lt;-</span> <span class="va">are_task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">are_task_openai</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4o"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">are_task_openai</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4.1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Any arguments to solving or scoring functions can be passed directly
 to <code>$eval()</code>, allowing for quickly evaluating tasks across
 several parameterizations.</p>
@@ -390,7 +396,7 @@ results:</p>
 <code class="sourceCode R"><span><span class="va">are_task_eval</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/vitals_bind.html">vitals_bind</a></span><span class="op">(</span><span class="va">are_task</span>, <span class="va">are_task_openai</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    task <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">task</span> <span class="op">==</span> <span class="st">"are_task"</span>, <span class="st">"Claude"</span>, <span class="st">"GPT-4o"</span><span class="op">)</span></span>
+<span>    task <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">task</span> <span class="op">==</span> <span class="st">"are_task"</span>, <span class="st">"Claude"</span>, <span class="st">"gpt-4.1"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">task</span><span class="op">)</span></span>
 <span></span>
@@ -409,7 +415,7 @@ results:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">model</span>, fill <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="va">rev</span>, palette <span class="op">=</span> <span class="st">"RdYlGn"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vitals_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="vitals_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <p>Is this difference in performance just a result of noise, though? We
 can supply the scores to an ordinal regression model to answer this
 question.</p>
@@ -428,16 +434,16 @@ question.</p>
 <span><span class="co">## data:    are_task_eval</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  link  threshold nobs logLik AIC    niter max.grad cond.H </span></span>
-<span><span class="co">##  logit flexible  58   -60.05 126.10 4(0)  3.53e-12 1.2e+01</span></span>
+<span><span class="co">##  logit flexible  58   -60.81 127.61 4(0)  1.13e-12 1.1e+01</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">## modelGPT-4o </span></span>
-<span><span class="co">##     -0.9443 </span></span>
+<span><span class="co">## modelgpt-4.1 </span></span>
+<span><span class="co">##      -0.4077 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Threshold coefficients:</span></span>
-<span><span class="co">##     I|P     P|C </span></span>
-<span><span class="co">## -1.7248 -0.3048</span></span></code></pre>
-<p>The coefficient for <code>model == "GPT-4o"</code> is -0.944,
+<span><span class="co">##      I|P      P|C </span></span>
+<span><span class="co">## -1.47066 -0.07803</span></span></code></pre>
+<p>The coefficient for <code>model == "gpt-4.1"</code> is -0.408,
 indicating that GPT-4o tends to be associated with lower grades. If a
 95% confidence interval for this coefficient contains zero, we can
 conclude that there is not sufficient evidence to reject the null
@@ -445,8 +451,8 @@ hypothesis that the difference between GPT-4o and Claude’s performance
 on this eval is zero at the 0.05 significance level.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">are_mod</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                 2.5 %     97.5 %</span></span>
-<span><span class="co">## modelGPT-4o -1.967718 0.03831908</span></span></code></pre>
+<pre><code><span><span class="co">##                  2.5 %    97.5 %</span></span>
+<span><span class="co">## modelgpt-4.1 -1.393271 0.5596623</span></span></code></pre>
 <div class="callout-note">
 <p>If we had evaluated this model across multiple epochs, the question
 ID could become a “nuisance parameter” in a mixed model, e.g. with the
@@ -470,7 +476,7 @@ advanced evals, check out the other vignettes in this package!</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>

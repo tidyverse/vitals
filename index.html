@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Large Language Model Evaluation • vitals</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
@@ -16,7 +21,7 @@
 <meta name="description" content="A port of Inspect, a widely adopted Python framework for large language model evaluation. Specifically aimed at ellmer users who want to measure the effectiveness of their large language model-based products, the package supports prompt engineering, tool usage, multi-turn dialog, and model graded evaluations.">
 <meta property="og:description" content="A port of Inspect, a widely adopted Python framework for large language model evaluation. Specifically aimed at ellmer users who want to measure the effectiveness of their large language model-based products, the package supports prompt engineering, tool usage, multi-turn dialog, and model graded evaluations.">
 <meta property="og:image" content="https://vitals.tidyverse.org/logo.png">
-<script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -26,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">vitals</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,7 +108,7 @@
 <span></span>
 <span><span class="va">tsk</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  dataset <span class="op">=</span> <span class="va">simple_addition</span>, </span>
-<span>  solver <span class="op">=</span> <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-20250514"</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>  solver <span class="op">=</span> <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-5"</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>  scorer <span class="op">=</span> <span class="fu"><a href="reference/scorer_model.html">model_graded_qa</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Tasks are composed of three main components:</p>
@@ -122,11 +127,11 @@
 <code class="sourceCode R"><span><span class="va">tsk</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><code>$eval()</code> will run the solver, run the scorer, and then situate the results in a persistent log file that can be explored interactively with the Inspect log viewer.</p>
 <p><img src="reference/figures/log_viewer.png" alt="A screenshot of the Inspect log viewer, an interactive app displaying information on the 3 samples evaluated in this eval." width="100%"></p>
-<p>Any arguments to the solver or scorer can be passed to <code>$eval()</code>, allowing for straightforward parameterization of tasks. For example, if I wanted to evaluate <code><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai()</a></code> on this task rather than <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic()</a></code>, I could write:</p>
+<p>Any arguments to the solver or scorer can be passed to <code>$eval()</code>, allowing for straightforward parameterization of tasks. For example, if I wanted to evaluate <code><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai()</a></code> on this task rather than <code><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude()</a></code>, I could write:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tsk_openai</span> <span class="op">&lt;-</span> <span class="va">tsk</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tsk_openai</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4.1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>For an applied example, see the “Getting started with vitals” vignette at <code><a href="articles/vitals.html">vignette("vitals", package = "vitals")</a></code>.</p>
+<p>For an applied example, see the “Getting started with vitals” vignette at <code><a href="https://vitals.tidyverse.org/articles/vitals.html">vignette("vitals", package = "vitals")</a></code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -183,7 +188,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>

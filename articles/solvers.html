@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Custom solvers and tool calling • vitals</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
@@ -13,7 +18,7 @@
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Custom solvers and tool calling">
-<script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -23,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +69,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Custom solvers and tool calling</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/v0.1.0/vignettes/articles/solvers.Rmd" class="external-link"><code>vignettes/articles/solvers.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/main/vignettes/articles/solvers.Rmd" class="external-link"><code>vignettes/articles/solvers.Rmd</code></a></small>
       <div class="d-none name"><code>solvers.Rmd</code></div>
     </div>
 
@@ -147,18 +152,24 @@ implementation of <code><a href="../reference/generate.html">generate()</a></cod
 function factory, meaning that the function itself outputs a
 function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sonnet_3_7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sonnet_3_7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="va">sonnet_3_7</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (inputs, ..., solver_chat = chat) </span></span>
 <span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;     check_inherits(solver_chat, "Chat")</span></span>
-<span><span class="co">#&gt;     ch &lt;- solver_chat$clone()</span></span>
+<span><span class="co">#&gt;     if (is.function(solver_chat)) {</span></span>
+<span><span class="co">#&gt;         ch &lt;- solver_chat()</span></span>
+<span><span class="co">#&gt;         check_inherits(ch, "Chat")</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;     else {</span></span>
+<span><span class="co">#&gt;         check_inherits(solver_chat, "Chat")</span></span>
+<span><span class="co">#&gt;         ch &lt;- solver_chat$clone()</span></span>
+<span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;     res &lt;- ellmer::parallel_chat(ch, as.list(inputs), ...)</span></span>
 <span><span class="co">#&gt;     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), </span></span>
 <span><span class="co">#&gt;         solver_chat = res)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x5647612ba288&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x5647612b91b0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55cab7be2d80&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55cab7be5cc8&gt;</span></span></code></pre></div>
 <p>While, in documentation, I’ve mostly written “<code><a href="../reference/generate.html">generate()</a></code>
 just calls <code>$chat()</code>,” there are a couple extra tricks up
 <code><a href="../reference/generate.html">generate()</a></code>’s sleeves:</p>
@@ -301,7 +312,7 @@ several parameterizations. We’ll just use Claude Sonnet 3.7 for now.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> are_btw after-stat-bar-heights      I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> are_btw conditional-grouped-summary C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> are_btw correlated-delays-reasoning P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> are_btw curl-http-get               P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> are_btw curl-http-get               C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> are_btw dropped-level-legend        I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> are_btw filter-multiple-conditions  C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> are_btw geocode-req-perform         C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
@@ -309,8 +320,8 @@ several parameterizations. We’ll just use Claude Sonnet 3.7 for now.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> are_btw grouped-filter-summarize    P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> are_btw grouped-geom-line           C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 19 more rows</span></span></span></code></pre></div>
-<p>Claude answered fully correctly in 15 out of 29 samples, and
-partially correctly 8 times. Using the metadata, we can also determine
+<p>Claude answered fully correctly in 16 out of 29 samples, and
+partially correctly 7 times. Using the metadata, we can also determine
 how often the model looked at at least one help-page before supplying an
 answer:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -330,7 +341,7 @@ answer:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; FALSE  TRUE </span></span>
-<span><span class="co">#&gt;     3    26</span></span></code></pre></div>
+<span><span class="co">#&gt;     2    27</span></span></code></pre></div>
 <p>When equipped with the ability to peruse documentation, the model
 almost always made use of it. To see the kinds of docs it decided to
 look at, click in a few samples in the log viewer for this eval:</p>
@@ -366,7 +377,7 @@ here if we didn’t want to recreate the task.)</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> btw    after-stat-bar-heights      I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> btw    conditional-grouped-summary C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> btw    correlated-delays-reasoning P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> btw    curl-http-get               P     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> btw    curl-http-get               C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> btw    dropped-level-legend        I     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> btw    filter-multiple-conditions  C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> btw    geocode-req-perform         C     <span style="color: #949494;">&lt;tibble [1 × 10]&gt;</span></span></span>
@@ -392,26 +403,26 @@ question.</p>
 <span><span class="co">#&gt; data:    are_eval_data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  link  threshold nobs logLik AIC    niter max.grad cond.H </span></span>
-<span><span class="co">#&gt;  logit flexible  58   -60.19 126.38 4(0)  1.25e-09 1.2e+01</span></span>
+<span><span class="co">#&gt;  logit flexible  58   -54.60 115.20 5(0)  5.49e-13 1.5e+01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt; solverbtw </span></span>
-<span><span class="co">#&gt;    0.2159 </span></span>
+<span><span class="co">#&gt;   -0.3846 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Threshold coefficients:</span></span>
 <span><span class="co">#&gt;     I|P     P|C </span></span>
-<span><span class="co">#&gt; -1.0381  0.1101</span></span></code></pre></div>
-<p>The coefficient for <code>solver == "btw"</code> is 0.216, indicating
-that allowing the model to peruse documentation tends to be associated
-with higher grades. If a 95% confidence interval for this coefficient
-contains zero, we can conclude that there is not sufficient evidence to
-reject the null hypothesis that the difference between GPT-4o and
-Claude’s performance on this eval is zero at the 0.05 significance
-level.</p>
+<span><span class="co">#&gt; -1.6589 -0.6189</span></span></code></pre></div>
+<p>The coefficient for <code>solver == "btw"</code> is -0.385,
+indicating that allowing the model to peruse documentation tends to be
+associated with lower grades. If a 95% confidence interval for this
+coefficient contains zero, we can conclude that there is not sufficient
+evidence to reject the null hypothesis that the difference between the
+btw solver and basic solver’s performance on this eval is zero at the
+0.05 significance level.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">are_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                2.5 %   97.5 %</span></span>
-<span><span class="co">#&gt; solverbtw -0.7572417 1.196237</span></span></code></pre></div>
+<span><span class="co">#&gt;               2.5 %    97.5 %</span></span>
+<span><span class="co">#&gt; solverbtw -1.429136 0.6379013</span></span></code></pre></div>
 <div class="callout-note">
 <p>If we had evaluated this model across multiple epochs, the question
 ID could become a “nuisance parameter” in a mixed model, e.g. with the
@@ -437,7 +448,7 @@ incorporated into evaluation logs.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>

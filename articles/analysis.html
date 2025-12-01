@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Analyzing evaluation results • vitals</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
@@ -13,7 +18,7 @@
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyzing evaluation results">
-<script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="vitals.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -23,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +71,7 @@
 Simon Couch</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/v0.1.0/vignettes/articles/analysis.Rmd" class="external-link"><code>vignettes/articles/analysis.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidyverse/vitals/blob/main/vignettes/articles/analysis.Rmd" class="external-link"><code>vignettes/articles/analysis.Rmd</code></a></small>
       <div class="d-none name"><code>analysis.Rmd</code></div>
     </div>
 
@@ -84,7 +89,7 @@ data:</p>
 <span>  dataset <span class="op">=</span> <span class="va">are</span>,</span>
 <span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  scorer <span class="op">=</span> <span class="fu"><a href="../reference/scorer_model.html">model_graded_qa</a></span><span class="op">(</span></span>
-<span>    scorer_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>LLM <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span>, </span>
+<span>    scorer_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-3-7-sonnet-latest"</span><span class="op">)</span>, </span>
 <span>    partial_credit <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"An R Eval"</span>,</span>
@@ -92,16 +97,16 @@ data:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">are_claude</span> <span class="op">&lt;-</span> <span class="va">are_task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">are_claude</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_anthropic</a></span><span class="op">(</span>LLM <span class="op">=</span> <span class="st">"claude-sonnet-4-20250514"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">are_claude</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-5"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">are_gpt</span> <span class="op">&lt;-</span> <span class="va">are_task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">are_gpt</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>LLM <span class="op">=</span> <span class="st">"gpt-4.1"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">are_gpt</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_openai.html" class="external-link">chat_openai</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gpt-4.1"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">are_gemini</span> <span class="op">&lt;-</span> <span class="va">are_task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">are_gemini</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_google_gemini.html" class="external-link">chat_google_gemini</a></span><span class="op">(</span>LLM <span class="op">=</span> <span class="st">"gemini-2.5-pro-preview-05-06"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">are_gemini</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_google_gemini.html" class="external-link">chat_google_gemini</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gemini-2.5-pro-preview-05-06"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>These evaluations look a lot like those from the “Getting started
 with vitals” vignette from
-<code><a href="../articles/vitals.html">vignette("vitals", package = "vitals")</a></code>, except:</p>
+<code><a href="https://vitals.tidyverse.org/articles/vitals.html">vignette("vitals", package = "vitals")</a></code>, except:</p>
 <ul>
 <li>We evaluate three LLMs, rather than two.</li>
 <li>We set <code>epochs = 3</code> in <code>Task$new()</code> so that
@@ -207,7 +212,7 @@ probabilities and credible intervals.</li>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">LLM</span>, fill <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/data-structure-plot-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/data-structure-plot-1.png" class="r-plt" width="700"></p>
 <p>In this data:</p>
 <ul>
 <li>We’re comparing results from 3 different <strong>tasks</strong>. The
@@ -332,7 +337,7 @@ epoch like so:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/single_sample-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/single_sample-1.png" class="r-plt" width="700"></p>
 <p>To model the score probabilities, the cumulative logit model
 estimates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c-1</annotation></semantics></math>
@@ -1405,7 +1410,7 @@ before:</p>
 <span>    legend.position <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/multiple-sample-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/multiple-sample-1.png" class="r-plt" width="700"></p>
 <p>We can extend the cumulative logistic model to account for additional
 data hierarchies by incorporating random effects due to specific random
 variables. In the case of <code>are_eval</code>, we’ve evaluated the
@@ -2452,7 +2457,7 @@ for each question.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Random Intercept Estimate\n(incorrect &lt;----------------&gt; correct)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">lims</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">effect_range</span>, <span class="va">effect_range</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/multiple-effects-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/multiple-effects-1.png" class="r-plt" width="700"></p>
 <p>The distribution of these is assumed to be Gaussian-like, with
 smaller values indicating that a sample is more difficult. For example,
 the most challenging sample was “after-stat-bar-heights” where, across
@@ -2577,7 +2582,7 @@ regression model parameters can be visualized:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/influence.measures.html" class="external-link">hat</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/posterior-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/posterior-1.png" class="r-plt" width="700"></p>
 <p>Since these parameters measure LLM effectiveness (relative to the
 baseline LLM of GPT 4.1), we can tell what our model thinks that likely
 values are. It suggests that the GPT 4.1 performs on par with Gemini 2.5
@@ -3137,7 +3142,7 @@ interpretability:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_errorbar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">lower</span>, xmax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Random Intercept Estimate\n(incorrect &lt;----------------&gt; correct)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">lims</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">bayes_effect_range</span>, <span class="va">bayes_effect_range</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/bayes-effects-1.png" width="700"></p>
+<p><img src="analysis_files/figure-html/bayes-effects-1.png" class="r-plt" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="extendability">Extendability<a class="anchor" aria-label="anchor" href="#extendability"></a>
@@ -3172,7 +3177,7 @@ hierarchies in the experimental design.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>

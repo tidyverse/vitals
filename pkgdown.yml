@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/analysis: analysis.html
   articles/solvers: solvers.html
-  vitals: vitals.html
-  writing-evals: writing-evals.html
-last_built: 2025-06-26T13:18Z
+  articles/vitals: vitals.html
+  articles/writing-evals: writing-evals.html
+last_built: 2025-12-01T15:36Z
 urls:
   reference: https://vitals.tidyverse.org/reference
   article: https://vitals.tidyverse.org/articles

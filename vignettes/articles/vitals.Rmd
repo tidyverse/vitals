@@ -22,15 +22,15 @@ cat <- function(x, width = 0.9 * getOption("width")) {
   base::cat(wrapped, sep = "\n")
 }
 
-withr::local_envvar(list(VITALS_LOG_DIR = here::here("vignettes/data/logs/")))
+withr::local_envvar(list(VITALS_LOG_DIR = here::here("vignettes/articles/data/vitals/logs")))
 
 # don't set this as the default `eval`, but use it as a
 # flag for the computationally intensive steps
 should_eval <- identical(Sys.getenv("VITALS_SHOULD_EVAL"), "true")
 
 if (!should_eval) {
-  load(here::here("vignettes/data/are_task.rda"))
-  load(here::here("vignettes/data/are_task_openai.rda"))
+  load(here::here("vignettes/articles/data/vitals/are_task.rda"))
+  load(here::here("vignettes/articles/data/vitals/are_task_openai.rda"))
 }
 ```
 
@@ -120,7 +120,7 @@ are_task$eval()
 #| label: save-are-task-scored
 #| include: false
 if (should_eval) {
-  save(are_task, file = here::here("vignettes/data/are_task.rda"))
+  save(are_task, file = here::here("vignettes/articles/data/vitals/are_task.rda"))
 }
 ```
 
@@ -208,7 +208,7 @@ are_task_openai$eval(solver_chat = chat_openai(model = "gpt-4.1"))
 #| label: save-are-task-openai
 #| include: false
 if (should_eval) {
-  save(are_task_openai, file = here::here("vignettes/data/are_task_openai.rda"))
+  save(are_task_openai, file = here::here("vignettes/articles/data/vitals/are_task_openai.rda"))
 }
 ```
 
@@ -275,7 +275,7 @@ This vignette demonstrated the simplest possible evaluation based on the `are` d
 # `pkgdown/assets/`
 dest_dir <- here::here("pkgdown/assets/example-logs/vitals")
 vitals_bundle(
-  log_dir = here::here("vignettes/data/logs"),
+  log_dir = here::here("vignettes/articles/data/vitals/logs"),
   output_dir = dest_dir,
   overwrite = TRUE
 )

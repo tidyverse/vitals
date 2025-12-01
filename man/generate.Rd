@@ -7,7 +7,8 @@
 generate(solver_chat = NULL)
 }
 \arguments{
-\item{solver_chat}{An ellmer chat object, such as from \code{\link[ellmer:chat_anthropic]{ellmer::chat_claude()}}.}
+\item{solver_chat}{An ellmer chat object, such as from
+\code{\link[ellmer:chat_anthropic]{ellmer::chat_claude()}}, or a zero-argument function that returns one.}
 }
 \value{
 The output of \code{generate()} is another function. That function takes in

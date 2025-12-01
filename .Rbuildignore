@@ -13,6 +13,7 @@
 CLAUDE.md
 ^vignettes/articles$
 R/README.md
+logs/
 
 inst/hex
 inst/sandbox

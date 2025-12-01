@@ -1,6 +1,12 @@
-**Comments for CRAN team**
+**Comments for CRAN team**:
 
-There's 1 NOTE as this is an initial release.
+There's one NOTE:
 
-There are not references describing the methods in this package to cite in
-the Description field.
+```
+─  checking installed package size ... INFO
+     installed size is  8.8Mb
+     sub-directories of 1Mb or more:
+       dist   7.6Mb
+```
+
+The package vendors a `.js` app from another program. At the time of the initial package release, the vendored app was slightly smaller.

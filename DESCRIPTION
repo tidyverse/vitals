@@ -1,6 +1,6 @@
 Package: vitals
 Title: Large Language Model Evaluation
-Version: 0.1.0.9000
+Version: 0.2.0
 Authors@R: c(
     person("Simon", "Couch", , "simon.couch@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5676-5107")),
@@ -47,7 +47,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     vcr (>= 2.0.0)
-VignetteBuilder: knitr
 Config/Needs/website: tidyverse/tidytemplate, rmarkdown, btw,
     tidyverse, gt, brms, RcppEigen, broom, gt
 Config/testthat/edition: 3

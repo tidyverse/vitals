@@ -2,6 +2,8 @@
 
 ## vitals (development version)
 
+## vitals 0.2.0
+
 ### New features
 
 - Images, audio, and video in user messages and tool call results will

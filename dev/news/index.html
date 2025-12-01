@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,8 +40,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="vitals-020">vitals 0.2.0<a class="anchor" aria-label="anchor" href="#vitals-020"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li><p>Images, audio, and video in user messages and tool call results will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>, <a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>
 <li><p>Solvers and scorers can now return arbitrary R objects in metadata; they will be summarized in a lossy format when logged to .json and available as-is via <code>$get_samples()</code>.</p></li>
 <li><p><code><a href="../reference/generate.html">generate()</a></code> now accepts a zero-argument chat factory for <code>solver_chat</code>, enabling a fresh chat per call instead of cloning an existing chat (<a href="https://github.com/tidyverse/vitals/issues/190" class="external-link">#190</a>).</p></li>
@@ -49,7 +52,7 @@
 <li><p>Scorers that don’t return <code>scorer_chat</code>s can now return an <code>explanation</code> slot that explains the scoring output. The built-in detect-based scorers now return an <code>explanation</code> slot (<a href="https://github.com/tidyverse/vitals/issues/189" class="external-link">#189</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="viewing-logs-development-version">Viewing logs<a class="anchor" aria-label="anchor" href="#viewing-logs-development-version"></a></h3>
+<h3 id="viewing-logs-0-2-0">Viewing logs<a class="anchor" aria-label="anchor" href="#viewing-logs-0-2-0"></a></h3>
 <ul><li><p>Updated the vendored Inspect Log Viewer to Inspect version 0.3.122, bringing all sorts of new features and bug fixes (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>).</p></li>
 <li><p>Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (<a href="https://github.com/tidyverse/vitals/issues/115" class="external-link">#115</a>).</p></li>
 <li><p>The log viewer previously reported the solver’s response as the answer provided to the scorer. However, these two texts can differ when post-processing of the solver’s response is performed. This is now fixed in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/166" class="external-link">#166</a>, <a href="https://github.com/tidyverse/vitals/issues/169" class="external-link">#169</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
@@ -57,7 +60,7 @@
 <li><p>Tool uses from scorers will now be visible in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/186" class="external-link">#186</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-improvements-and-bug-fixes-0-2-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-2-0"></a></h3>
 <ul><li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
 <li><p>The default <code>accuracy()</code> metric will now report a score of 0 rather than <code>NaN</code> when all scores are 0.</p></li>
 <li><p>Fixed bug where non-default grading systems in model-graded evals would result in scores being wiped during logging (<a href="https://github.com/tidyverse/vitals/issues/139" class="external-link">#139</a>).</p></li>

@@ -32,9 +32,7 @@ are_gemini$eval(solver_chat = chat_google_gemini(model = "gemini-2.5-pro-preview
 ```
 
 These evaluations look a lot like those from the “Getting started with
-vitals” vignette from
-[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/articles/vitals.html),
-except:
+vitals” vignette from `vignette("vitals", package = "vitals")`, except:
 
 - We evaluate three LLMs, rather than two.
 - We set `epochs = 3` in `Task$new()` so that each sample in `are` is

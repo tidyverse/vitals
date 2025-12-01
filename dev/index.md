@@ -101,5 +101,4 @@ tsk_openai$eval(solver_chat = chat_openai(model = "gpt-4.1"))
 ```
 
 For an applied example, see the “Getting started with vitals” vignette
-at
-[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/articles/vitals.html).
+at `vignette("vitals", package = "vitals")`.

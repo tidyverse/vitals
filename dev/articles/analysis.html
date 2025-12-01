@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +107,7 @@ data:</p>
 <span><span class="va">are_gemini</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span>solver_chat <span class="op">=</span> <span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_google_gemini.html" class="external-link">chat_google_gemini</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"gemini-2.5-pro-preview-05-06"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>These evaluations look a lot like those from the “Getting started
 with vitals” vignette from
-<code><a href="https://vitals.tidyverse.org/articles/vitals.html">vignette("vitals", package = "vitals")</a></code>, except:</p>
+<code>vignette("vitals", package = "vitals")</code>, except:</p>
 <ul>
 <li>We evaluate three LLMs, rather than two.</li>
 <li>We set <code>epochs = 3</code> in <code>Task$new()</code> so that

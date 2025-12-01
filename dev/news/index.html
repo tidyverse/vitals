@@ -40,28 +40,36 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/generate.html">generate()</a></code> can now accept a zero-argument chat factory for <code>solver_chat</code>, enabling a fresh chat per call instead of cloning an existing chat (<a href="https://github.com/tidyverse/vitals/issues/190" class="external-link">#190</a>).</p></li>
-<li><p>Deterministic scorers can now return an <code>explanation</code> slot that explains the scoring output. The built-in detect-based scorers now return an <code>explanation</code> slot (<a href="https://github.com/tidyverse/vitals/issues/189" class="external-link">#189</a>).</p></li>
-<li><p>Tool uses from scorers will now be visible in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/186" class="external-link">#186</a>).</p></li>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p>Images, audio, and video in user messages and tool call results will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>, <a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>
+<li><p>Solvers and scorers can now return arbitrary R objects in metadata; they will be summarized in a lossy format when logged to .json and available as-is via <code>$get_samples()</code>.</p></li>
+<li><p><code><a href="../reference/generate.html">generate()</a></code> now accepts a zero-argument chat factory for <code>solver_chat</code>, enabling a fresh chat per call instead of cloning an existing chat (<a href="https://github.com/tidyverse/vitals/issues/190" class="external-link">#190</a>).</p></li>
+<li><p><code>$eval()</code> now routes arguments to solvers and scorers based on their function signatures, allowing users to pass arguments specific to each without requiring ellipses in both functions (<a href="https://github.com/tidyverse/vitals/issues/152" class="external-link">#152</a>). <code>$eval()</code> now errors when supplied unnamed arguments.</p></li>
+<li><p>Scorers that don’t return <code>scorer_chat</code>s can now return an <code>explanation</code> slot that explains the scoring output. The built-in detect-based scorers now return an <code>explanation</code> slot (<a href="https://github.com/tidyverse/vitals/issues/189" class="external-link">#189</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="viewing-logs-development-version">Viewing logs<a class="anchor" aria-label="anchor" href="#viewing-logs-development-version"></a></h3>
+<ul><li><p>Updated the vendored Inspect Log Viewer to Inspect version 0.3.122, bringing all sorts of new features and bug fixes (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>).</p></li>
 <li><p>Assistant turns now have precise durations in generated logs. Previously, their timings were averaged across the course of the evaluation (<a href="https://github.com/tidyverse/vitals/issues/115" class="external-link">#115</a>).</p></li>
-<li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
-<li><p>Images passed in user messages will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>
 <li><p>The log viewer previously reported the solver’s response as the answer provided to the scorer. However, these two texts can differ when post-processing of the solver’s response is performed. This is now fixed in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/166" class="external-link">#166</a>, <a href="https://github.com/tidyverse/vitals/issues/169" class="external-link">#169</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
+<li><p>The log viewer previously reported the scorer’s response as both the solver’s and scorers response—this is now fixed (<a href="https://github.com/tidyverse/vitals/issues/141" class="external-link">#141</a>, <a href="https://github.com/tidyverse/vitals/issues/142" class="external-link">#142</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
+<li><p>Tool uses from scorers will now be visible in the log viewer (<a href="https://github.com/tidyverse/vitals/issues/186" class="external-link">#186</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now pick a random available port rather than its previous default port, 7576.</p></li>
 <li><p>The default <code>accuracy()</code> metric will now report a score of 0 rather than <code>NaN</code> when all scores are 0.</p></li>
 <li><p>Fixed bug where non-default grading systems in model-graded evals would result in scores being wiped during logging (<a href="https://github.com/tidyverse/vitals/issues/139" class="external-link">#139</a>).</p></li>
 <li><p>The full suite of package tests can now be ran without active API keys via the vcr package (<a href="https://github.com/tidyverse/vitals/issues/163" class="external-link">#163</a>).</p></li>
 <li><p><code>$eval()</code> and <code>$log()</code> will now write log files to the same default directory–the one specified when initializing the Task object. Previously, <code>$eval()</code> wrote to that directory, while <code>$log()</code> wrote to <code><a href="../reference/vitals_log_dir.html">vitals_log_dir()</a></code> (<a href="https://github.com/tidyverse/vitals/issues/158" class="external-link">#158</a> by <a href="https://github.com/SokolovAnatoliy" class="external-link">@SokolovAnatoliy</a>).</p></li>
 <li><p>Manifest files for deployed logs are now named <code>listing.json</code> rather than <code>logs.json</code> for compatibility with newer Inspect versions.</p></li>
 <li><p>Removed dependency on the rstudioapi package (<a href="https://github.com/tidyverse/vitals/issues/146" class="external-link">#146</a>).</p></li>
-<li><p><code>$eval()</code> now routes arguments to solvers and scorers based on their function signatures, allowing users to pass arguments specific to each without requiring ellipses in both functions (<a href="https://github.com/tidyverse/vitals/issues/152" class="external-link">#152</a>). <code>$eval()</code> now errors when supplied unnamed arguments.</p></li>
-<li><p>Solvers and scorers can now return arbitrary R objects in metadata; they will be summarized in a lossy format when logged to .json.</p></li>
 <li><p>The package will now set the envvar <code>IN_VITALS_EVAL</code> to <code>"true"</code> during solving and scoring.</p></li>
 <li><p>Numeric task targets will no longer introduce errors in the log viewer.</p></li>
-<li><p>Images, audio, and video generated from tool calls will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>).</p></li>
-<li><p>Updated the vendored Inspect Log Viewer to Inspect version 0.3.122 (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>).</p></li>
 <li><p><code><a href="../reference/scorer_detect.html">detect_match()</a></code> now lists the correct <code>location</code> options in its default value (<a href="https://github.com/tidyverse/vitals/issues/140" class="external-link">#140</a>, <a href="https://github.com/tidyverse/vitals/issues/142" class="external-link">#142</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
-<li><p>The log viewer previously reported the scorer’s response as both the solver’s and scorers response—this is now fixed (<a href="https://github.com/tidyverse/vitals/issues/141" class="external-link">#141</a>, <a href="https://github.com/tidyverse/vitals/issues/142" class="external-link">#142</a> by <a href="https://github.com/mattwarkentin" class="external-link">@mattwarkentin</a>).</p></li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="vitals-010">vitals 0.1.0<a class="anchor" aria-label="anchor" href="#vitals-010"></a></h2><p class="text-muted">CRAN release: 2025-06-24</p>
 <ul><li>Initial CRAN submission.</li>

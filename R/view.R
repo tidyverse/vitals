@@ -77,15 +77,101 @@ vitals_view_impl <- function(
                   file_path <- file.path(dir, f)
                   info <- file.info(file_path)
 
+                  task_info <- tryCatch(
+                    {
+                      headers <- eval_log_read_headers(file_path)
+                      list(
+                        task = headers$eval$task,
+                        task_id = headers$eval$task_id
+                      )
+                    },
+                    error = function(e) {
+                      list(task = NULL, task_id = NULL)
+                    }
+                  )
+
                   list(
-                    name = f,
+                    name = paste0("file://", normalizePath(file_path)),
                     size = info$size,
-                    mtime = as.numeric(info$mtime) * 1000
+                    mtime = as.numeric(info$mtime) * 1000,
+                    task = task_info$task,
+                    task_id = task_info$task_id
                   )
                 })
 
                 resp <- list(
-                  dir = normalizePath(dir),
+                  log_dir = paste0("file://", normalizePath(dir)),
+                  files = log_files
+                )
+
+                return(list(
+                  status = 200,
+                  headers = list(
+                    'Content-Type' = 'application/json',
+                    'Cache-Control' = 'no-cache'
+                  ),
+                  body = jsonlite::toJSON(
+                    resp,
+                    auto_unbox = TRUE,
+                    null = "null"
+                  )
+                ))
+              }
+
+              # GET /api/log-dir
+              if (req$PATH_INFO == "/api/log-dir") {
+                resp <- list(
+                  log_dir = paste0("file://", normalizePath(dir))
+                )
+
+                return(list(
+                  status = 200,
+                  headers = list(
+                    'Content-Type' = 'application/json',
+                    'Cache-Control' = 'no-cache'
+                  ),
+                  body = jsonlite::toJSON(
+                    resp,
+                    auto_unbox = TRUE,
+                    null = "null"
+                  )
+                ))
+              }
+
+              # GET /api/log-files
+              if (req$PATH_INFO == "/api/log-files") {
+                files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
+                files <- files[basename(files) != "listing.json"]
+                files <- sort(files, decreasing = TRUE)
+
+                log_files <- lapply(files, function(f) {
+                  file_path <- file.path(dir, f)
+                  info <- file.info(file_path)
+
+                  task_info <- tryCatch(
+                    {
+                      headers <- eval_log_read_headers(file_path)
+                      list(
+                        task = headers$eval$task,
+                        task_id = headers$eval$task_id
+                      )
+                    },
+                    error = function(e) {
+                      list(task = NULL, task_id = NULL)
+                    }
+                  )
+
+                  list(
+                    name = paste0("file://", normalizePath(file_path)),
+                    size = info$size,
+                    mtime = as.numeric(info$mtime) * 1000,
+                    task = task_info$task,
+                    task_id = task_info$task_id
+                  )
+                })
+
+                resp <- list(
+                  response_type = "full",
                   files = log_files
                 )
 
@@ -135,11 +221,69 @@ vitals_view_impl <- function(
                 return(log_headers)
               }
 
+              # GET /api/events (polling endpoint for live updates)
+              if (req$PATH_INFO == "/api/events") {
+                return(list(
+                  status = 200,
+                  headers = list(
+                    'Content-Type' = 'application/json',
+                    'Cache-Control' = 'no-cache'
+                  ),
+                  body = jsonlite::toJSON(
+                    list(),
+                    auto_unbox = TRUE,
+                    null = "null"
+                  )
+                ))
+              }
+
+              # GET /api/eval-set
+              if (req$PATH_INFO == "/api/eval-set") {
+                return(list(
+                  status = 200,
+                  headers = list(
+                    'Content-Type' = 'application/json',
+                    'Cache-Control' = 'no-cache'
+                  ),
+                  body = jsonlite::toJSON(
+                    NULL,
+                    auto_unbox = TRUE,
+                    null = "null"
+                  )
+                ))
+              }
+
+              # GET /api/flow
+              if (req$PATH_INFO == "/api/flow") {
+                return(list(
+                  status = 200,
+                  headers = list(
+                    'Content-Type' = 'application/json',
+                    'Cache-Control' = 'no-cache'
+                  ),
+                  body = jsonlite::toJSON(
+                    NULL,
+                    auto_unbox = TRUE,
+                    null = "null"
+                  )
+                ))
+              }
+
               # GET /api/logs/{filename}
               if (startsWith(req$PATH_INFO, "/api/logs/")) {
                 file <- substr(req$PATH_INFO, 11, nchar(req$PATH_INFO))
                 file <- utils::URLdecode(file)
-                file_path <- file.path(dir, file)
+
+                # Strip file:// prefix if present
+                if (startsWith(file, "file://")) {
+                  file_path <- substr(file, 8, nchar(file))
+                } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
+                  # If file is an absolute path, use it directly
+                  file_path <- file
+                } else {
+                  # Otherwise join with dir
+                  file_path <- file.path(dir, file)
+                }
 
                 if (file.exists(file_path)) {
                   # read the file content first

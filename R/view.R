@@ -253,7 +253,14 @@ get_api_log_headers <- function(dir, query) {
     files <- as.list(query)
 
     headers <- lapply(files, function(f) {
-      file_path <- file.path(dir, f)
+      if (startsWith(f, "file://")) {
+        file_path <- substr(f, 8, nchar(f))
+      } else if (startsWith(f, "/") || grepl("^[A-Za-z]:", f)) {
+        file_path <- f
+      } else {
+        file_path <- file.path(dir, f)
+      }
+
       if (file.exists(file_path)) {
         content <- eval_log_read_headers(file_path)
       } else {

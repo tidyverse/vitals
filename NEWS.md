@@ -3,6 +3,8 @@
 * Updated the vendored Inspect Log Viewer to Inspect version 0.3.151 
   (released 30 November 2025, #194).
 
+* The log viewer home page will now show full summaries of each eval.
+
 # vitals 0.2.0
 
 ## New features

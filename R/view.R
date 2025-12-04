@@ -75,18 +75,7 @@ vitals_view_impl <- function(
                   files = get_log_files_metadata(dir)
                 )
 
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    resp,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(resp))
               }
 
               # GET /api/log-dir
@@ -95,18 +84,7 @@ vitals_view_impl <- function(
                   log_dir = paste0("file://", normalizePath(dir))
                 )
 
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    resp,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(resp))
               }
 
               # GET /api/log-files
@@ -116,28 +94,10 @@ vitals_view_impl <- function(
                   files = get_log_files_metadata(dir)
                 )
 
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    resp,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(resp))
               }
 
               # GET /api/log-headers
-              log_headers <- list(
-                status = 200,
-                headers = list(
-                  'Content-Type' = 'application/json',
-                  'Cache-Control' = 'no-cache'
-                )
-              )
               if (req$PATH_INFO == "/api/log-headers") {
                 if (!is.null(query$file)) {
                   files <- as.list(query)
@@ -152,62 +112,25 @@ vitals_view_impl <- function(
                   })
 
                   names(headers) <- NULL
-                  log_headers$body <-
-                    jsonlite::toJSON(headers, auto_unbox = TRUE, null = "null")
-                  return(log_headers)
+                  return(json_response(headers))
                 }
 
-                log_headers$body <-
-                  jsonlite::toJSON(list(), auto_unbox = TRUE, null = "null")
-                return(log_headers)
+                return(json_response(list()))
               }
 
               # GET /api/events (polling endpoint for live updates)
               if (req$PATH_INFO == "/api/events") {
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    list(),
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(list()))
               }
 
               # GET /api/eval-set
               if (req$PATH_INFO == "/api/eval-set") {
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    NULL,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(NULL))
               }
 
               # GET /api/flow
               if (req$PATH_INFO == "/api/flow") {
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    NULL,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
+                return(json_response(NULL))
               }
 
               # GET /api/logs/{filename}
@@ -227,17 +150,14 @@ vitals_view_impl <- function(
                 }
 
                 if (file.exists(file_path)) {
-                  # read the file content first
                   content <- jsonlite::fromJSON(file_path)
 
-                  # check header_only parameter
                   header_only <- query$`header-only`
                   if (!is.null(header_only)) {
                     header_only <- as.numeric(header_only)
                     file_size_mb <- file.info(file_path)$size / (1024 * 1024)
 
                     if (!is.na(header_only) && file_size_mb > header_only) {
-                      # include only metadata and first few records
                       if (
                         !is.null(content$records) &&
                           length(content$records) > 10
@@ -247,18 +167,7 @@ vitals_view_impl <- function(
                     }
                   }
 
-                  return(list(
-                    status = 200,
-                    headers = list(
-                      'Content-Type' = 'application/json',
-                      'Cache-Control' = 'no-cache'
-                    ),
-                    body = jsonlite::toJSON(
-                      content,
-                      auto_unbox = TRUE,
-                      null = "null"
-                    )
-                  ))
+                  return(json_response(content))
                 }
 
                 return(list(status = 404, body = "File not found"))
@@ -386,4 +295,19 @@ get_log_files_metadata <- function(dir) {
       task_id = task_info$task_id
     )
   })
+}
+
+json_response <- function(data, status = 200) {
+  list(
+    status = status,
+    headers = list(
+      'Content-Type' = 'application/json',
+      'Cache-Control' = 'no-cache'
+    ),
+    body = jsonlite::toJSON(
+      data,
+      auto_unbox = TRUE,
+      null = "null"
+    )
+  )
 }

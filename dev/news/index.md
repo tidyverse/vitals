@@ -6,6 +6,8 @@
   (released 30 November 2025,
   [\#194](https://github.com/tidyverse/vitals/issues/194)).
 
+- The log viewer home page will now show full summaries of each eval.
+
 ## vitals 0.2.0
 
 CRAN release: 2025-12-01

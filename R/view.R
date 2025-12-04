@@ -68,118 +68,25 @@ vitals_view_impl <- function(
 
             # handle API routes first
             if (startsWith(req$PATH_INFO, "/api/")) {
-              # GET /api/logs
-              if (req$PATH_INFO == "/api/logs") {
-                files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
-                files <- files[basename(files) != "listing.json"]
-                files <- sort(files, decreasing = TRUE)
-                log_files <- lapply(files, function(f) {
-                  file_path <- file.path(dir, f)
-                  info <- file.info(file_path)
-
-                  list(
-                    name = f,
-                    size = info$size,
-                    mtime = as.numeric(info$mtime) * 1000
-                  )
-                })
-
-                resp <- list(
-                  dir = normalizePath(dir),
-                  files = log_files
-                )
-
-                return(list(
-                  status = 200,
-                  headers = list(
-                    'Content-Type' = 'application/json',
-                    'Cache-Control' = 'no-cache'
-                  ),
-                  body = jsonlite::toJSON(
-                    resp,
-                    auto_unbox = TRUE,
-                    null = "null"
-                  )
-                ))
-              }
-
-              # GET /api/log-headers
-              log_headers <- list(
-                status = 200,
-                headers = list(
-                  'Content-Type' = 'application/json',
-                  'Cache-Control' = 'no-cache'
-                )
-              )
-              if (req$PATH_INFO == "/api/log-headers") {
-                if (!is.null(query$file)) {
-                  files <- as.list(query)
-
-                  headers <- lapply(files, function(f) {
-                    file_path <- file.path(dir, f)
-                    if (file.exists(file_path)) {
-                      content <- eval_log_read_headers(file_path)
-                    } else {
-                      NULL
-                    }
-                  })
-
-                  names(headers) <- NULL
-                  log_headers$body <-
-                    jsonlite::toJSON(headers, auto_unbox = TRUE, null = "null")
-                  return(log_headers)
-                }
-
-                log_headers$body <-
-                  jsonlite::toJSON(list(), auto_unbox = TRUE, null = "null")
-                return(log_headers)
-              }
-
-              # GET /api/logs/{filename}
+              # handle dynamic route first
               if (startsWith(req$PATH_INFO, "/api/logs/")) {
                 file <- substr(req$PATH_INFO, 11, nchar(req$PATH_INFO))
                 file <- utils::URLdecode(file)
-                file_path <- file.path(dir, file)
-
-                if (file.exists(file_path)) {
-                  # read the file content first
-                  content <- jsonlite::fromJSON(file_path)
-
-                  # check header_only parameter
-                  header_only <- query$`header-only`
-                  if (!is.null(header_only)) {
-                    header_only <- as.numeric(header_only)
-                    file_size_mb <- file.info(file_path)$size / (1024 * 1024)
-
-                    if (!is.na(header_only) && file_size_mb > header_only) {
-                      # include only metadata and first few records
-                      if (
-                        !is.null(content$records) &&
-                          length(content$records) > 10
-                      ) {
-                        content$records <- head(content$records, 10)
-                      }
-                    }
-                  }
-
-                  return(list(
-                    status = 200,
-                    headers = list(
-                      'Content-Type' = 'application/json',
-                      'Cache-Control' = 'no-cache'
-                    ),
-                    body = jsonlite::toJSON(
-                      content,
-                      auto_unbox = TRUE,
-                      null = "null"
-                    )
-                  ))
-                }
-
-                return(list(status = 404, body = "File not found"))
+                return(get_api_log_file(dir, file, query))
               }
 
-              return(list(status = 404, body = "API endpoint not found"))
+              # handle static routes
+              return(switch(
+                req$PATH_INFO,
+                "/api/logs" = get_api_logs(dir),
+                "/api/log-dir" = get_api_log_dir(dir),
+                "/api/log-files" = get_api_log_files(dir),
+                "/api/log-headers" = get_api_log_headers(dir, query),
+                "/api/events" = get_api_events(),
+                "/api/eval-set" = get_api_eval_set(),
+                "/api/flow" = get_api_flow(),
+                list(status = 404, body = "API endpoint not found")
+              ))
             }
 
             # then handle static files
@@ -269,4 +176,139 @@ parse_query_string <- function(query_string) {
     NULL
   })
   do.call(c, params)
+}
+
+get_log_files_metadata <- function(dir) {
+  files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
+  files <- files[basename(files) != "listing.json"]
+  files <- sort(files, decreasing = TRUE)
+
+  lapply(files, function(f) {
+    file_path <- file.path(dir, f)
+    info <- file.info(file_path)
+
+    task_info <- tryCatch(
+      {
+        headers <- eval_log_read_headers(file_path)
+        list(
+          task = headers$eval$task,
+          task_id = headers$eval$task_id
+        )
+      },
+      error = function(e) {
+        list(task = NULL, task_id = NULL)
+      }
+    )
+
+    list(
+      name = paste0("file://", normalizePath(file_path)),
+      size = info$size,
+      mtime = as.numeric(info$mtime) * 1000,
+      task = task_info$task,
+      task_id = task_info$task_id
+    )
+  })
+}
+
+json_response <- function(data, status = 200) {
+  list(
+    status = status,
+    headers = list(
+      'Content-Type' = 'application/json',
+      'Cache-Control' = 'no-cache'
+    ),
+    body = jsonlite::toJSON(
+      data,
+      auto_unbox = TRUE,
+      null = "null"
+    )
+  )
+}
+
+get_api_logs <- function(dir) {
+  resp <- list(
+    log_dir = paste0("file://", normalizePath(dir)),
+    files = get_log_files_metadata(dir)
+  )
+  json_response(resp)
+}
+
+get_api_log_dir <- function(dir) {
+  resp <- list(
+    log_dir = paste0("file://", normalizePath(dir))
+  )
+  json_response(resp)
+}
+
+get_api_log_files <- function(dir) {
+  resp <- list(
+    response_type = "full",
+    files = get_log_files_metadata(dir)
+  )
+  json_response(resp)
+}
+
+get_api_log_headers <- function(dir, query) {
+  if (!is.null(query$file)) {
+    files <- as.list(query)
+
+    headers <- lapply(files, function(f) {
+      file_path <- file.path(dir, f)
+      if (file.exists(file_path)) {
+        content <- eval_log_read_headers(file_path)
+      } else {
+        NULL
+      }
+    })
+
+    names(headers) <- NULL
+    return(json_response(headers))
+  }
+
+  json_response(list())
+}
+
+get_api_events <- function() {
+  json_response(list())
+}
+
+get_api_eval_set <- function() {
+  json_response(NULL)
+}
+
+get_api_flow <- function() {
+  json_response(NULL)
+}
+
+get_api_log_file <- function(dir, file, query) {
+  if (startsWith(file, "file://")) {
+    file_path <- substr(file, 8, nchar(file))
+  } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
+    file_path <- file
+  } else {
+    file_path <- file.path(dir, file)
+  }
+
+  if (!file.exists(file_path)) {
+    return(list(status = 404, body = "File not found"))
+  }
+
+  content <- jsonlite::fromJSON(file_path)
+
+  header_only <- query$`header-only`
+  if (!is.null(header_only)) {
+    header_only <- as.numeric(header_only)
+    file_size_mb <- file.info(file_path)$size / (1024 * 1024)
+
+    if (!is.na(header_only) && file_size_mb > header_only) {
+      if (
+        !is.null(content$records) &&
+          length(content$records) > 10
+      ) {
+        content$records <- head(content$records, 10)
+      }
+    }
+  }
+
+  json_response(content)
 }

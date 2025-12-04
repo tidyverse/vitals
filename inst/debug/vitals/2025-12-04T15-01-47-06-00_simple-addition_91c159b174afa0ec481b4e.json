@@ -1,0 +1,1249 @@
+{
+  "version": 2,
+  "status": "success",
+  "eval": {
+    "run_id": "AGswRsYt5Hr6yg5rhAPsa6",
+    "created": "2025-12-04T15:01:47-06:00",
+    "task": "simple-addition",
+    "task_id": "91c159b174afa0ec481b4e",
+    "task_version": 0,
+    "task_file": "",
+    "task_attribs": {},
+    "task_args": {},
+    "dataset": {
+      "samples": 3,
+      "sample_ids": [
+        1,
+        2,
+        3
+      ],
+      "shuffled": false
+    },
+    "model": "generate(chat_claude()) (claude-sonnet-4-5)",
+    "model_args": {},
+    "config": {},
+    "revision": {
+      "type": "git",
+      "origin": "https://github.com/UKGovernmentBEIS/inspect_ai.git",
+      "commit": "9140d8a2"
+    },
+    "packages": {
+      "inspect_ai": "0.3.63"
+    },
+    "scorers": [
+      {
+        "name": "model_graded_qa()",
+        "options": {},
+        "metrics": [
+          {
+            "name": "mean",
+            "options": {}
+          }
+        ],
+        "metadata": {}
+      }
+    ]
+  },
+  "plan": {
+    "name": "plan",
+    "steps": [
+      {
+        "solver": "generate(chat_claude()) (claude-sonnet-4-5)",
+        "params": {
+          "1": "self$get_samples()$input"
+        }
+      }
+    ],
+    "config": {}
+  },
+  "results": {
+    "total_samples": 3,
+    "completed_samples": 3,
+    "scores": [
+      {
+        "name": "model_graded_qa() (claude-sonnet-4-5)",
+        "scorer": "model_graded_qa() (claude-sonnet-4-5)",
+        "params": {},
+        "metrics": {
+          "accuracy": {
+            "name": "accuracy",
+            "value": 100,
+            "params": {
+              "1": "numeric_scores"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "stats": {
+    "started_at": "2025-12-04T15:01:39-06:00",
+    "completed_at": "2025-12-04T15:01:47-06:00",
+    "model_usage": {
+      "claude-sonnet-4-5": {
+        "input_tokens": 42,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 37,
+        "total_tokens": 79
+      }
+    }
+  },
+  "samples": [
+    {
+      "id": 1,
+      "epoch": 1,
+      "input": "What's 2+2?",
+      "target": "4",
+      "messages": [
+        {
+          "id": "6OpWyurLSdUHohFKe1izfR",
+          "content": "What's 2+2?",
+          "source": "input",
+          "role": "user"
+        },
+        {
+          "id": "Ih8bvE2F0wfRx5exN0YgTy",
+          "content": [
+            {
+              "type": "text",
+              "text": "2+2 = 4"
+            }
+          ],
+          "source": "generate",
+          "role": "assistant"
+        }
+      ],
+      "output": {
+        "model": "claude-sonnet-4-5",
+        "choices": [
+          {
+            "message": {
+              "id": "1rvcAiZKZQTCrswOXvrVE5",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "2+2 = 4"
+                }
+              ],
+              "source": "generate",
+              "role": "assistant"
+            },
+            "stop_reason": "stop"
+          }
+        ],
+        "usage": {
+          "input_tokens": 14,
+          "input_tokens_cache_write": 0,
+          "input_tokens_cache_read": 0,
+          "output_tokens": 11,
+          "total_tokens": 25
+        },
+        "time": 2.8007
+      },
+      "scores": {
+        "model_graded_qa() (claude-sonnet-4-5)": {
+          "value": "C",
+          "answer": "2+2 = 4",
+          "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C",
+          "metadata": {
+            "grading": [
+              {
+                "id": "vQVkcbIzeogX4WWip0JByj",
+                "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+2?\n***\n[Submission]: 2+2 = 4\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                "role": "user"
+              },
+              {
+                "id": "6dxRxgehPAZty6f1PGYsUT",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C"
+                  }
+                ],
+                "source": "generate",
+                "role": "assistant"
+              }
+            ],
+            "scorer_metadata": ["List of 1", " $ :List of 3", "  ..$ prompt       : chr \"You are assessing a submitted answer on a given task based on a criterion.\\n[BEGIN DATA]\\n***\\n[Task]: What's 2\"| __truncated__", "  ..$ response     : chr \"I need to assess whether the submission meets the criterion.\\n\\n**Task Analysis:**\\nThe task asks \\\"What's 2+2?\"| __truncated__", "  ..$ grade_pattern: chr \"(?i)GRADE\\\\s*:\\\\s*([CPI])(.*)$\""]
+          }
+        }
+      },
+      "metadata": {},
+      "store": {},
+      "events": [
+        {
+          "timestamp": "2025-12-04T15:01:47.778836-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.778889-06:00",
+          "working_start": 0,
+          "event": "sample_init",
+          "sample": {
+            "input": "What's 2+2?",
+            "target": "4",
+            "id": 1
+          },
+          "state": {
+            "messages": [
+              {
+                "id": "4f4JiScLr5vaJcEJBHGqD0",
+                "content": "What's 2+2?",
+                "source": "input",
+                "role": "user"
+              }
+            ],
+            "tools": [],
+            "tool_choice": {},
+            "store": {},
+            "output": {
+              "model": "claude-sonnet-4-5",
+              "choices": []
+            },
+            "completed": false,
+            "metadata": {}
+          }
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.778915-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "end",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779006-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779114-06:00",
+          "working_start": 0,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "JaYgqmnR1ZTccSWjCMK47i",
+              "content": "What's 2+2?",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "5UD9g0BghZYmsrGpNFDC4p",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2+2 = 4"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 14,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 11
+            },
+            "time": 2.8007
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "What's 2+2?"
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "JceiLIQasn1IHiz6RgE99S"
+              }
+            },
+            "response": {
+              "id": "msg_pmDaP8ac0uG24mZqtnKaZf",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "2+2 = 4",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 14,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 11
+              }
+            },
+            "time": 2.8007
+          },
+          "completed": "2025-12-04T15:01:47.779170-06:00",
+          "working_time": 2.8007
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779186-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "end",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779262-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779392-06:00",
+          "working_start": 0,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "Gt0Q3iqA14Etv1RxgjsTqq",
+              "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+2?\n***\n[Submission]: 2+2 = 4\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "DrCcdUFSZhRo9Qm9kzv4E1",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 173,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 163
+            },
+            "time": 5.6681
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+2?\n***\n[Submission]: 2+2 = 4\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it."
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "HU6iRNwhgMJGI36ZcOu9AQ"
+              }
+            },
+            "response": {
+              "id": "msg_15Zc2Pj8SYGFQDenOhI1PT",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 173,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 163
+              },
+              "time": 5.6681
+            }
+          },
+          "completed": "2025-12-04T15:01:47.779447-06:00",
+          "working_time": 5.6681
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779469-06:00",
+          "working_start": 0,
+          "event": "score",
+          "score": {
+            "value": "C",
+            "answer": "2+2 = 4",
+            "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C",
+            "metadata": {
+              "grading": [
+                {
+                  "id": "bZSrTjEzuIq2WgpubpDfNk",
+                  "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+2?\n***\n[Submission]: 2+2 = 4\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                  "role": "user"
+                },
+                {
+                  "id": "ZKXXDvtF02Fd9RvkQ24Xya",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks \"What's 2+2?\"\n\n**Submission Analysis:**\nThe submission states \"2+2 = 4\"\n\n**Criterion Analysis:**\nThe criterion is simply \"4\"\n\n**Assessment:**\nThe submission correctly answers that 2+2 = 4. The criterion appears to be checking if the answer is \"4\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nThe submission meets the criterion because:\n1. It provides the correct answer to 2+2, which is 4\n2. The criterion is \"4\", and the submission contains this correct answer\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant"
+                }
+              ]
+            }
+          },
+          "target": "4",
+          "intermediate": false
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.779540-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "end",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        }
+      ],
+      "model_usage": {
+        "claude-sonnet-4-5": {
+          "input_tokens": 14,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 11,
+          "total_tokens": 25
+        }
+      },
+      "attachments": {}
+    },
+    {
+      "id": 2,
+      "epoch": 1,
+      "input": "What's 2+3?",
+      "target": "5",
+      "messages": [
+        {
+          "id": "0wTklSi104sAaE7JXOHjkP",
+          "content": "What's 2+3?",
+          "source": "input",
+          "role": "user"
+        },
+        {
+          "id": "1L0JkCq0xOZ4Kk7bSDr84U",
+          "content": [
+            {
+              "type": "text",
+              "text": "2 + 3 = 5"
+            }
+          ],
+          "source": "generate",
+          "role": "assistant"
+        }
+      ],
+      "output": {
+        "model": "claude-sonnet-4-5",
+        "choices": [
+          {
+            "message": {
+              "id": "NZ8BrBUaTMrkcpBtCZ9mtq",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "2 + 3 = 5"
+                }
+              ],
+              "source": "generate",
+              "role": "assistant"
+            },
+            "stop_reason": "stop"
+          }
+        ],
+        "usage": {
+          "input_tokens": 14,
+          "input_tokens_cache_write": 0,
+          "input_tokens_cache_read": 0,
+          "output_tokens": 13,
+          "total_tokens": 27
+        },
+        "time": 2.8416
+      },
+      "scores": {
+        "model_graded_qa() (claude-sonnet-4-5)": {
+          "value": "C",
+          "answer": "2 + 3 = 5",
+          "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C",
+          "metadata": {
+            "grading": [
+              {
+                "id": "qWw9cKDHDu9Vr3gEQYLO7Q",
+                "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+3?\n***\n[Submission]: 2 + 3 = 5\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                "role": "user"
+              },
+              {
+                "id": "P8R0IwQP9iQCQjwgMfDzdW",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C"
+                  }
+                ],
+                "source": "generate",
+                "role": "assistant"
+              }
+            ],
+            "scorer_metadata": ["List of 1", " $ :List of 3", "  ..$ prompt       : chr \"You are assessing a submitted answer on a given task based on a criterion.\\n[BEGIN DATA]\\n***\\n[Task]: What's 2\"| __truncated__", "  ..$ response     : chr \"I need to assess whether the submission meets the criterion.\\n\\n**Task Analysis:**\\nThe task asks for the sum o\"| __truncated__", "  ..$ grade_pattern: chr \"(?i)GRADE\\\\s*:\\\\s*([CPI])(.*)$\""]
+          }
+        }
+      },
+      "metadata": {},
+      "store": {},
+      "events": [
+        {
+          "timestamp": "2025-12-04T15:01:47.780735-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.780777-06:00",
+          "working_start": 2.8007,
+          "event": "sample_init",
+          "sample": {
+            "input": "What's 2+3?",
+            "target": "5",
+            "id": 2
+          },
+          "state": {
+            "messages": [
+              {
+                "id": "KAGlv2IKN5W32RdHxS97ej",
+                "content": "What's 2+3?",
+                "source": "input",
+                "role": "user"
+              }
+            ],
+            "tools": [],
+            "tool_choice": {},
+            "store": {},
+            "output": {
+              "model": "claude-sonnet-4-5",
+              "choices": []
+            },
+            "completed": false,
+            "metadata": {}
+          }
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.780798-06:00",
+          "working_start": 2.8007,
+          "event": "step",
+          "action": "end",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.780872-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.780962-06:00",
+          "working_start": 2.8007,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "75rTJExBMvtx6BcWSpxXXE",
+              "content": "What's 2+3?",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "qCC3OYtNnXOCSC9dcfJGfV",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2 + 3 = 5"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 14,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 13
+            },
+            "time": 2.8416
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "What's 2+3?"
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "T9CMNOUQGJWSmf8AWSNgk5"
+              }
+            },
+            "response": {
+              "id": "msg_FKKqKcj7nrTr9U74zZEhEG",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "2 + 3 = 5",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 14,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 13
+              }
+            },
+            "time": 2.8416
+          },
+          "completed": "2025-12-04T15:01:47.781012-06:00",
+          "working_time": 2.8416
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.781025-06:00",
+          "working_start": 2.8007,
+          "event": "step",
+          "action": "end",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.781090-06:00",
+          "working_start": 5.6681,
+          "event": "step",
+          "action": "begin",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.781202-06:00",
+          "working_start": 5.6681,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "Mpqq5jqqxWo7s0XJDmPqXC",
+              "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+3?\n***\n[Submission]: 2 + 3 = 5\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "4prZRxJLgQURpWNdszFtfQ",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 175,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 136
+            },
+            "time": 5.2964
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+3?\n***\n[Submission]: 2 + 3 = 5\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it."
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "T8SbSgK5Cv9pXXhrALG72y"
+              }
+            },
+            "response": {
+              "id": "msg_t3gNkkdoxSZTWyIe3GsWAS",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 175,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 136
+              },
+              "time": 5.2964
+            }
+          },
+          "completed": "2025-12-04T15:01:47.781250-06:00",
+          "working_time": 5.2964
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.781270-06:00",
+          "working_start": 5.6681,
+          "event": "score",
+          "score": {
+            "value": "C",
+            "answer": "2 + 3 = 5",
+            "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C",
+            "metadata": {
+              "grading": [
+                {
+                  "id": "ZaF903mUgh5UIfZUCCkC5R",
+                  "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+3?\n***\n[Submission]: 2 + 3 = 5\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                  "role": "user"
+                },
+                {
+                  "id": "APYGxzO8vSMMJUnRJl9ojL",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task Analysis:**\nThe task asks for the sum of 2 + 3.\n\n**Submission Analysis:**\nThe submission states \"2 + 3 = 5\", which is mathematically correct.\n\n**Criterion Analysis:**\nThe criterion given is simply \"5\".\n\n**Assessment:**\nThe submission correctly calculates that 2 + 3 = 5. The criterion is \"5\", which appears to be the expected correct answer. The submission's answer matches this criterion exactly.\n\nTherefore, the submission meets the criterion.\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant"
+                }
+              ]
+            }
+          },
+          "target": "5",
+          "intermediate": false
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.781333-06:00",
+          "working_start": 5.6681,
+          "event": "step",
+          "action": "end",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        }
+      ],
+      "model_usage": {
+        "claude-sonnet-4-5": {
+          "input_tokens": 14,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 13,
+          "total_tokens": 27
+        }
+      },
+      "attachments": {}
+    },
+    {
+      "id": 3,
+      "epoch": 1,
+      "input": "What's 2+4?",
+      "target": "6",
+      "messages": [
+        {
+          "id": "c6GhjYrEG28D4gVZCYV0uE",
+          "content": "What's 2+4?",
+          "source": "input",
+          "role": "user"
+        },
+        {
+          "id": "Nx4p83drKCUtzmAoYiqcN4",
+          "content": [
+            {
+              "type": "text",
+              "text": "2 + 4 = 6"
+            }
+          ],
+          "source": "generate",
+          "role": "assistant"
+        }
+      ],
+      "output": {
+        "model": "claude-sonnet-4-5",
+        "choices": [
+          {
+            "message": {
+              "id": "Kq05fOnqtd8phnrn21FSMm",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "2 + 4 = 6"
+                }
+              ],
+              "source": "generate",
+              "role": "assistant"
+            },
+            "stop_reason": "stop"
+          }
+        ],
+        "usage": {
+          "input_tokens": 14,
+          "input_tokens_cache_write": 0,
+          "input_tokens_cache_read": 0,
+          "output_tokens": 13,
+          "total_tokens": 27
+        },
+        "time": 2.6669
+      },
+      "scores": {
+        "model_graded_qa() (claude-sonnet-4-5)": {
+          "value": "C",
+          "answer": "2 + 4 = 6",
+          "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C",
+          "metadata": {
+            "grading": [
+              {
+                "id": "pxHWUivNUG5ugZf9waInCQ",
+                "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+4?\n***\n[Submission]: 2 + 4 = 6\n***\n[Criterion]: 6\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                "role": "user"
+              },
+              {
+                "id": "UBYavC3ExkvlFA3a0cKU6H",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C"
+                  }
+                ],
+                "source": "generate",
+                "role": "assistant"
+              }
+            ],
+            "scorer_metadata": ["List of 1", " $ :List of 3", "  ..$ prompt       : chr \"You are assessing a submitted answer on a given task based on a criterion.\\n[BEGIN DATA]\\n***\\n[Task]: What's 2\"| __truncated__", "  ..$ response     : chr \"I need to assess whether the submission meets the criterion.\\n\\n**Task**: What's 2+4?\\n\\n**Submission**: 2 + 4 \"| __truncated__", "  ..$ grade_pattern: chr \"(?i)GRADE\\\\s*:\\\\s*([CPI])(.*)$\""]
+          }
+        }
+      },
+      "metadata": {},
+      "store": {},
+      "events": [
+        {
+          "timestamp": "2025-12-04T15:01:47.782422-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782468-06:00",
+          "working_start": 5.6423,
+          "event": "sample_init",
+          "sample": {
+            "input": "What's 2+4?",
+            "target": "6",
+            "id": 3
+          },
+          "state": {
+            "messages": [
+              {
+                "id": "fxBTc5oMfmu2lPhmOcLgLG",
+                "content": "What's 2+4?",
+                "source": "input",
+                "role": "user"
+              }
+            ],
+            "tools": [],
+            "tool_choice": {},
+            "store": {},
+            "output": {
+              "model": "claude-sonnet-4-5",
+              "choices": []
+            },
+            "completed": false,
+            "metadata": {}
+          }
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782489-06:00",
+          "working_start": 5.6423,
+          "event": "step",
+          "action": "end",
+          "name": "init"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782562-06:00",
+          "working_start": 0,
+          "event": "step",
+          "action": "begin",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782668-06:00",
+          "working_start": 5.6423,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "OIl72KvGBDGS4W004C47BU",
+              "content": "What's 2+4?",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "qSbkf7ayFEl6K6qZxPFywQ",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "2 + 4 = 6"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 14,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 13
+            },
+            "time": 2.6669
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "What's 2+4?"
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "g33FwReBeH230DU3cKwtXM"
+              }
+            },
+            "response": {
+              "id": "msg_lj1l25g7cNjbhhXOQZIJ0U",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "2 + 4 = 6",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 14,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 13
+              }
+            },
+            "time": 2.6669
+          },
+          "completed": "2025-12-04T15:01:47.782716-06:00",
+          "working_time": 2.6669
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782730-06:00",
+          "working_start": 5.6423,
+          "event": "step",
+          "action": "end",
+          "type": "solver",
+          "name": "generate"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782798-06:00",
+          "working_start": 10.9645,
+          "event": "step",
+          "action": "begin",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782908-06:00",
+          "working_start": 10.9645,
+          "event": "model",
+          "model": "claude-sonnet-4-5",
+          "input": [
+            {
+              "id": "sC8Buft6E5X5A8CPZu8kfK",
+              "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+4?\n***\n[Submission]: 2 + 4 = 6\n***\n[Criterion]: 6\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+              "source": "input",
+              "role": "user"
+            }
+          ],
+          "tools": [],
+          "tool_choice": "none",
+          "config": {
+            "max_tokens": 4096
+          },
+          "output": {
+            "model": "claude-sonnet-4-5",
+            "choices": [
+              {
+                "message": {
+                  "id": "IkeKIqmu9hhkgsLPTeU6Aj",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-sonnet-4-5"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "usage": {
+              "input_tokens": 175,
+              "input_tokens_cache_write": 0,
+              "input_tokens_cache_read": 0,
+              "output_tokens": 103
+            },
+            "time": 3.9727
+          },
+          "call": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+4?\n***\n[Submission]: 2 + 4 = 6\n***\n[Criterion]: 6\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it."
+                    }
+                  ]
+                }
+              ],
+              "tools": [],
+              "tool_choice": "none",
+              "model": "claude-sonnet-4-5",
+              "max_tokens": 4096,
+              "extra_headers": {
+                "x-irid": "SuH8HqKCjizEspvPurtIwK"
+              }
+            },
+            "response": {
+              "id": "msg_xIBbqJVJjh1X89xEEBqSO3",
+              "content": [
+                {
+                  "citations": {},
+                  "text": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C",
+                  "type": "text"
+                }
+              ],
+              "model": "claude-sonnet-4-5",
+              "role": "assistant",
+              "stop_reason": "end_turn",
+              "stop_sequence": {},
+              "type": "message",
+              "usage": {
+                "input_tokens": 175,
+                "input_tokens_cache_write": 0,
+                "input_tokens_cache_read": 0,
+                "output_tokens": 103
+              },
+              "time": 3.9727
+            }
+          },
+          "completed": "2025-12-04T15:01:47.782957-06:00",
+          "working_time": 3.9727
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.782977-06:00",
+          "working_start": 10.9645,
+          "event": "score",
+          "score": {
+            "value": "C",
+            "answer": "2 + 4 = 6",
+            "explanation": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C",
+            "metadata": {
+              "grading": [
+                {
+                  "id": "3upWowXN9JdCKESyrNsR7Z",
+                  "content": "You are assessing a submitted answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What's 2+4?\n***\n[Submission]: 2 + 4 = 6\n***\n[Criterion]: 6\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing the submitted answer, reply with 'GRADE: $LETTER' where\nLETTER is one of C or I.\nPlease choose ONE option: either 'C' for correct answers, \nor 'I' for incorrect answers.\nFirst explain your reasoning, then end with GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation or\nexposition after it.",
+                  "role": "user"
+                },
+                {
+                  "id": "Pyz81fRo5Ly3PJAS1Jr08F",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "I need to assess whether the submission meets the criterion.\n\n**Task**: What's 2+4?\n\n**Submission**: 2 + 4 = 6\n\n**Criterion**: 6\n\nThe submission correctly calculates that 2 + 4 = 6. The criterion appears to be checking whether the answer is \"6\", which it is. The submission provides the correct mathematical answer to the addition problem posed in the task.\n\nGRADE: C"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant"
+                }
+              ]
+            }
+          },
+          "target": "6",
+          "intermediate": false
+        },
+        {
+          "timestamp": "2025-12-04T15:01:47.783039-06:00",
+          "working_start": 10.9645,
+          "event": "step",
+          "action": "end",
+          "type": "scorer",
+          "name": "model_graded_qa"
+        }
+      ],
+      "model_usage": {
+        "claude-sonnet-4-5": {
+          "input_tokens": 14,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 13,
+          "total_tokens": 27
+        }
+      },
+      "attachments": {}
+    }
+  ]
+}

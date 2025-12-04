@@ -68,112 +68,25 @@ vitals_view_impl <- function(
 
             # handle API routes first
             if (startsWith(req$PATH_INFO, "/api/")) {
-              # GET /api/logs
-              if (req$PATH_INFO == "/api/logs") {
-                resp <- list(
-                  log_dir = paste0("file://", normalizePath(dir)),
-                  files = get_log_files_metadata(dir)
-                )
-
-                return(json_response(resp))
-              }
-
-              # GET /api/log-dir
-              if (req$PATH_INFO == "/api/log-dir") {
-                resp <- list(
-                  log_dir = paste0("file://", normalizePath(dir))
-                )
-
-                return(json_response(resp))
-              }
-
-              # GET /api/log-files
-              if (req$PATH_INFO == "/api/log-files") {
-                resp <- list(
-                  response_type = "full",
-                  files = get_log_files_metadata(dir)
-                )
-
-                return(json_response(resp))
-              }
-
-              # GET /api/log-headers
-              if (req$PATH_INFO == "/api/log-headers") {
-                if (!is.null(query$file)) {
-                  files <- as.list(query)
-
-                  headers <- lapply(files, function(f) {
-                    file_path <- file.path(dir, f)
-                    if (file.exists(file_path)) {
-                      content <- eval_log_read_headers(file_path)
-                    } else {
-                      NULL
-                    }
-                  })
-
-                  names(headers) <- NULL
-                  return(json_response(headers))
-                }
-
-                return(json_response(list()))
-              }
-
-              # GET /api/events (polling endpoint for live updates)
-              if (req$PATH_INFO == "/api/events") {
-                return(json_response(list()))
-              }
-
-              # GET /api/eval-set
-              if (req$PATH_INFO == "/api/eval-set") {
-                return(json_response(NULL))
-              }
-
-              # GET /api/flow
-              if (req$PATH_INFO == "/api/flow") {
-                return(json_response(NULL))
-              }
-
-              # GET /api/logs/{filename}
+              # handle dynamic route first
               if (startsWith(req$PATH_INFO, "/api/logs/")) {
                 file <- substr(req$PATH_INFO, 11, nchar(req$PATH_INFO))
                 file <- utils::URLdecode(file)
-
-                # Strip file:// prefix if present
-                if (startsWith(file, "file://")) {
-                  file_path <- substr(file, 8, nchar(file))
-                } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
-                  # If file is an absolute path, use it directly
-                  file_path <- file
-                } else {
-                  # Otherwise join with dir
-                  file_path <- file.path(dir, file)
-                }
-
-                if (file.exists(file_path)) {
-                  content <- jsonlite::fromJSON(file_path)
-
-                  header_only <- query$`header-only`
-                  if (!is.null(header_only)) {
-                    header_only <- as.numeric(header_only)
-                    file_size_mb <- file.info(file_path)$size / (1024 * 1024)
-
-                    if (!is.na(header_only) && file_size_mb > header_only) {
-                      if (
-                        !is.null(content$records) &&
-                          length(content$records) > 10
-                      ) {
-                        content$records <- head(content$records, 10)
-                      }
-                    }
-                  }
-
-                  return(json_response(content))
-                }
-
-                return(list(status = 404, body = "File not found"))
+                return(get_api_log_file(dir, file, query))
               }
 
-              return(list(status = 404, body = "API endpoint not found"))
+              # handle static routes
+              return(switch(
+                req$PATH_INFO,
+                "/api/logs" = get_api_logs(dir),
+                "/api/log-dir" = get_api_log_dir(dir),
+                "/api/log-files" = get_api_log_files(dir),
+                "/api/log-headers" = get_api_log_headers(dir, query),
+                "/api/events" = get_api_events(),
+                "/api/eval-set" = get_api_eval_set(),
+                "/api/flow" = get_api_flow(),
+                list(status = 404, body = "API endpoint not found")
+              ))
             }
 
             # then handle static files
@@ -310,4 +223,92 @@ json_response <- function(data, status = 200) {
       null = "null"
     )
   )
+}
+
+get_api_logs <- function(dir) {
+  resp <- list(
+    log_dir = paste0("file://", normalizePath(dir)),
+    files = get_log_files_metadata(dir)
+  )
+  json_response(resp)
+}
+
+get_api_log_dir <- function(dir) {
+  resp <- list(
+    log_dir = paste0("file://", normalizePath(dir))
+  )
+  json_response(resp)
+}
+
+get_api_log_files <- function(dir) {
+  resp <- list(
+    response_type = "full",
+    files = get_log_files_metadata(dir)
+  )
+  json_response(resp)
+}
+
+get_api_log_headers <- function(dir, query) {
+  if (!is.null(query$file)) {
+    files <- as.list(query)
+
+    headers <- lapply(files, function(f) {
+      file_path <- file.path(dir, f)
+      if (file.exists(file_path)) {
+        content <- eval_log_read_headers(file_path)
+      } else {
+        NULL
+      }
+    })
+
+    names(headers) <- NULL
+    return(json_response(headers))
+  }
+
+  json_response(list())
+}
+
+get_api_events <- function() {
+  json_response(list())
+}
+
+get_api_eval_set <- function() {
+  json_response(NULL)
+}
+
+get_api_flow <- function() {
+  json_response(NULL)
+}
+
+get_api_log_file <- function(dir, file, query) {
+  if (startsWith(file, "file://")) {
+    file_path <- substr(file, 8, nchar(file))
+  } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
+    file_path <- file
+  } else {
+    file_path <- file.path(dir, file)
+  }
+
+  if (!file.exists(file_path)) {
+    return(list(status = 404, body = "File not found"))
+  }
+
+  content <- jsonlite::fromJSON(file_path)
+
+  header_only <- query$`header-only`
+  if (!is.null(header_only)) {
+    header_only <- as.numeric(header_only)
+    file_size_mb <- file.info(file_path)$size / (1024 * 1024)
+
+    if (!is.na(header_only) && file_size_mb > header_only) {
+      if (
+        !is.null(content$records) &&
+          length(content$records) > 10
+      ) {
+        content$records <- head(content$records, 10)
+      }
+    }
+  }
+
+  json_response(content)
 }

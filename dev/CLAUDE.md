@@ -50,6 +50,8 @@ Importantly:
   `devtools::test()`
 - Use your inspect-researcher sub-agent to read more about Inspect AI
   and how it works.
+- See `inst/debug/` for example scripts and guidance on debugging the
+  log viewer.
 
 ## Testing
 

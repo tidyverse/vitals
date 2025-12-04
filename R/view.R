@@ -70,38 +70,9 @@ vitals_view_impl <- function(
             if (startsWith(req$PATH_INFO, "/api/")) {
               # GET /api/logs
               if (req$PATH_INFO == "/api/logs") {
-                files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
-                files <- files[basename(files) != "listing.json"]
-                files <- sort(files, decreasing = TRUE)
-                log_files <- lapply(files, function(f) {
-                  file_path <- file.path(dir, f)
-                  info <- file.info(file_path)
-
-                  task_info <- tryCatch(
-                    {
-                      headers <- eval_log_read_headers(file_path)
-                      list(
-                        task = headers$eval$task,
-                        task_id = headers$eval$task_id
-                      )
-                    },
-                    error = function(e) {
-                      list(task = NULL, task_id = NULL)
-                    }
-                  )
-
-                  list(
-                    name = paste0("file://", normalizePath(file_path)),
-                    size = info$size,
-                    mtime = as.numeric(info$mtime) * 1000,
-                    task = task_info$task,
-                    task_id = task_info$task_id
-                  )
-                })
-
                 resp <- list(
                   log_dir = paste0("file://", normalizePath(dir)),
-                  files = log_files
+                  files = get_log_files_metadata(dir)
                 )
 
                 return(list(
@@ -140,39 +111,9 @@ vitals_view_impl <- function(
 
               # GET /api/log-files
               if (req$PATH_INFO == "/api/log-files") {
-                files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
-                files <- files[basename(files) != "listing.json"]
-                files <- sort(files, decreasing = TRUE)
-
-                log_files <- lapply(files, function(f) {
-                  file_path <- file.path(dir, f)
-                  info <- file.info(file_path)
-
-                  task_info <- tryCatch(
-                    {
-                      headers <- eval_log_read_headers(file_path)
-                      list(
-                        task = headers$eval$task,
-                        task_id = headers$eval$task_id
-                      )
-                    },
-                    error = function(e) {
-                      list(task = NULL, task_id = NULL)
-                    }
-                  )
-
-                  list(
-                    name = paste0("file://", normalizePath(file_path)),
-                    size = info$size,
-                    mtime = as.numeric(info$mtime) * 1000,
-                    task = task_info$task,
-                    task_id = task_info$task_id
-                  )
-                })
-
                 resp <- list(
                   response_type = "full",
-                  files = log_files
+                  files = get_log_files_metadata(dir)
                 )
 
                 return(list(
@@ -413,4 +354,36 @@ parse_query_string <- function(query_string) {
     NULL
   })
   do.call(c, params)
+}
+
+get_log_files_metadata <- function(dir) {
+  files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
+  files <- files[basename(files) != "listing.json"]
+  files <- sort(files, decreasing = TRUE)
+
+  lapply(files, function(f) {
+    file_path <- file.path(dir, f)
+    info <- file.info(file_path)
+
+    task_info <- tryCatch(
+      {
+        headers <- eval_log_read_headers(file_path)
+        list(
+          task = headers$eval$task,
+          task_id = headers$eval$task_id
+        )
+      },
+      error = function(e) {
+        list(task = NULL, task_id = NULL)
+      }
+    )
+
+    list(
+      name = paste0("file://", normalizePath(file_path)),
+      size = info$size,
+      mtime = as.numeric(info$mtime) * 1000,
+      task = task_info$task,
+      task_id = task_info$task_id
+    )
+  })
 }

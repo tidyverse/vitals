@@ -21,6 +21,7 @@ Importantly:
 
 * Once you feel you have a working solution (logs generated from R that pass `expect_valid_log()`, the remaining tests should still pass with `devtools::test()`
 * Use your inspect-researcher sub-agent to read more about Inspect AI and how it works.
+* See `inst/debug/` for example scripts and guidance on debugging the log viewer.
 
 ## Testing
 

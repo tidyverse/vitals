@@ -18,6 +18,7 @@ reference:
 - title: "Solvers"
   contents:
   - generate
+  - generate_structured
 
 - title: "Scorers"
   contents:

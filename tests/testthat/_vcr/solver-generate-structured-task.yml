@@ -1,0 +1,166 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","messages":[{"role":"user","content":[{"type":"text","text":"What''s
+        2+2?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"_structured_tool_call","description":"Extract
+        structured data","input_schema":{"type":"object","description":"","properties":{"data":{"type":"object","description":"","properties":{"answer":{"type":"string","description":"The
+        numeric answer to the math question"}},"required":["answer"],"additionalProperties":false}},"required":["data"],"additionalProperties":false}}],"tool_choice":{"type":"tool","name":"_structured_tool_call"},"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 15 Dec 2025 17:44:24 GMT
+      content-type: application/json
+      content-encoding: gzip
+      cf-ray: 9ae7bfa15f08104e-ORD
+      cf-cache-status: DYNAMIC
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-12-15T17:44:24Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-12-15T17:44:24Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-12-15T17:44:24Z'
+      request-id: req_011CW8tU8QrLRKoZ86kQrSsC
+      x-envoy-upstream-service-time: '2762'
+      vary: Accept-Encoding
+      x-robots-tag: none
+      server: cloudflare
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","id":"msg_015iKSpbrU12SKah1GpF7Tdc","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_01SjkdwLDvgd92b5qcD4g8mR","name":"_structured_tool_call","input":{"data":{"answer":"4"}}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":442,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":38,"service_tier":"standard"}}'
+  recorded_at: 2025-12-15 17:44:24
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","messages":[{"role":"user","content":[{"type":"text","text":"What''s
+        2+3?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"_structured_tool_call","description":"Extract
+        structured data","input_schema":{"type":"object","description":"","properties":{"data":{"type":"object","description":"","properties":{"answer":{"type":"string","description":"The
+        numeric answer to the math question"}},"required":["answer"],"additionalProperties":false}},"required":["data"],"additionalProperties":false}}],"tool_choice":{"type":"tool","name":"_structured_tool_call"},"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 15 Dec 2025 17:44:27 GMT
+      content-type: application/json
+      content-encoding: gzip
+      cf-ray: 9ae7bfb3cdbf104e-ORD
+      cf-cache-status: DYNAMIC
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-12-15T17:44:27Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-12-15T17:44:27Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-12-15T17:44:27Z'
+      request-id: req_011CW8tULsSiDQkmA8992ZjX
+      x-envoy-upstream-service-time: '2409'
+      vary: Accept-Encoding
+      x-robots-tag: none
+      server: cloudflare
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","id":"msg_01NWzavwKYVb6wBkDqXUnCYM","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_01R7QmMus3uKUgTMv7kwgqv2","name":"_structured_tool_call","input":{"data":{"answer":"5"}}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":442,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":38,"service_tier":"standard"}}'
+  recorded_at: 2025-12-15 17:44:27
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","messages":[{"role":"user","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: [{\"answer\":\"4\"}]\n***\n[Criterion]:
+        4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 15 Dec 2025 17:44:34 GMT
+      content-type: application/json
+      content-encoding: gzip
+      cf-ray: 9ae7bfc3d98b104e-ORD
+      cf-cache-status: DYNAMIC
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-12-15T17:44:30Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-12-15T17:44:34Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-12-15T17:44:30Z'
+      request-id: req_011CW8tUXnmtRQZgWsHdjqbS
+      x-envoy-upstream-service-time: '6512'
+      vary: Accept-Encoding
+      x-robots-tag: none
+      server: cloudflare
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","id":"msg_01ThTWLG24kmGZobiUmDijCz","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to assess whether the submission meets the criterion for the task \"What''s
+        2+2?\"\n\nThe task asks for the result of 2+2.\nThe submission provides: [{\"answer\":\"4\"}]\nThe
+        criterion is: 4\n\nThe mathematical answer to 2+2 is indeed 4. The submission
+        contains the correct numerical answer \"4\" within the JSON structure. Even
+        though it''s formatted as JSON rather than a plain number, the core answer
+        of \"4\" matches the criterion of 4 and is mathematically correct.\n\nGRADE:
+        C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":172,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":124,"service_tier":"standard"}}'
+  recorded_at: 2025-12-15 17:44:34
+- request:
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","messages":[{"role":"user","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: [{\"answer\":\"5\"}]\n***\n[Criterion]:
+        5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
+        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
+  response:
+    status: 200
+    headers:
+      date: Mon, 15 Dec 2025 17:44:39 GMT
+      content-type: application/json
+      content-encoding: gzip
+      cf-ray: 9ae7bfed2c99104e-ORD
+      cf-cache-status: DYNAMIC
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
+      anthropic-ratelimit-input-tokens-limit: '2000000'
+      anthropic-ratelimit-input-tokens-remaining: '2000000'
+      anthropic-ratelimit-input-tokens-reset: '2025-12-15T17:44:36Z'
+      anthropic-ratelimit-output-tokens-limit: '400000'
+      anthropic-ratelimit-output-tokens-remaining: '400000'
+      anthropic-ratelimit-output-tokens-reset: '2025-12-15T17:44:39Z'
+      anthropic-ratelimit-tokens-limit: '2400000'
+      anthropic-ratelimit-tokens-remaining: '2400000'
+      anthropic-ratelimit-tokens-reset: '2025-12-15T17:44:36Z'
+      request-id: req_011CW8tV1zRGPgXCvMhsrqtW
+      x-envoy-upstream-service-time: '5330'
+      vary: Accept-Encoding
+      x-robots-tag: none
+      server: cloudflare
+    body:
+      string: '{"model":"claude-sonnet-4-20250514","id":"msg_01JJqFptQszeMSomNj3cFTPR","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to assess whether the submission meets the criterion for the task \"What''s
+        2+3?\".\n\nThe task asks for the sum of 2+3.\nThe mathematical answer to 2+3
+        is 5.\nThe submission provides: [{\"answer\":\"5\"}]\nThe criterion is: 5\n\nThe
+        submission contains the correct answer \"5\" in a JSON-like format. Even though
+        it''s formatted as a data structure rather than a plain number, the actual
+        answer value \"5\" matches the correct mathematical result and meets the criterion
+        of 5.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":172,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":128,"service_tier":"standard"}}'
+  recorded_at: 2025-12-15 17:44:39
+recorded_with: VCR-vcr/2.0.0

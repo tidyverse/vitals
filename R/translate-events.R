@@ -1051,11 +1051,14 @@ events_timestamp <- function(time) {
 turn_tokens <- function(turn) {
   tokens_io <- turn@tokens
 
+  input_tokens <- if (is.na(tokens_io[1])) 0L else as.integer(tokens_io[1])
+  output_tokens <- if (is.na(tokens_io[2])) 0L else as.integer(tokens_io[2])
+
   list(
-    input_tokens = tokens_io[1],
-    input_tokens_cache_write = 0,
-    input_tokens_cache_read = 0,
-    output_tokens = tokens_io[2]
+    input_tokens = input_tokens,
+    input_tokens_cache_write = 0L,
+    input_tokens_cache_read = 0L,
+    output_tokens = output_tokens
   )
 }
 

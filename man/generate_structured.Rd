@@ -37,7 +37,7 @@ or timing metadata from the API.
 
 The \code{result} field contains JSON-serialized strings for compatibility
 with existing scorers. The raw structured data is available in
-\code{solver_metadata} after calling \verb{$solve()} or \verb{$eval()}.
+\verb{$get_samples()$solver_metadata} after calling \verb{$solve()} or \verb{$eval()}.
 }
 \examples{
 if (FALSE) {

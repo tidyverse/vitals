@@ -61,7 +61,7 @@ generate <- function(solver_chat = NULL) {
 #'
 #' The `result` field contains JSON-serialized strings for compatibility
 #' with existing scorers. The raw structured data is available in
-#' `solver_metadata` after calling `$solve()` or `$eval()`.
+#' `$get_samples()$solver_metadata` after calling `$solve()` or `$eval()`.
 #'
 #' @inheritParams generate
 #' @param type A type specification for the extracted data, created with

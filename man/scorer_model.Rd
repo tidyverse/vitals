@@ -26,7 +26,9 @@ model_graded_fact(
 \item{template}{Grading template to use--a \code{glue()} string which will take
 substitutions \code{input}, \code{answer}, \code{criterion}, \code{instructions}.}
 
-\item{instructions}{Grading instructions.}
+\item{instructions}{Grading instructions. If provided, this completely
+replaces the default instructions, which specify e.g. how the grader should
+format its output (e.g. \code{"GRADE: C"}).}
 
 \item{grade_pattern}{A regex pattern to extract the final grade from the
 judge model's response.}

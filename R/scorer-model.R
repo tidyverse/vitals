@@ -12,7 +12,9 @@
 #'
 #' @param template Grading template to use--a `glue()` string which will take
 #' substitutions `input`, `answer`, `criterion`, `instructions`.
-#' @param instructions Grading instructions.
+#' @param instructions Grading instructions. If provided, this completely
+#' replaces the default instructions, which specify e.g. how the grader should
+#' format its output (e.g. `"GRADE: C"`).
 #' @param grade_pattern A regex pattern to extract the final grade from the
 #' judge model's response.
 #' @param partial_credit Whether to allow partial credit.

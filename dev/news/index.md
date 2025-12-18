@@ -8,6 +8,10 @@
 
 - The log viewer home page will now show full summaries of each eval.
 
+- Updated the default `model_graded_qa(instructions)` to encourage
+  brevity in reasoning
+  ([\#197](https://github.com/tidyverse/vitals/issues/197)).
+
 ## vitals 0.2.0
 
 CRAN release: 2025-12-01

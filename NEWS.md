@@ -1,6 +1,10 @@
 # vitals (development version)
 
-* Updated the vendored Inspect Log Viewer to Inspect version 0.3.151 
+* New `generate_structured()` solver uses `ellmer::parallel_chat_structured()`
+  to extract structured data from model responses. `generate_structured()` is to
+  `parallel_chat_structured()` as `generate()` is to `parallel_chat()` (#153).
+
+* Updated the vendored Inspect Log Viewer to Inspect version 0.3.151
   (released 30 November 2025, #194).
 
 * The log viewer home page will now show full summaries of each eval.

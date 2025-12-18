@@ -66,3 +66,6 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 }
 
 }
+\seealso{
+\code{\link[=generate_structured]{generate_structured()}} for structured output extraction.
+}

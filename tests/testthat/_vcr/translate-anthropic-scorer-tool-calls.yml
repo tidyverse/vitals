@@ -114,7 +114,7 @@ http_interactions:
         392\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
@@ -160,7 +160,7 @@ http_interactions:
         1332\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
@@ -206,7 +206,7 @@ http_interactions:
         129\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
@@ -252,7 +252,7 @@ http_interactions:
         392\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
         need to verify whether 125 + 267 = 392 by using the sum_tool."},{"type":"tool_use","id":"toolu_01CKQX5HakZXgFp1syafXuzU","name":"sum_tool","input":{"a":125,"b":267}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01CKQX5HakZXgFp1syafXuzU","content":"{\"sum\":392}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
@@ -302,7 +302,7 @@ http_interactions:
         1332\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
         need to verify whether 543 + 789 = 1332 is correct by using the sum_tool."},{"type":"tool_use","id":"toolu_019ngctCs4m7z57g1QCvERdw","name":"sum_tool","input":{"a":543,"b":789}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_019ngctCs4m7z57g1QCvERdw","content":"{\"sum\":1332}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
@@ -353,7 +353,7 @@ http_interactions:
         129\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
         need to verify whether 91 + 38 = 129 by using the sum_tool."},{"type":"tool_use","id":"toolu_01TTqAzKHmCJcbx7B6un7HCP","name":"sum_tool","input":{"a":91,"b":38}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01TTqAzKHmCJcbx7B6un7HCP","content":"{\"sum\":129}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add

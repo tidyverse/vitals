@@ -77,7 +77,7 @@ http_interactions:
         4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:
@@ -126,7 +126,7 @@ http_interactions:
         5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst explain your reasoning, then end with
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
         GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
         or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
   response:

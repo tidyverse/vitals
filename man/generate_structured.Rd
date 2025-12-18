@@ -34,30 +34,47 @@ Chat objects, \code{generate_structured()} creates synthetic Chat objects
 for logging purposes. These "mock" chats contain the input and
 JSON-serialized output as turns, but won't include actual token usage
 or timing metadata from the API.
+
+The \code{result} field contains JSON-serialized strings for compatibility
+with existing scorers. The raw structured data is available in
+\code{solver_metadata} after calling \verb{$solve()} or \verb{$eval()}.
 }
 \examples{
 if (FALSE) {
   library(ellmer)
 
   type_answer <- type_object(
-    answer = type_string("The answer to the question"),
-    confidence = type_number("Confidence from 0 to 1")
+    answer = type_string(
+      "The author's first name, with no other formatting."
+    )
+  )
+
+  names <- tibble::tribble(
+    ~input,                                  ~target,
+    "Name's Josiah, how's it going?",        "Josiah",
+    "I'm Lin, what's your name?",            "Lin",
+    "My name is Em Fields, how about you?",  "Em"
   )
 
   tsk <- Task$new(
-    dataset = data.frame(
-      input = c("What is 2+2?", "What is 3+3?"),
-
-      target = c("4", "6")
-    ),
+    dataset = names,
     solver = generate_structured(
-      solver_chat = chat_openai(),
+      solver_chat = chat_anthropic(model = "claude-sonnet-4-20250514"),
       type = type_answer
     ),
-    scorer = detect_match(location = "answer")
+    scorer = detect_match("any")
   )
 
   tsk$eval()
+
+  # the result is JSON-serialized for compatibility with scorers
+  tsk$get_samples()$result
+
+  # raw structured data is available in solver_metadata
+  tsk$get_samples()$solver_metadata
+
+  # solver_chat contains synthetic turns for logging
+  tsk$get_samples()$solver_chat[[1]]
 }
 }
 \seealso{

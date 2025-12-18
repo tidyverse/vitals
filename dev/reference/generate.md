@@ -34,6 +34,11 @@ See the documentation for the `solver` argument in
 [Task](https://vitals.tidyverse.org/dev/reference/Task.md) for more
 information on the return type.
 
+## See also
+
+[`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
+for structured output extraction.
+
 ## Examples
 
 ``` r
@@ -77,13 +82,13 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [3.1s]
+#> ✔ Solving [3.2s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [3.7s]
+#> ✔ Scoring [4.2s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%

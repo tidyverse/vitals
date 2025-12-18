@@ -2,6 +2,20 @@
 
 ## vitals (development version)
 
+- New
+  [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
+  solver uses
+  [`ellmer::parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
+  to extract structured data from model responses.
+  [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
+  is to
+  [`parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
+  as
+  [`generate()`](https://vitals.tidyverse.org/dev/reference/generate.md)
+  is to
+  [`parallel_chat()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
+  ([\#153](https://github.com/tidyverse/vitals/issues/153)).
+
 - Updated the vendored Inspect Log Viewer to Inspect version 0.3.151
   (released 30 November 2025,
   [\#194](https://github.com/tidyverse/vitals/issues/194)).

@@ -211,7 +211,7 @@ qa_default_instructions <- function(partial_credit = FALSE) {
     LETTER is one of C{partial_letter}I.
     Please choose ONE option: either 'C' for correct answers, {partial_prompt}
     or 'I' for incorrect answers.
-    First explain your reasoning, then end with GRADE: $LETTER.
+    First **briefly** explain your reasoning, then end with GRADE: $LETTER.
     Do not format the grading string and do not include any punctuation or
     exposition after it."
   )

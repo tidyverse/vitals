@@ -178,6 +178,15 @@ parse_query_string <- function(query_string) {
   do.call(c, params)
 }
 
+path_to_file_url <- function(path) {
+  normalized <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  if (.Platform$OS.type == "windows") {
+    paste0("file:///", normalized)
+  } else {
+    paste0("file://", normalized)
+  }
+}
+
 get_log_files_metadata <- function(dir) {
   files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
   files <- files[basename(files) != "listing.json"]
@@ -201,7 +210,7 @@ get_log_files_metadata <- function(dir) {
     )
 
     list(
-      name = paste0("file://", normalizePath(file_path)),
+      name = path_to_file_url(file_path),
       size = info$size,
       mtime = as.numeric(info$mtime) * 1000,
       task = task_info$task,
@@ -227,7 +236,7 @@ json_response <- function(data, status = 200) {
 
 get_api_logs <- function(dir) {
   resp <- list(
-    log_dir = paste0("file://", normalizePath(dir)),
+    log_dir = path_to_file_url(dir),
     files = get_log_files_metadata(dir)
   )
   json_response(resp)
@@ -235,7 +244,7 @@ get_api_logs <- function(dir) {
 
 get_api_log_dir <- function(dir) {
   resp <- list(
-    log_dir = paste0("file://", normalizePath(dir))
+    log_dir = path_to_file_url(dir)
   )
   json_response(resp)
 }

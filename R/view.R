@@ -187,6 +187,17 @@ path_to_file_url <- function(path) {
   }
 }
 
+file_url_to_path <- function(url) {
+  if (!startsWith(url, "file://")) {
+    return(url)
+  }
+  path <- substr(url, 8, nchar(url))
+  if (.Platform$OS.type == "windows" && startsWith(path, "/")) {
+    path <- substr(path, 2, nchar(path))
+  }
+  path
+}
+
 get_log_files_metadata <- function(dir) {
   files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
   files <- files[basename(files) != "listing.json"]
@@ -263,7 +274,7 @@ get_api_log_headers <- function(dir, query) {
 
     headers <- lapply(files, function(f) {
       if (startsWith(f, "file://")) {
-        file_path <- substr(f, 8, nchar(f))
+        file_path <- file_url_to_path(f)
       } else if (startsWith(f, "/") || grepl("^[A-Za-z]:", f)) {
         file_path <- f
       } else {
@@ -298,7 +309,7 @@ get_api_flow <- function() {
 
 get_api_log_file <- function(dir, file, query) {
   if (startsWith(file, "file://")) {
-    file_path <- substr(file, 8, nchar(file))
+    file_path <- file_url_to_path(file)
   } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
     file_path <- file
   } else {

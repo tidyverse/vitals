@@ -1103,3 +1103,118 @@ test_that("$log() respects dir argument", {
   expect_equal(length(files_in_arg_dir), 1)
   expect_equal(length(files_in_env_dir), 0)
 })
+
+# prompt_template ---------------------------------------------------------
+test_that("prompt_template interpolates metadata into prompts", {
+  vcr::local_cassette("task-prompt-template")
+  key_get("OPENAI_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  shapes_data <- tibble::tibble(
+    input = c("The shapes are square, circle and rhombus"),
+    target = c("square"),
+    shape_to_pick = c("square")
+  )
+
+  tsk <- Task$new(
+    dataset = shapes_data,
+    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    scorer = detect_match("any"),
+    prompt_template = "Always pick {{ shape_to_pick }}. Just return the shape name."
+  )
+
+  tsk$eval()
+  expect_valid_log(tsk$log())
+
+  expect_equal(nrow(tsk$get_samples()), 1)
+})
+
+test_that("prompt_template works with generate_structured", {
+  vcr::local_cassette("task-prompt-template-structured")
+  key_get("OPENAI_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  type_shape <- type_object(
+    shape = type_string("The name of the shape that was picked")
+  )
+
+  shapes_data <- tibble::tibble(
+    input = c("The shapes are square, circle and rhombus"),
+    target = c("square"),
+    shape_to_pick = c("square")
+  )
+
+  tsk <- Task$new(
+    dataset = shapes_data,
+    solver = generate_structured(
+      solver_chat = chat_openai(model = "gpt-4.1-nano"),
+      type = type_shape
+    ),
+    scorer = detect_match("any"),
+    prompt_template = "Always pick {{ shape_to_pick }}."
+  )
+
+  tsk$eval()
+  expect_valid_log(tsk$log())
+
+  expect_equal(nrow(tsk$get_samples()), 1)
+  expect_true("solver_metadata" %in% names(tsk$get_samples()))
+})
+
+test_that("prompt_template=NULL preserves original behavior", {
+  vcr::local_cassette("task-prompt-template-null")
+  key_get("OPENAI_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    scorer = model_graded_qa(),
+    prompt_template = NULL
+  )
+
+  tsk$eval()
+  expect_valid_log(tsk$log())
+
+  expect_equal(nrow(tsk$get_samples()), 2)
+})
+
+test_that("interpolate_prompts works correctly", {
+  samples <- tibble::tibble(
+    input = c("Question 1", "Question 2"),
+    target = c("A", "B"),
+    context = c("Context A", "Context B")
+  )
+
+  result <- interpolate_prompts(samples, NULL)
+  expect_equal(result, c("Question 1", "Question 2"))
+
+  result <- interpolate_prompts(samples, "{{ context }}")
+  expect_equal(result, c("Context A\n\nQuestion 1", "Context B\n\nQuestion 2"))
+
+  result <- interpolate_prompts(samples, "Use {{ context }} to answer.")
+  expect_equal(
+    result,
+    c(
+      "Use Context A to answer.\n\nQuestion 1",
+      "Use Context B to answer.\n\nQuestion 2"
+    )
+  )
+})

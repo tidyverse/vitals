@@ -67,6 +67,15 @@
 #' The value of `epochs` supplied to `$eval()` or `$score()` will take
 #' precedence over the value in `$new()`.
 #'
+#' @param prompt_template An optional prompt template for per-sample
+#' customization using `{{ column_name }}` syntax. When provided, values from
+#' metadata columns in the dataset are interpolated into the template, which
+#' is then prepended to each sample's `input`. For example,
+#' `"Always pick {{ shape }}."` with a `shape` column would prepend
+#' `"Always pick square.\n\n"` to the input for rows where `shape` is
+#' `"square"`. If `NULL` (the default), inputs are passed to the solver
+#' unchanged.
+#'
 #' @seealso [generate()] for the simplest possible solver, and
 #' [scorer_model] and [scorer_detect] for two built-in approaches to
 #' scoring.
@@ -138,6 +147,7 @@ Task <- R6::R6Class(
       scorer,
       metrics = NULL,
       epochs = NULL,
+      prompt_template = NULL,
       name = deparse(substitute(dataset)),
       dir = vitals_log_dir()
     ) {
@@ -150,9 +160,9 @@ Task <- R6::R6Class(
       check_dataset(dataset)
       check_log_dir(dir)
       check_function(solver)
-      # TODO: for non-built in scorers, what to do?
       check_metrics(metrics)
       check_number_whole(epochs, min = 1, allow_null = TRUE)
+      check_string(prompt_template, allow_null = TRUE)
 
       # dataset names can contain dashes or alphanumerics--transition
       # underscores and spaces to dashes (#92)
@@ -171,6 +181,7 @@ Task <- R6::R6Class(
 
       private$task_id <- substr(hash(c(name, solver_name, scorer_name)), 1, 22)
       private$epochs <- epochs
+      private$prompt_template <- prompt_template
 
       private$samples <- set_id_column(dataset)
     },
@@ -272,7 +283,9 @@ Task <- R6::R6Class(
       private$samples$solver_chat <- NA
 
       private$track_token_usage("solver_token_usage")
-      private$solutions <- private$solver(self$get_samples()$input, ...)
+      samples <- self$get_samples()
+      prompts <- interpolate_prompts(samples, private$prompt_template)
+      private$solutions <- private$solver(prompts, ...)
 
       # TODO: it might be nice to just run one of the inputs async and check for
       # this earlier on so that a full eval's worth of results isn't thrown
@@ -842,7 +855,8 @@ Task <- R6::R6Class(
     task_id = NULL,
     run_id = NULL,
 
-    epochs = NULL
+    epochs = NULL,
+    prompt_template = NULL
   )
 )
 
@@ -1013,4 +1027,16 @@ numeric_price <- function(price) {
   result <- as.numeric(gsub("\\$", "", price))
   result[is.na(result)] <- 0
   result
+}
+
+interpolate_prompts <- function(samples, template) {
+  if (is.null(template)) {
+    return(samples$input)
+  }
+
+  purrr::map_chr(seq_len(nrow(samples)), function(i) {
+    row_data <- as.list(samples[i, , drop = FALSE])
+    prefix <- ellmer::interpolate(template, !!!row_data)
+    paste0(prefix, "\n\n", samples$input[[i]])
+  })
 }

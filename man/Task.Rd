@@ -108,6 +108,7 @@ calling this method and then \verb{$eval()} on the resulting object.
   scorer,
   metrics = NULL,
   epochs = NULL,
+  prompt_template = NULL,
   name = deparse(substitute(dataset)),
   dir = vitals_log_dir()
 )}\if{html}{\out{</div>}}
@@ -171,6 +172,15 @@ for examples.}
 multiple times to better quantify variation. Optional, defaults to \code{1L}.
 The value of \code{epochs} supplied to \verb{$eval()} or \verb{$score()} will take
 precedence over the value in \verb{$new()}.}
+
+\item{\code{prompt_template}}{An optional prompt template for per-sample
+customization using \code{{{ column_name }}} syntax. When provided, values from
+metadata columns in the dataset are interpolated into the template, which
+is then prepended to each sample's \code{input}. For example,
+\code{"Always pick {{ shape }}."} with a \code{shape} column would prepend
+\code{"Always pick square.\\n\\n"} to the input for rows where \code{shape} is
+\code{"square"}. If \code{NULL} (the default), inputs are passed to the solver
+unchanged.}
 
 \item{\code{name}}{A name for the evaluation task. Defaults to
 \code{deparse(substitute(dataset))}.}

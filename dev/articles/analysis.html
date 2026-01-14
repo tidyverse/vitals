@@ -213,7 +213,7 @@ probabilities and credible intervals.</li>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">LLM</span>, fill <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">2</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/data-structure-plot-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/data-structure-plot-1.png" class="r-plt" alt="" width="700"></p>
 <p>In this data:</p>
 <ul>
 <li>We’re comparing results from 3 different <strong>tasks</strong>. The
@@ -338,7 +338,7 @@ epoch like so:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/single_sample-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/single_sample-1.png" class="r-plt" alt="" width="700"></p>
 <p>To model the score probabilities, the cumulative logit model
 estimates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c-1</annotation></semantics></math>
@@ -1411,7 +1411,7 @@ before:</p>
 <span>    legend.position <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/multiple-sample-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/multiple-sample-1.png" class="r-plt" alt="" width="700"></p>
 <p>We can extend the cumulative logistic model to account for additional
 data hierarchies by incorporating random effects due to specific random
 variables. In the case of <code>are_eval</code>, we’ve evaluated the
@@ -2458,7 +2458,7 @@ for each question.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Random Intercept Estimate\n(incorrect &lt;----------------&gt; correct)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">lims</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">effect_range</span>, <span class="va">effect_range</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/multiple-effects-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/multiple-effects-1.png" class="r-plt" alt="" width="700"></p>
 <p>The distribution of these is assumed to be Gaussian-like, with
 smaller values indicating that a sample is more difficult. For example,
 the most challenging sample was “after-stat-bar-heights” where, across
@@ -2583,7 +2583,7 @@ regression model parameters can be visualized:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/influence.measures.html" class="external-link">hat</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/posterior-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/posterior-1.png" class="r-plt" alt="" width="700"></p>
 <p>Since these parameters measure LLM effectiveness (relative to the
 baseline LLM of GPT 4.1), we can tell what our model thinks that likely
 values are. It suggests that the GPT 4.1 performs on par with Gemini 2.5
@@ -3143,7 +3143,7 @@ interpretability:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_errorbar</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">lower</span>, xmax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Random Intercept Estimate\n(incorrect &lt;----------------&gt; correct)"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">lims</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">bayes_effect_range</span>, <span class="va">bayes_effect_range</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="analysis_files/figure-html/bayes-effects-1.png" class="r-plt" width="700"></p>
+<p><img src="analysis_files/figure-html/bayes-effects-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="extendability">Extendability<a class="anchor" aria-label="anchor" href="#extendability"></a>

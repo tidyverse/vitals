@@ -96,8 +96,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x55e8428909c8>
-#> <environment: 0x55e842893910>
+#> <bytecode: 0x55ea6d38fc68>
+#> <environment: 0x55ea6d392bb0>
 ```
 
 While, in documentation, I’ve mostly written
@@ -358,7 +358,7 @@ are_mod
 #> data:    are_eval_data
 #> 
 #>  link  threshold nobs logLik AIC    niter max.grad cond.H 
-#>  logit flexible  58   -54.60 115.20 5(0)  5.49e-13 1.5e+01
+#>  logit flexible  58   -54.60 115.20 5(0)  5.48e-13 1.5e+01
 #> 
 #> Coefficients:
 #> solverbtw 

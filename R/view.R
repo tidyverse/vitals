@@ -178,6 +178,26 @@ parse_query_string <- function(query_string) {
   do.call(c, params)
 }
 
+path_to_file_url <- function(path) {
+  normalized <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  if (.Platform$OS.type == "windows") {
+    paste0("file:///", normalized)
+  } else {
+    paste0("file://", normalized)
+  }
+}
+
+file_url_to_path <- function(url) {
+  if (!startsWith(url, "file://")) {
+    return(url)
+  }
+  path <- substr(url, 8, nchar(url))
+  if (.Platform$OS.type == "windows" && startsWith(path, "/")) {
+    path <- substr(path, 2, nchar(path))
+  }
+  path
+}
+
 get_log_files_metadata <- function(dir) {
   files <- list.files(dir, pattern = "\\.json$", recursive = TRUE)
   files <- files[basename(files) != "listing.json"]
@@ -201,7 +221,7 @@ get_log_files_metadata <- function(dir) {
     )
 
     list(
-      name = paste0("file://", normalizePath(file_path)),
+      name = path_to_file_url(file_path),
       size = info$size,
       mtime = as.numeric(info$mtime) * 1000,
       task = task_info$task,
@@ -227,7 +247,7 @@ json_response <- function(data, status = 200) {
 
 get_api_logs <- function(dir) {
   resp <- list(
-    log_dir = paste0("file://", normalizePath(dir)),
+    log_dir = path_to_file_url(dir),
     files = get_log_files_metadata(dir)
   )
   json_response(resp)
@@ -235,7 +255,7 @@ get_api_logs <- function(dir) {
 
 get_api_log_dir <- function(dir) {
   resp <- list(
-    log_dir = paste0("file://", normalizePath(dir))
+    log_dir = path_to_file_url(dir)
   )
   json_response(resp)
 }
@@ -254,7 +274,7 @@ get_api_log_headers <- function(dir, query) {
 
     headers <- lapply(files, function(f) {
       if (startsWith(f, "file://")) {
-        file_path <- substr(f, 8, nchar(f))
+        file_path <- file_url_to_path(f)
       } else if (startsWith(f, "/") || grepl("^[A-Za-z]:", f)) {
         file_path <- f
       } else {
@@ -289,7 +309,7 @@ get_api_flow <- function() {
 
 get_api_log_file <- function(dir, file, query) {
   if (startsWith(file, "file://")) {
-    file_path <- substr(file, 8, nchar(file))
+    file_path <- file_url_to_path(file)
   } else if (startsWith(file, "/") || grepl("^[A-Za-z]:", file)) {
     file_path <- file
   } else {

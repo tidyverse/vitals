@@ -76,3 +76,22 @@ regenerate_example_objects <- function() {
 accuracy <- function(...) {
   mean(...) * 100
 }
+
+is_old_task_id_format <- function(task_id) {
+  !is.null(task_id) && !grepl("/", task_id, fixed = TRUE)
+}
+
+warn_old_task_id_format <- function() {
+  cli::cli_warn(
+    c(
+      "Log directory contains logs with old-format task IDs.",
+      "i" = "The log viewer may collapse different evals as
+             {.emph retried} logs.",
+      "i" = "Click {.emph Show retried logs} in the viewer to see all logs.",
+      "i" = "To silence this warning, regenerate logs with the current
+             {.pkg vitals} version."
+    ),
+    .frequency = "once",
+    .frequency_id = "vitals_old_task_id_format"
+  )
+}

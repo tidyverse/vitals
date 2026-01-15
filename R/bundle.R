@@ -187,6 +187,11 @@ write_log_dir_manifest <- function(log_dir) {
   overviews <- lapply(headers, log_header_to_overview)
   manifest <- setNames(overviews, basename(log_files))
 
+  task_ids <- vapply(headers, function(h) h$eval$task_id %||% NA_character_, character(1))
+  if (any(vapply(task_ids, is_old_task_id_format, logical(1)), na.rm = TRUE)) {
+    warn_old_task_id_format()
+  }
+
   jsonlite::write_json(
     manifest,
     manifest_file,

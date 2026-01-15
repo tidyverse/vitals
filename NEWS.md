@@ -9,6 +9,14 @@
 
 * The log viewer home page will now show full summaries of each eval.
 
+* Task IDs now include the model name and a hash of solver/scorer arguments,
+  following Inspect's `task_identifier` format (`task_name/model/hash`).
+  This ensures that evals with different models or arguments appear as
+  separate entries in the log viewer rather than being collapsed as "retries."
+  Logs generated with older vitals versions may appear collapsed; click
+  "Show retried logs" in the viewer to see all logs, or regenerate logs
+  with the current version.
+
 * Updated the default `model_graded_qa(instructions)` to encourage brevity in reasoning (#197).
 
 # vitals 0.2.0

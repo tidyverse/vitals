@@ -55,6 +55,12 @@ vitals_view_impl <- function(
     )
   }
 
+  log_metadata <- get_log_files_metadata(dir)
+  task_ids <- vapply(log_metadata, function(x) x$task_id %||% NA_character_, character(1))
+  if (any(vapply(task_ids, is_old_task_id_format, logical(1)), na.rm = TRUE)) {
+    warn_old_task_id_format()
+  }
+
   server <- httpuv::startServer(
     host = host,
     port = port,

@@ -569,28 +569,43 @@ test_that("task errors informatively with bad metrics", {
 })
 
 # misc ------------------------------------------------------------------
-test_that("task ids are deterministic", {
+test_that("task ids are NULL before logging, computed after", {
   key_get("OPENAI_API_KEY")
 
-  tsk_1 <-
+  tsk <-
     Task$new(
       dataset = are,
       solver = generate(),
       scorer = model_graded_qa()
     )
 
-  tsk_2 <-
-    Task$new(
-      dataset = are,
-      solver = generate(),
-      scorer = model_graded_qa()
-    )
+  expect_null(tsk$.__enclos_env__$private$task_id)
+})
 
-  tsk_id_1 <- tsk_1$.__enclos_env__$private$task_id
-  tsk_id_2 <- tsk_2$.__enclos_env__$private$task_id
+test_that("task ids have correct format after logging", {
+  vcr::local_cassette("task-id-format")
+  key_get("OPENAI_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
 
-  expect_equal(tsk_id_1, tsk_id_2)
-  expect_equal(nchar(tsk_id_1), 22)
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?"),
+    target = c("4")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    scorer = detect_exact()
+  )
+
+  tsk$eval()
+
+  task_id <- tsk$.__enclos_env__$private$task_id
+  expect_true(grepl("/", task_id, fixed = TRUE))
+  expect_true(grepl("gpt-4.1-nano", task_id, fixed = TRUE))
 })
 
 test_that("Task completeness is tracked and preserved", {

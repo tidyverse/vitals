@@ -11,6 +11,13 @@
 
     Code
       result <- vitals_bundle(log_dir = log_dir, output_dir = output_dir, overwrite = TRUE)
+    Condition
+      Warning:
+      Log directory contains logs with old-format task IDs.
+      i The log viewer may collapse different evals as retried logs.
+      i Click Show retried logs in the viewer to see all logs.
+      i To silence this warning, regenerate logs with the current vitals version.
+      This warning is displayed once per session.
     Message
       v Bundle '***' created!
 

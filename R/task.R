@@ -169,7 +169,7 @@ Task <- R6::R6Class(
         private$metric_fns <- metrics
       }
 
-      private$task_id <- substr(hash(c(name, solver_name, scorer_name)), 1, 22)
+      private$task_id <- NULL
       private$epochs <- epochs
 
       private$samples <- set_id_column(dataset)
@@ -374,10 +374,12 @@ Task <- R6::R6Class(
         )
       }
 
+      private$task_id <- private$compute_task_id()
+
       eval_log <- eval_log(
         eval = translate_to_eval(
           run_id = private$run_id,
-          task = private$dataset_name,
+          task = private$task_id,
           task_id = private$task_id,
           dataset = list(
             samples = length(unique(samples$id)),
@@ -525,6 +527,21 @@ Task <- R6::R6Class(
         ),
         collapse = ""
       )
+    },
+
+    compute_task_id = function() {
+      model_name <- private$samples$solver_chat[[1]]$get_model()
+
+      hash_input <- list(
+        solver_name = private$solutions$name,
+        solver_args = private$solutions$arguments,
+        scorer_name = private$scores$name,
+        scorer_args = private$scores$arguments
+      )
+
+      args_hash <- substr(hash(hash_input), 1, 22)
+
+      paste(private$dataset_name, model_name, args_hash, sep = "/")
     },
 
     scorer = NULL,

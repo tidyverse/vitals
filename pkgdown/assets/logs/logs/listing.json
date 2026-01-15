@@ -1,0 +1,40 @@
+{
+  "2026-01-14T16-19-11-06-00_simple-addition_add3e3e94f8e2faf092a58.json": {
+    "eval_id": {},
+    "run_id": "M0O3LgCEUPpsaMuNTRxHTY",
+    "task": "simple-addition",
+    "task_id": "add3e3e94f8e2faf092a58",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "generate(chat_claude()) (claude-sonnet-4-5-20250929)",
+    "started_at": "2026-01-14T16:19:11-06:00",
+    "completed_at": "2026-01-14T16:19:11-06:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 100,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-01-14T16-31-13-06-00_simple-addition_add3e3e94f8e2faf092a58.json": {
+    "eval_id": {},
+    "run_id": "EJUDkpOsKBamZ35mNH10Np",
+    "task": "simple-addition",
+    "task_id": "add3e3e94f8e2faf092a58",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "generate(chat_claude()) (claude-sonnet-4-5-20250929)",
+    "started_at": "2026-01-14T16:31:13-06:00",
+    "completed_at": "2026-01-14T16:31:13-06:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 100,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  }
+}

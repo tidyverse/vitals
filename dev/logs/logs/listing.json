@@ -50,7 +50,7 @@
     "completed_at": "2026-01-12T16:09:53-08:00",
     "primary_metric": {
       "name": "accuracy",
-      "value": 51.3514,
+      "value": 51.351,
       "params": {
         "1": "numeric_scores"
       }

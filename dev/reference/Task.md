@@ -529,8 +529,6 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:24900>
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:41296>
 ```

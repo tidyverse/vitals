@@ -97,7 +97,10 @@ calling this method and then `$eval()` on the resulting object.
 
 - `dataset`:
 
-  A tibble with, minimally, columns `input` and `target`.
+  A tibble with, minimally, columns `input` and `target`. The `input`
+  column can be either a character vector or a list-column of 1-row
+  tibbles. Using 1-row tibbles allows per-sample customization by
+  including additional metadata that custom solvers can access.
 
 - `solver`:
 
@@ -519,16 +522,40 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [2.5s]
+#> ✔ Solving [3.2s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [3.5s]
+#> ✔ Scoring [5.4s]
 #> 
+#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
+#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:24900>
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:41296>
+
+# The `input` column can be a list of 1-row tibbles for per-sample metadata.
+# Custom solvers can then extract columns from each input:
+shapes_data <- tibble::tibble(
+  input = list(
+    tibble::tibble(shapes = "square, circle, rhombus", pick = "square"),
+    tibble::tibble(shapes = "square, circle, rhombus", pick = "circle")
+  ),
+  target = c("square", "circle")
+)
+
+my_solver <- function(solver_chat = NULL) {
+  chat <- solver_chat
+  function(inputs, ..., solver_chat = chat) {
+    ch <- if (is.function(solver_chat)) solver_chat() else solver_chat$clone()
+    prompts <- lapply(inputs, function(inp) {
+      paste0("Always pick ", inp$pick, ". Return only that shape.\n\n", inp$shapes)
+    })
+    res <- ellmer::parallel_chat(ch, prompts, ...)
+    list(result = purrr::map_chr(res, \(c) c$last_turn()@text), solver_chat = res)
+  }
+}
 ```

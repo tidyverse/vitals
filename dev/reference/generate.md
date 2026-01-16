@@ -79,13 +79,43 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   vitals_view()
 }
 #> ℹ Solving
-#> ✔ Solving [2.5s]
+#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
+#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
+#> ℹ Solving
+#> ✔ Solving [1.9s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [3.7s]
+#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
+#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
+#> ℹ Scoring
+#> ✔ Scoring [3.6s]
 #> 
+#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
+#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:32046>
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:33970>
+
+# The `input` column can be a list of 1-row tibbles for per-sample metadata.
+# Custom solvers can then extract columns from each input:
+shapes_data <- tibble::tibble(
+  input = list(
+    tibble::tibble(shapes = "square, circle, rhombus", pick = "square"),
+    tibble::tibble(shapes = "square, circle, rhombus", pick = "circle")
+  ),
+  target = c("square", "circle")
+)
+
+my_solver <- function(solver_chat = NULL) {
+  chat <- solver_chat
+  function(inputs, ..., solver_chat = chat) {
+    ch <- if (is.function(solver_chat)) solver_chat() else solver_chat$clone()
+    prompts <- lapply(inputs, function(inp) {
+      paste0("Always pick ", inp$pick, ". Return only that shape.\n\n", inp$shapes)
+    })
+    res <- ellmer::parallel_chat(ch, prompts, ...)
+    list(result = purrr::map_chr(res, \(c) c$last_turn()@text), solver_chat = res)
+  }
+}
 ```

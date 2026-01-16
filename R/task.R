@@ -108,6 +108,28 @@
 #'   vitals_view()
 #' }
 #'
+#' # The `input` column can be a list of 1-row tibbles for per-sample metadata.
+#' # Custom solvers can then extract columns from each input:
+#' shapes_data <- tibble::tibble(
+#'   input = list(
+#'     tibble::tibble(shapes = "square, circle, rhombus", pick = "square"),
+#'     tibble::tibble(shapes = "square, circle, rhombus", pick = "circle")
+#'   ),
+#'   target = c("square", "circle")
+#' )
+#'
+#' my_solver <- function(solver_chat = NULL) {
+#'   chat <- solver_chat
+#'   function(inputs, ..., solver_chat = chat) {
+#'     ch <- if (is.function(solver_chat)) solver_chat() else solver_chat$clone()
+#'     prompts <- lapply(inputs, function(inp) {
+#'       paste0("Always pick ", inp$pick, ". Return only that shape.\n\n", inp$shapes)
+#'     })
+#'     res <- ellmer::parallel_chat(ch, prompts, ...)
+#'     list(result = purrr::map_chr(res, \(c) c$last_turn()@text), solver_chat = res)
+#'   }
+#' }
+#'
 #' @export
 Task <- R6::R6Class(
   "Task",
@@ -125,8 +147,11 @@ Task <- R6::R6Class(
     #' @description
     #' The typical flow of LLM evaluation with vitals tends to involve first
     #' calling this method and then `$eval()` on the resulting object.
-    #'
+
     #' @param dataset A tibble with, minimally, columns `input` and `target`.
+    #' The `input` column can be either a character vector or a list-column
+    #' of 1-row tibbles. Using 1-row tibbles allows per-sample customization
+    #' by including additional metadata that custom solvers can access.
     #' @param name A name for the evaluation task. Defaults to
     #' `deparse(substitute(dataset))`.
     #' @param dir Directory where logs should be stored.

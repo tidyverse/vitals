@@ -189,13 +189,16 @@ generate_id <- function(length = 22) {
 }
 
 eval_log_filename <- function(eval_log) {
-  task_id_safe <- gsub("/", "_", eval_log$eval$task_id, fixed = TRUE)
   paste0(
-    gsub(":", "-", eval_log$eval$created),
+    clean_filename_component(eval_log$eval$created),
     "_",
-    task_id_safe,
+    clean_filename_component(eval_log$eval$task_id),
     ".json"
   )
+}
+
+clean_filename_component <- function(x) {
+  gsub("[_/:]", "-", x)
 }
 
 results_scores <- function(name, metrics) {

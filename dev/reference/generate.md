@@ -85,12 +85,12 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [3s]
+#> ✔ Scoring [2.8s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:32046>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:33970>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:26308>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:21035>
 
 # The `input` column can be a list of 1-row tibbles for per-sample metadata.
 # Custom solvers can then extract columns from each input:

@@ -21,6 +21,7 @@ translate_to_message <- function(turn, model) {
     ) {
       tool_result <- turn@contents[[1]]
       message$content <- collapse_tool_result(tool_result)
+      message$role <- "tool"
       message$tool_call_id <- tool_result@request@id
       message$`function` <- tool_result@request@name
       return(message)

@@ -108,14 +108,7 @@ translate_events_solver <- function(events, sample, timestamps) {
       next
     }
 
-    # If we're at the last turn or this is a turn with tool requests
-    if (
-      i == length(solver_turns) ||
-        any(sapply(
-          turn@contents,
-          function(ct) inherits(ct, "ellmer::ContentToolRequest")
-        ))
-    ) {
+    if (turn@role == "assistant") {
       events <- c(events, create_model_event(turn, sample))
     }
   }

@@ -464,6 +464,35 @@ test_that("default metrics are applied effectively", {
   expect_valid_log(tsk$log())
 })
 
+test_that("naive accuracy normalizes by number of factor levels, not observed max", {
+  vcr::local_cassette("task-default-metrics")
+  key_get("OPENAI_API_KEY")
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+  library(ellmer)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    scorer = function(...) {
+      list(
+        score = factor(c("P", "I"), levels = c("I", "P", "C"))
+      )
+    }
+  )
+
+  tsk$eval()
+
+  expect_equal(tsk$metrics, c("accuracy" = 25))
+})
+
 test_that("task applies non-default metrics", {
   vcr::local_cassette("task-non-default-metrics")
   key_get("OPENAI_API_KEY")

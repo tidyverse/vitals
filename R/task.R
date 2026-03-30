@@ -745,8 +745,8 @@ Task <- R6::R6Class(
         if (any(is.na(numeric_scores))) {
           return()
         }
-        max_score <- max(numeric_scores, na.rm = TRUE)
-        if (is.finite(max_score) && max_score > 0) {
+        max_score <- nlevels(self$get_samples()$score) - 1
+        if (max_score > 0) {
           numeric_scores <- numeric_scores / max_score
         }
         private$metric_results <-

@@ -1,5 +1,10 @@
 # vitals (development version)
 
+* Fixed naive accuracy calculation for ordered factor scores with more than
+  two levels (e.g. `I < P < C`). Previously, numeric conversion was normalized
+  by the observed max rather than the number of factor levels, so partial
+  credit scores were inflated when the highest grade was absent from results.
+
 * New `generate_structured()` solver uses `ellmer::parallel_chat_structured()`
   to extract structured data from model responses. `generate_structured()` is to
   `parallel_chat_structured()` as `generate()` is to `parallel_chat()` (#153).

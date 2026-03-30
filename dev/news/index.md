@@ -2,6 +2,12 @@
 
 ## vitals (development version)
 
+- Fixed naive accuracy calculation for ordered factor scores with more
+  than two levels (e.g. `I < P < C`). Previously, numeric conversion was
+  normalized by the observed max rather than the number of factor
+  levels, so partial credit scores were inflated when the highest grade
+  was absent from results.
+
 - New
   [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
   solver uses

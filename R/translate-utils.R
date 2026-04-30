@@ -6,10 +6,10 @@ translate_to_model_usage <- function(chat) {
   dots_list(
     !!model := list(
       input_tokens = sum(tokens$input, na.rm = TRUE),
-      cache_creation_input_tokens = 0,
-      cache_read_input_tokens = sum(tokens$cached_input, na.rm = TRUE),
       output_tokens = sum(tokens$output, na.rm = TRUE),
-      total_tokens = sum(tokens$input, tokens$output, na.rm = TRUE)
+      total_tokens = sum(tokens$input, tokens$output, na.rm = TRUE),
+      input_tokens_cache_write = 0,
+      input_tokens_cache_read = sum(tokens$cached_input, na.rm = TRUE)
     )
   )
 }
@@ -30,25 +30,6 @@ sum_model_usage <- function(solvers) {
   dots_list(!!chat$get_model() := res)
 }
 
-rename_token_fields <- function(input_list) {
-  name_mapping <- c(
-    "input_tokens" = "input_tokens",
-    "output_tokens" = "output_tokens",
-    "total_tokens" = "total_tokens",
-    "cache_creation_input_tokens" = "input_tokens_cache_write",
-    "cache_read_input_tokens" = "input_tokens_cache_read"
-  )
-
-  result <- list()
-  for (name in names(input_list)) {
-    if (name %in% names(name_mapping)) {
-      result[[name_mapping[name]]] <- input_list[[name]]
-    }
-  }
-
-  result
-}
-
 # output ----------------------------------------------------------------------
 translate_to_output <- function(chat) {
   last_assistant_turn <- chat$last_turn()
@@ -56,7 +37,7 @@ translate_to_output <- function(chat) {
   list(
     model = chat$get_model(),
     choices = translate_assistant_choices(last_assistant_turn),
-    usage = rename_token_fields(translate_to_model_usage(chat)[[1]]),
+    usage = translate_to_model_usage(chat)[[1]],
     time = turn_duration(last_assistant_turn)
   )
 }

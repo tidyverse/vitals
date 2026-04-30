@@ -109,7 +109,10 @@ translate_events_solver <- function(events, sample, timestamps) {
     }
 
     if (turn@role == "assistant") {
-      events <- c(events, create_model_event(turn, sample))
+      events <- c(
+        events,
+        create_model_event(turn, sample, timestamp = timestamps$solve$started_at)
+      )
     }
   }
 
@@ -384,7 +387,7 @@ create_solver_begin_event <- function(timestamp) {
   ))
 }
 
-create_model_event <- function(turn, sample) {
+create_model_event <- function(turn, sample, timestamp) {
   user_message_id <- generate_id()
   solver_chat <- sample$solver_chat[[1]]
 

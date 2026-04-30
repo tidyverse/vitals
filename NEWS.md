@@ -1,5 +1,9 @@
 # vitals (development version)
 
+* Model events in the log no longer hardcode `max_tokens = 4096`. The logged
+  value now reflects the provider's actual `max_tokens` setting, and the field
+  is omitted when unset (#213).
+
 * Fixed naive accuracy calculation for ordered factor scores with more than
   two levels (e.g. `I < P < C`). Previously, numeric conversion was normalized
   by the observed max rather than the number of factor levels, so partial

@@ -597,9 +597,9 @@ create_model_event <- function(turn, sample) {
     input = input_messages,
     tools = tools_list,
     tool_choice = if (length(tools_list) > 0) "auto" else "none",
-    config = list(
-      max_tokens = 4096
-    ),
+    config = drop_nulls(list(
+      max_tokens = solver_chat$get_provider()@params$max_tokens
+    )),
     output = list(
       model = solver_chat$get_model(),
       choices = list(
@@ -612,7 +612,7 @@ create_model_event <- function(turn, sample) {
       time = attr(turn, "working_time")
     ),
     call = list(
-      request = list(
+      request = drop_nulls(list(
         messages = request_messages,
         tools = tools_list,
         tool_choice = if (length(tools_list) > 0) {
@@ -621,11 +621,11 @@ create_model_event <- function(turn, sample) {
           "none"
         },
         model = solver_chat$get_model(),
-        max_tokens = 4096,
+        max_tokens = solver_chat$get_provider()@params$max_tokens,
         extra_headers = list(
           `x-irid` = generate_id()
         )
-      ),
+      )),
       response = list(
         id = paste0("msg_", generate_id()),
         content = if (has_tool_calls_in_turn) {
@@ -914,9 +914,9 @@ create_scoring_model_event <- function(turn, sample, timestamp) {
     input = input_messages,
     tools = tools_list,
     tool_choice = if (length(tools_list) > 0) "auto" else "none",
-    config = list(
-      max_tokens = 4096
-    ),
+    config = drop_nulls(list(
+      max_tokens = scorer_chat$get_provider()@params$max_tokens
+    )),
     output = list(
       model = scorer_chat$get_model(),
       choices = list(
@@ -929,7 +929,7 @@ create_scoring_model_event <- function(turn, sample, timestamp) {
       time = attr(turn, "working_time")
     ),
     call = list(
-      request = list(
+      request = drop_nulls(list(
         messages = request_messages,
         tools = tools_list,
         tool_choice = if (length(tools_list) > 0) {
@@ -938,11 +938,11 @@ create_scoring_model_event <- function(turn, sample, timestamp) {
           "none"
         },
         model = scorer_chat$get_model(),
-        max_tokens = 4096,
+        max_tokens = scorer_chat$get_provider()@params$max_tokens,
         extra_headers = list(
           `x-irid` = generate_id()
         )
-      ),
+      )),
       response = list(
         id = paste0("msg_", generate_id()),
         content = if (has_tool_calls_in_turn) {
@@ -1028,6 +1028,10 @@ create_scorer_end_event <- function(timestamp, working_start) {
     type = "scorer",
     name = "model_graded_qa"
   ))
+}
+
+drop_nulls <- function(x) {
+  x[!vapply(x, is.null, logical(1))]
 }
 
 # misc helpers -------------------------------------------------------------

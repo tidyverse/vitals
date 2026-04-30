@@ -47,8 +47,9 @@ translate_to_message <- function(turn, model) {
       })
 
       message$tool_calls <- tool_calls
-      message$model <- model
     }
+
+    message$model <- model
   }
 
   message$role <- role

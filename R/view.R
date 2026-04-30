@@ -334,12 +334,7 @@ get_api_log_file <- function(dir, file, query) {
     file_size_mb <- file.info(file_path)$size / (1024 * 1024)
 
     if (!is.na(header_only) && file_size_mb > header_only) {
-      if (
-        !is.null(content$records) &&
-          length(content$records) > 10
-      ) {
-        content$records <- head(content$records, 10)
-      }
+      content$samples <- NULL
     }
   }
 

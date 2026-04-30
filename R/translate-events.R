@@ -1041,7 +1041,7 @@ events_timestamp <- function(time) {
   sub(
     pattern = "(\\d{2})(\\d{2})$",
     replacement = "\\1:\\2",
-    x = format(Sys.time(), "%Y-%m-%dT%H:%M:%OS6%z")
+    x = format(time, "%Y-%m-%dT%H:%M:%OS6%z")
   )
 }
 

@@ -6,14 +6,21 @@ test_that("translate_to_messages works with example turns", {
 
   inspect_messages <- example_inspect_log()[["samples"]][[1]][["messages"]]
 
-  zap_id <- function(l) {
+  zap_volatile <- function(l) {
     l[["id"]] <- NULL
+    l[["model"]] <- NULL
     l
   }
   expect_equal(
-    purrr::map(ellmer_messages, zap_id),
-    purrr::map(inspect_messages, zap_id)
+    purrr::map(ellmer_messages, zap_volatile),
+    purrr::map(inspect_messages, zap_volatile)
   )
+})
+
+test_that("assistant messages include model field", {
+  chat <- mock_chat_turns(list(user = "Hi", assistant = "Hello"))
+  messages <- translate_to_messages(chat)
+  expect_equal(messages[[2]]$model, "test-model")
 })
 
 test_that("translate_to_messages handles image inputs", {

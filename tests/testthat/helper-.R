@@ -1,18 +1,29 @@
-# an example Claude chat with:
-#> <Chat turns=2 tokens=14/9>
-#> ── user ─────────────────────────────────────────────────────────────────
-#> What's 2+2?
-#> ── assistant ────────────────────────────────────────────────────────────
-#> 2+2=4
-example_ellmer_solver <- function() {
-  load(
-    system.file(
-      "test/solver.rda",
-      package = "vitals"
-    )
+mock_chat_turns <- function(..., system_prompt = NULL, model = "test-model") {
+  chat <- ellmer::chat_openai_compatible(
+    base_url = "https://example.com",
+    model = model,
+    system_prompt = system_prompt,
+    credentials = function() "fake-key"
   )
+  pairs <- list(...)
+  turns <- list()
+  for (pair in pairs) {
+    turns <- c(
+      turns,
+      list(
+        ellmer::UserTurn(contents = list(ellmer::ContentText(pair$user))),
+        ellmer::AssistantTurn(
+          contents = list(ellmer::ContentText(pair$assistant))
+        )
+      )
+    )
+  }
+  chat$set_turns(turns)
+  chat
+}
 
-  solver
+example_ellmer_solver <- function() {
+  mock_chat_turns(list(user = "What's 2+2?", assistant = "2+2=4"))
 }
 
 # a log actually written by Python Inspect
@@ -44,10 +55,8 @@ example_task <- function(solved = TRUE, scored = TRUE) {
 
   res <- Task$new(
     dataset = simple_addition,
-    solver = function(...) {
-    },
-    scorer = function(...) {
-    }
+    solver = function(...) {},
+    scorer = function(...) {}
   )
 
   if (!solved) {

@@ -1,6 +1,7 @@
 # Writing evals for your LLM product
 
 ``` r
+
 library(vitals)
 ```
 
@@ -160,11 +161,11 @@ When implementing a scorer, you have a few options
   product development, you should be spending a lot of time looking at
   the solver’s outputs yourself.
 
-| Technique     | Deterministic Scoring | LLM-as-a-judge / model grading | Human grading  |
-|---------------|-----------------------|--------------------------------|----------------|
-| Speed         | Very fast             | Pretty fast                    | Very slow      |
-| Cost          | Very cheap / “free”   | Pretty cheap                   | Very expensive |
-| Applicability | Narrow                | Broad                          | Broad          |
+| Technique | Deterministic Scoring | LLM-as-a-judge / model grading | Human grading |
+|----|----|----|----|
+| Speed | Very fast | Pretty fast | Very slow |
+| Cost | Very cheap / “free” | Pretty cheap | Very expensive |
+| Applicability | Narrow | Broad | Broad |
 
 Understandably, many people bristle at the thought of LLMs evaluating
 their own output; while these systems do take some careful refinement,
@@ -209,13 +210,13 @@ cases:
   Pro, etc.; you’re much more likely to get results you can begin to
   trust from larger models.
 
-Husain, Hamel. 2024a. “Creating a LLM-as-a-Judge That Drives Business
-Results.” <https://hamel.dev/blog/posts/llm-judge/index.html>.
+Husain, Hamel. 2024a. *Creating a LLM-as-a-Judge That Drives Business
+Results*. <https://hamel.dev/blog/posts/llm-judge/index.html>.
 
-———. 2024b. “Your AI Product Needs Evals.”
+Husain, Hamel. 2024b. *Your AI Product Needs Evals*.
 <https://hamel.dev/blog/posts/evals/>.
 
-Press, Ofir. 2024. “How to Build Good Language Modeling Benchmarks.”
+Press, Ofir. 2024. *How to Build Good Language Modeling Benchmarks*.
 <https://ofir.io/How-to-Build-Good-Language-Modeling-Benchmarks/>.
 
 Yan, Eugene. 2024. “Task-Specific LLM Evals That Do & Don’t Work.”

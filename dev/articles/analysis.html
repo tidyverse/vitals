@@ -276,7 +276,7 @@ and
 (which, in this context, might represent the accuracies of LLMs) as a
 simple example. If we wanted to evaluate their difference, the variance
 of that difference is
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mo>−</mo><mi>B</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>V</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>+</mo><mi>V</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>B</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mn>2</mn><mi>C</mi><mi>o</mi><mi>v</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var[A-B] = Var[A] + Var[B] - 2Cov[A,B]</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><mi>A</mi><mo>−</mo><mi>B</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><mi>A</mi><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><mi>B</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mn>2</mn><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false" form="prefix">[</mo><mi>A</mi><mo>,</mo><mi>B</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">Var[A-B] = Var[A] + Var[B] - 2Cov[A,B]</annotation></semantics></math>.
 Standard statistical tools, like the basic t-test, use signal-to-noise
 ratios. The covariance term would be nonzero if there is a within-sample
 (or rater) correlation. If we were to ignore this, we would artificially
@@ -298,11 +298,11 @@ model. For
 possible values of the scores, there are
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c-1</annotation></semantics></math>
 probabilities
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Pr[Y_{i} \ge k]</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">Pr[Y_{i} \ge k]</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mi>…</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">i=1\ldots n</annotation></semantics></math>
 samples. For example,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mn>2</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Pr[Y_{i} \ge 2]</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">Pr[Y_{i} \ge 2]</annotation></semantics></math>
 would model the probability of being not completely incorrect.</p>
 <div class="section level3">
 <h3 id="independent-data">Independent Data<a class="anchor" aria-label="anchor" href="#independent-data"></a>
@@ -343,7 +343,7 @@ epoch like so:</p>
 estimates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c-1</annotation></semantics></math>
 values of</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="false" form="postfix">]</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>θ</mi><mi>k</mi></msub><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>i</mi><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">]</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>θ</mi><mi>k</mi></msub><mo>−</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>i</mi><mi>p</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
 \log\left(\frac{Pr[Y_{i} \ge k]}{1 - Pr[Y_{i} \ge k]]}\right) = \theta_k - (\beta_2x_{i2} + \ldots +  \beta_{p}x_{ip})
 </annotation></semantics></math></p>
 <p>for
@@ -377,7 +377,7 @@ easily calculate the covariance matrix of the parameters and inferential
 procedures. Because of the properties of maximum likelihood, we can also
 make inferences on functions of the parameters that are monotonic in
 nature (e.g.,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">log(\beta)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">log(\beta)</annotation></semantics></math>,
 etc).</p>
 <p>We’ve ordered the LLMs above so that the worst-performing LLM has an
 index of
@@ -387,7 +387,7 @@ coefficients have the same sign, simplifying interpretation. Different
 orderings produce equivalent results but may require inverting odds
 ratios.&lt;/p&gt;'><sup>1</sup></a> This
 parameterization allows for a direct path to inference since the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">exp(\beta_j)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">exp(\beta_j)</annotation></semantics></math>
 parameters increase the odds that LLM
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
 performs <em>better</em> than the worst LLM. We can easily estimate null
@@ -1424,18 +1424,18 @@ zero effect on the model’s prediction function. Instead, it helps model
 the variability of the data.</p>
 <p>Let’s adjust our model equation and add a random intercept term due
 to replicates:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="false" form="postfix">]</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mi>k</mi></msub><mo>−</mo><msub><mi>α</mi><mo>ℓ</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>i</mi><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mi>r</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>Y</mi><mi>i</mi></msub><mo>≥</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">]</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>θ</mi><mi>k</mi></msub><mo>−</mo><msub><mi>α</mi><mi>ℓ</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>x</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>β</mi><mi>p</mi></msub><msub><mi>x</mi><mrow><mi>i</mi><mi>p</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
 \log\left(\frac{Pr[Y_{i} \ge k]}{1 - Pr[Y_{i} \ge k]]}\right) = (\theta_k - \alpha_{\ell})- (\beta_2x_{i2} + \ldots +  \beta_{p}x_{ip})
 </annotation></semantics></math></p>
 <p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mo>ℓ</mo></msub><annotation encoding="application/x-tex">\alpha_{\ell}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>ℓ</mi></msub><annotation encoding="application/x-tex">\alpha_{\ell}</annotation></semantics></math>
 reflects a random variation in the intercept for each category due to
 replicate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ℓ</mo><mo>=</mo><mn>1</mn><mi>…</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">\ell=1\ldots m</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℓ</mi><mo>=</mo><mn>1</mn><mi>…</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">\ell=1\ldots m</annotation></semantics></math>
 replicates. We need to make a probabilistic assumption for these values,
 and a convenient approach is to assume that they are independently
 distributed as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\alpha_{\ell} \sim N(0, \sigma^2)</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>ℓ</mi></msub><mo>∼</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\alpha_{\ell} \sim N(0, \sigma^2)</annotation></semantics></math>.
 This addition to the model reflects that the baseline log-odds can
 randomly fluctuate with different epochs. Still, the overall
 relationship between the log odds and the LLM parameters does not change
@@ -1445,7 +1445,7 @@ likelihood equations. However, the model shown above is not overly
 complex and, with more than two epochs, should not be difficult to
 train. We can still conduct the same inferential methods as previously
 shown, and, as a bonus, we can use our estimates of the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mo>ℓ</mo></msub><annotation encoding="application/x-tex">\alpha_{\ell}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>ℓ</mi></msub><annotation encoding="application/x-tex">\alpha_{\ell}</annotation></semantics></math>
 to help us understand which samples are most difficult for the LLMs to
 correctly solve.</p>
 <p>To model this structure, we first fit two models. The first is as
@@ -2438,7 +2438,7 @@ LLMs’ performance on it alone), too. <strong>Are some questions harder
 than others?</strong></p>
 <p>Since we included <code>(1|id)</code> in our model structure, the
 model estimates random effects
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mo>ℓ</mo></msub><annotation encoding="application/x-tex">\widehat{\alpha}_{\ell}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mi>ℓ</mi></msub><annotation encoding="application/x-tex">\widehat{\alpha}_{\ell}</annotation></semantics></math>
 for each question.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">multiple_intercepts</span> <span class="op">&lt;-</span> </span>
@@ -2513,7 +2513,7 @@ so we can assign them very wide Gaussian prior distributions. Assigning
 a very large variance allows some prior beliefs but also allows our
 observed data to influence the model estimates more. We’ll assume a wide
 <em>t</em> distribution via
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mo>ℓ</mo></msub><mo>∼</mo><mi>t</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\alpha_{\ell} \sim t(1)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>ℓ</mi></msub><mo>∼</mo><mi>t</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\alpha_{\ell} \sim t(1)</annotation></semantics></math>
 for the random effects. This is a slightly more informative
 distributional assumption than the one used in our previous random
 effects model.</p>
@@ -2593,7 +2593,7 @@ hypothesis-driven inference, so there is no p-value to report. We can
 see from the figure that a small area in these posterior distributions
 is near zero. For example, only NA% of the Claude 4 Sonnet posterior is
 within
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\pm 0.05</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>0.05</mn></mrow><annotation encoding="application/x-tex">\pm 0.05</annotation></semantics></math>.</p>
 <p>We can quantify the posteriors using standard summary statistics:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bayes_reg_summary</span></span></code></pre></div>

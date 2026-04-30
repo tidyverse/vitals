@@ -70,21 +70,18 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   vitals_view()
 }
 #> ℹ Solving
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Solving
-#> ✔ Solving [1.6s]
+#> ✔ Solving [1.8s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [2.4s]
+#> ✔ Scoring [2.3s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:2653>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:13278>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:3565>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:4327>
 
 # The `input` column can be a list of 1-row tibbles for per-sample metadata.
 # Custom solvers can then extract columns from each input:

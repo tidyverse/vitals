@@ -82,13 +82,10 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   vitals_bundle(output_dir = output_dir, overwrite = TRUE)
 }
 #> ℹ Solving
-#> ✔ Solving [1.9s]
+#> ✔ Solving [1.6s]
 #> 
 #> ℹ Scoring
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Scoring
-#> ✔ Scoring [4.9s]
+#> ✔ Scoring [2.6s]
 #> 
-#> ✔ Bundle /tmp/RtmpoJAyhG created!
+#> ✔ Bundle /tmp/RtmppEbidD created!
 ```

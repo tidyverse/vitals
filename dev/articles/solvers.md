@@ -99,8 +99,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x5607536effe8>
-#> <environment: 0x5607536f7e30>
+#> <bytecode: 0x5649808396e8>
+#> <environment: 0x564980841530>
 ```
 
 While, in documentation, I’ve mostly written

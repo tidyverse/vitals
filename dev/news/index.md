@@ -2,48 +2,47 @@
 
 ## vitals (development version)
 
-- Model events in the log no longer hardcode `max_tokens = 4096`. The
-  logged value now reflects the provider’s actual `max_tokens` setting,
-  and the field is omitted when unset
-  ([\#213](https://github.com/tidyverse/vitals/issues/213)).
+### New features
 
-- Fixed naive accuracy calculation for ordered factor scores with more
-  than two levels (e.g. `I < P < C`). Previously, numeric conversion was
-  normalized by the observed max rather than the number of factor
-  levels, so partial credit scores were inflated when the highest grade
-  was absent from results.
-
-- New
-  [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
-  solver uses
-  [`ellmer::parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
-  to extract structured data from model responses.
-  [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
-  is to
-  [`parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
-  as
+- [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
+  extracts structured data from model responses via
+  [`ellmer::parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html),
+  analogous to how
   [`generate()`](https://vitals.tidyverse.org/dev/reference/generate.md)
-  is to
+  wraps
   [`parallel_chat()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
   ([\#153](https://github.com/tidyverse/vitals/issues/153)).
 
-- Updated the vendored Inspect Log Viewer to Inspect version 0.3.161
-  (released 14 January 2026,
-  [\#194](https://github.com/tidyverse/vitals/issues/194)).
+- [`model_graded_qa()`](https://vitals.tidyverse.org/dev/reference/scorer_model.md)
+  now encourages brevity in its default `instructions`
+  ([\#197](https://github.com/tidyverse/vitals/issues/197)). This
+  reduces the tendency of model-graded scorers to “talk themselves out
+  of” a reasonable score.
 
-- The log viewer home page will now show full summaries of each eval.
+### Log viewer
 
-- Task IDs now include the model name and a hash of solver/scorer
-  arguments, following Inspect’s `task_identifier` format
-  (`task_name/model/hash`). This ensures that evals with different
-  models or arguments appear as separate entries in the log viewer
-  rather than being collapsed as “retries.” Logs generated with older
-  vitals versions may appear collapsed; click “Show retried logs” in the
-  viewer to see all logs, or regenerate logs with the current version.
+- Updated the vendored Inspect Log Viewer to version 0.3.161
+  ([\#194](https://github.com/tidyverse/vitals/issues/194)).
 
-- Updated the default `model_graded_qa(instructions)` to encourage
-  brevity in reasoning
-  ([\#197](https://github.com/tidyverse/vitals/issues/197)).
+- Task IDs now follow Inspect’s `task_identifier` format
+  (`task_name/model/hash`), including the model name and a hash of
+  solver/scorer arguments. This ensures evals with different models or
+  arguments appear as separate log viewer entries rather than being
+  collapsed as “retries.”
+
+- The home page now includes all of the metadata associated with the
+  eval.
+
+- Model events in the log no longer hardcode `max_tokens = 4096`. The
+  logged value now reflects the provider’s actual setting, and the field
+  is omitted when unset
+  ([\#213](https://github.com/tidyverse/vitals/issues/213)).
+
+### Bug fixes
+
+- Accuracy calculation for ordered factor scores with more than two
+  levels (e.g. `I < P < C`) no longer inflates partial-credit scores
+  when the highest grade is absent from results.
 
 ## vitals 0.2.0
 

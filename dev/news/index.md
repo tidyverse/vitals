@@ -2,6 +2,8 @@
 
 ## vitals (development version)
 
+## vitals 0.3.0
+
 ### New features
 
 - [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)

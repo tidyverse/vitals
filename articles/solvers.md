@@ -19,6 +19,7 @@ custom solver compared to plain
 First, loading the required packages:
 
 ``` r
+
 library(vitals)
 library(ellmer)
 library(btw)
@@ -38,6 +39,7 @@ From the `are` docs:
 > full, partial, or no credit.
 
 ``` r
+
 glimpse(are)
 ```
 
@@ -79,6 +81,7 @@ implementation of
 function factory, meaning that the function itself outputs a function.
 
 ``` r
+
 sonnet_3_7 <- chat_claude(model = "claude-3-7-sonnet-latest")
 generate(solver_chat = sonnet_3_7$clone())
 #> function (inputs, ..., solver_chat = chat) 
@@ -95,8 +98,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x55cab7be2d80>
-#> <environment: 0x55cab7be5cc8>
+#> <bytecode: 0x55809b909be0>
+#> <environment: 0x55809b90fb08>
 ```
 
 While, in documentation, I’ve mostly written
@@ -144,6 +147,7 @@ function
 that returns a list of tools that can be registered with an ellmer chat.
 
 ``` r
+
 ch <- sonnet_3_7$clone()
 ch$set_tools(btw_tools(tools = "docs"))
 ```
@@ -161,6 +165,7 @@ months before I started working on it. Nonetheless, the model is able to
 tell me about how custom solvers work:
 
 ``` r
+
 ch$chat("How do custom solvers work in vitals?")
 ```
 
@@ -200,6 +205,7 @@ before calling
 [`ellmer::parallel_chat()`](https://ellmer.tidyverse.org/reference/parallel_chat.html).
 
 ``` r
+
 btw_solver <- function(inputs, ..., solver_chat) {
   ch <- solver_chat$clone()
   ch$set_tools(btw_tools(tools = "docs"))
@@ -219,6 +225,7 @@ Situate a custom solver in a dataset in the same way you would with a
 built-in one:
 
 ``` r
+
 are_btw <- Task$new(
   dataset = are,
   solver = btw_solver,
@@ -237,6 +244,7 @@ scorer, and then explore a persistent log of the results in the
 interactive Inspect log viewer.
 
 ``` r
+
 are_btw$eval(solver_chat = sonnet_3_7$clone())
 ```
 
@@ -245,6 +253,7 @@ Any arguments to solving or scoring functions can be passed directly to
 parameterizations. We’ll just use Claude Sonnet 3.7 for now.
 
 ``` r
+
 are_btw_data <- vitals_bind(are_btw)
 
 are_btw_data
@@ -269,6 +278,7 @@ correctly 7 times. Using the metadata, we can also determine how often
 the model looked at at least one help-page before supplying an answer:
 
 ``` r
+
 chat_called_a_tool <- function(chat) {
   turns <- chat[[1]]$get_turns()
   any(purrr::map_lgl(turns, turn_called_a_tool))
@@ -301,6 +311,7 @@ evaluation *without* the model being able to access documentation.
 Using the same code from the introductory vignette:
 
 ``` r
+
 are_basic <- Task$new(
   dataset = are,
   solver = generate(solver_chat = sonnet_3_7$clone()),
@@ -315,6 +326,7 @@ are_basic$eval()
 didn’t want to recreate the task.)
 
 ``` r
+
 are_eval_data <- 
   # the argument names will become the entries in `task`
   vitals_bind(btw = are_btw, basic = are_basic) |>
@@ -343,6 +355,7 @@ supply the scores to an ordinal regression model to answer this
 question.
 
 ``` r
+
 library(ordinal)
 #> 
 #> Attaching package: 'ordinal'
@@ -377,6 +390,7 @@ solver’s performance on this eval is zero at the 0.05 significance
 level.
 
 ``` r
+
 confint(are_mod)
 #>               2.5 %    97.5 %
 #> solverbtw -1.429136 0.6379013

@@ -9,6 +9,8 @@
 
 - [`generate()`](https://vitals.tidyverse.org/reference/generate.md) :
   Convert a chat to a solver function
+- [`generate_structured()`](https://vitals.tidyverse.org/reference/generate_structured.md)
+  : Convert a chat to a solver function with structured output
 
 ## Scorers
 

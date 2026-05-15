@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="vitals-020">vitals 0.2.0<a class="anchor" aria-label="anchor" href="#vitals-020"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="vitals-030">vitals 0.3.0<a class="anchor" aria-label="anchor" href="#vitals-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li><p><code><a href="../reference/generate_structured.html">generate_structured()</a></code> extracts structured data from model responses via <code><a href="https://ellmer.tidyverse.org/reference/parallel_chat.html" class="external-link">ellmer::parallel_chat_structured()</a></code>, analogous to how <code><a href="../reference/generate.html">generate()</a></code> wraps <code><a href="https://ellmer.tidyverse.org/reference/parallel_chat.html" class="external-link">parallel_chat()</a></code> (<a href="https://github.com/tidyverse/vitals/issues/153" class="external-link">#153</a>).</p></li>
+<li><p><code><a href="../reference/scorer_model.html">model_graded_qa()</a></code> now encourages brevity in its default <code>instructions</code> (<a href="https://github.com/tidyverse/vitals/issues/197" class="external-link">#197</a>). This reduces the tendency of model-graded scorers to “talk themselves out of” a reasonable score.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="log-viewer-0-3-0">Log viewer<a class="anchor" aria-label="anchor" href="#log-viewer-0-3-0"></a></h3>
+<ul><li><p>Updated the vendored Inspect Log Viewer to version 0.3.161 (<a href="https://github.com/tidyverse/vitals/issues/194" class="external-link">#194</a>).</p></li>
+<li><p>Task IDs now follow Inspect’s <code>task_identifier</code> format (<code>task_name/model/hash</code>), including the model name and a hash of solver/scorer arguments. This ensures evals with different models or arguments appear as separate log viewer entries rather than being collapsed as “retries.”</p></li>
+<li><p>The home page now includes all of the metadata associated with the eval.</p></li>
+<li><p>Model events in the log no longer hardcode <code>max_tokens = 4096</code>. The logged value now reflects the provider’s actual setting, and the field is omitted when unset (<a href="https://github.com/tidyverse/vitals/issues/213" class="external-link">#213</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-0"></a></h3>
+<ul><li>Accuracy calculation for ordered factor scores with more than two levels (e.g. <code>I &lt; P &lt; C</code>) no longer inflates partial-credit scores when the highest grade is absent from results.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="vitals-020">vitals 0.2.0<a class="anchor" aria-label="anchor" href="#vitals-020"></a></h2><p class="text-muted">CRAN release: 2025-12-01</p>
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li><p>Images, audio, and video in user messages and tool call results will now be logged compatibly with the log viewer (<a href="https://github.com/tidyverse/vitals/issues/138" class="external-link">#138</a>, <a href="https://github.com/tidyverse/vitals/issues/171" class="external-link">#171</a>).</p></li>

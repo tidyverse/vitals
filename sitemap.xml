@@ -13,10 +13,12 @@
 <url><loc>https://vitals.tidyverse.org/example-logs/solvers/index.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/example-logs/vitals/index.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/index.html</loc></url>
+<url><loc>https://vitals.tidyverse.org/logs/index.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/news/index.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/Task.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/are.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/generate.html</loc></url>
+<url><loc>https://vitals.tidyverse.org/reference/generate_structured.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/index.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/scorer_detect.html</loc></url>
 <url><loc>https://vitals.tidyverse.org/reference/scorer_model.html</loc></url>

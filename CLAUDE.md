@@ -50,6 +50,8 @@ Importantly:
   `devtools::test()`
 - Use your inspect-researcher sub-agent to read more about Inspect AI
   and how it works.
+- See `inst/debug/` for example scripts and guidance on debugging the
+  log viewer.
 
 ## Testing
 
@@ -103,6 +105,7 @@ their logs by temporarily swapping in the current method from
     method, and restore the lock:
 
     ``` r
+
     unlockBinding("log", task$.__enclos_env__$self)
     fn <- Task$public_methods$log
     environment(fn) <- task$.__enclos_env__
@@ -116,6 +119,7 @@ their logs by temporarily swapping in the current method from
 4.  Point the task at the log directory and call the refreshed method:
 
     ``` r
+
     task$dir <- normalizePath("path/to/logs", mustWork = TRUE)
     path <- task$log()
     ```
@@ -145,6 +149,7 @@ To regenerate and validate logs using the Python virtualenv that bundles
 3.  For each saved task (following the rebinding steps above):
 
     ``` r
+
     path <- task$log()
     expect_valid_log(path)
     ```

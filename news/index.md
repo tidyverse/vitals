@@ -1,6 +1,52 @@
 # Changelog
 
+## vitals 0.3.0
+
+### New features
+
+- [`generate_structured()`](https://vitals.tidyverse.org/reference/generate_structured.md)
+  extracts structured data from model responses via
+  [`ellmer::parallel_chat_structured()`](https://ellmer.tidyverse.org/reference/parallel_chat.html),
+  analogous to how
+  [`generate()`](https://vitals.tidyverse.org/reference/generate.md)
+  wraps
+  [`parallel_chat()`](https://ellmer.tidyverse.org/reference/parallel_chat.html)
+  ([\#153](https://github.com/tidyverse/vitals/issues/153)).
+
+- [`model_graded_qa()`](https://vitals.tidyverse.org/reference/scorer_model.md)
+  now encourages brevity in its default `instructions`
+  ([\#197](https://github.com/tidyverse/vitals/issues/197)). This
+  reduces the tendency of model-graded scorers to “talk themselves out
+  of” a reasonable score.
+
+### Log viewer
+
+- Updated the vendored Inspect Log Viewer to version 0.3.161
+  ([\#194](https://github.com/tidyverse/vitals/issues/194)).
+
+- Task IDs now follow Inspect’s `task_identifier` format
+  (`task_name/model/hash`), including the model name and a hash of
+  solver/scorer arguments. This ensures evals with different models or
+  arguments appear as separate log viewer entries rather than being
+  collapsed as “retries.”
+
+- The home page now includes all of the metadata associated with the
+  eval.
+
+- Model events in the log no longer hardcode `max_tokens = 4096`. The
+  logged value now reflects the provider’s actual setting, and the field
+  is omitted when unset
+  ([\#213](https://github.com/tidyverse/vitals/issues/213)).
+
+### Bug fixes
+
+- Accuracy calculation for ordered factor scores with more than two
+  levels (e.g. `I < P < C`) no longer inflates partial-credit scores
+  when the highest grade is absent from results.
+
 ## vitals 0.2.0
+
+CRAN release: 2025-12-01
 
 ### New features
 

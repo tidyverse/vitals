@@ -26,12 +26,14 @@ evaluation logs to the same file format.
 Install the vitals package from CRAN with:
 
 ``` r
+
 install.packages("vitals")
 ```
 
 You can install the developmental version of vitals using:
 
 ``` r
+
 pak::pak("tidyverse/vitals")
 ```
 
@@ -40,6 +42,7 @@ pak::pak("tidyverse/vitals")
 LLM evaluation with vitals is composed of two main steps.
 
 ``` r
+
 library(vitals)
 library(ellmer)
 library(tibble)
@@ -48,6 +51,7 @@ library(tibble)
 1.  First, create an evaluation **task** with the `Task$new()` method.
 
 ``` r
+
 simple_addition <- tibble(
   input = c("What's 2+2?", "What's 2+3?", "What's 2+4?"),
   target = c("4", "5", "6")
@@ -76,6 +80,7 @@ Tasks are composed of three main components:
 2.  Evaluate the task.
 
 ``` r
+
 tsk$eval()
 ```
 
@@ -96,10 +101,10 @@ on this task rather than
 I could write:
 
 ``` r
+
 tsk_openai <- tsk$clone()
 tsk_openai$eval(solver_chat = chat_openai(model = "gpt-4.1"))
 ```
 
 For an applied example, see the “Getting started with vitals” vignette
-at
-[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/articles/vitals.html).
+at `vignette("vitals", package = "vitals")`.

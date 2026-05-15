@@ -1,6 +1,7 @@
 # Analyzing evaluation results
 
 ``` r
+
 library(vitals)
 library(ellmer)
 library(tidyverse)
@@ -9,6 +10,7 @@ library(tidyverse)
 Consider the following evaluation based on the `are` data:
 
 ``` r
+
 are_task <-
   Task$new(
   dataset = are,
@@ -32,9 +34,7 @@ are_gemini$eval(solver_chat = chat_google_gemini(model = "gemini-2.5-pro-preview
 ```
 
 These evaluations look a lot like those from the “Getting started with
-vitals” vignette from
-[`vignette("vitals", package = "vitals")`](https://vitals.tidyverse.org/articles/vitals.html),
-except:
+vitals” vignette from `vignette("vitals", package = "vitals")`, except:
 
 - We evaluate three LLMs, rather than two.
 - We set `epochs = 3` in `Task$new()` so that each sample in `are` is
@@ -45,6 +45,7 @@ Passing the evaluated tasks to
 will concatenate the results into a tabular data frame:
 
 ``` r
+
 are_eval <-
   vitals_bind(
     `Claude 4 Sonnet` = are_claude,
@@ -113,6 +114,7 @@ can be estimated in multiple ways.
 Before we go further, we’ll need a few additional packages:
 
 ``` r
+
 library(tidyverse)
 library(ordinal)
 library(cli)
@@ -127,6 +129,7 @@ library(broom)
 Revisiting `are_eval`:
 
 ``` r
+
 are_eval |>
   mutate(
     score = factor(
@@ -154,16 +157,16 @@ In this data:
   Claude 4 Sonnet, and OpenAI’s GPT 4.1, and Google’s Gemini 2.5 Pro.
   We’ll refer to the identifier for the task as `p` (shown in `are_eval`
   as column `LLM`).
-- Underlying the tasks are a dataset of $n =$ 75 **samples**. Each
+- Underlying the tasks are a dataset of $`n =`$ 75 **samples**. Each
   sample contains a question to be asked to an LLM.
 - Once the LLM answers a given sample, the answer is assigned one of
   three qualitative, ordinal **scores**: Incorrect (`I`), Partially
-  correct (`P`), or correct (`C`). We’ll denote $Y$ as a discrete random
-  variable representing the scores that take on values $1,2,\ldots c$
-  (with $c = 3$ here).
+  correct (`P`), or correct (`C`). We’ll denote $`Y`$ as a discrete
+  random variable representing the scores that take on values
+  $`1, 2, \ldots c`$ (with $`c=3`$ here).
 
-A completely balanced data set would contain $p \times n$ rows (and does
-in our case).
+A completely balanced data set would contain $`p \times n`$ rows (and
+does in our case).
 
 With this data structure, the `LLM` is the systematic effect in the data
 on which we would like to make inferences about (i.e., is accuracy
@@ -176,12 +179,12 @@ analyzing evaluation data:
 
 - LLMs are not deterministic; given the same prompt, LLMs will not
   always return the same answer. To measure variation, we run the same
-  sample multiple times, generating a set of $m$**epochs**. We thus must
-  account for *repeated measures*, where the epochs have no systematic
-  ordering effect. However, we expect a within-sample correlation to
-  occur. This means that we would expect the $m$ data points within a
-  specific sample to be more likely to correlate with one another than
-  with a data point from a different sample.
+  sample multiple times, generating a set of $`m`$**epochs**. We thus
+  must account for *repeated measures*, where the epochs have no
+  systematic ordering effect. However, we expect a within-sample
+  correlation to occur. This means that we would expect the $`m`$ data
+  points within a specific sample to be more likely to correlate with
+  one another than with a data point from a different sample.
 - Second, the **rating method** could be variable. Multiple raters might
   score the LLM output for multiple samples (or sample/epoch
   combination) to offset the chances of a systematic rater bias. This
@@ -194,17 +197,17 @@ unit: the samples. Each layer below this incurs an additional variance
 component.
 
 To make valid inferences, it is crucial to appropriately account for
-these multiple sources of variation. Consider random variables $A$ and
-$B$ (which, in this context, might represent the accuracies of LLMs) as
-a simple example. If we wanted to evaluate their difference, the
+these multiple sources of variation. Consider random variables $`A`$ and
+$`B`$ (which, in this context, might represent the accuracies of LLMs)
+as a simple example. If we wanted to evaluate their difference, the
 variance of that difference is
-$Var\lbrack A - B\rbrack = Var\lbrack A\rbrack + Var\lbrack B\rbrack - 2Cov\lbrack A,B\rbrack$.
-Standard statistical tools, like the basic t-test, use signal-to-noise
-ratios. The covariance term would be nonzero if there is a within-sample
-(or rater) correlation. If we were to ignore this, we would artificially
-under-power our assessment of the difference and might erroneously fail
-to show a difference. Our analyses below differentiate the cases with
-one or more data hierarchies.
+$`Var[A-B] = Var[A] + Var[B] - 2Cov[A,B]`$. Standard statistical tools,
+like the basic t-test, use signal-to-noise ratios. The covariance term
+would be nonzero if there is a within-sample (or rater) correlation. If
+we were to ignore this, we would artificially under-power our assessment
+of the difference and might erroneously fail to show a difference. Our
+analyses below differentiate the cases with one or more data
+hierarchies.
 
 ## ANOVA-Type Models
 
@@ -214,11 +217,10 @@ type of model called a *generalized linear model* can be used to analyze
 the results. Without ordered categories, we’ll focus on an ordinal
 logistic regression model. There are many different variants of this
 model but one of the most common is the cumulative probability model.
-For $k = 1\ldots c$ possible values of the scores, there are $c - 1$
-probabilities $Pr\left\lbrack Y_{i} \geq k \right\rbrack$ for
-$i = 1\ldots n$ samples. For example,
-$Pr\left\lbrack Y_{i} \geq 2 \right\rbrack$ would model the probability
-of being not completely incorrect.
+For $`k=1\ldots c`$ possible values of the scores, there are $`c-1`$
+probabilities $`Pr[Y_{i} \ge k]`$ for $`i=1\ldots n`$ samples. For
+example, $`Pr[Y_{i} \ge 2]`$ would model the probability of being not
+completely incorrect.
 
 ### Independent Data
 
@@ -227,6 +229,7 @@ statistically independent, conditional on `LLM`. Said another way, we
 can keep only the rows for the first epoch:
 
 ``` r
+
 are_eval_single <- are_eval %>% filter(epoch == 1)
 
 are_eval_single
@@ -251,6 +254,7 @@ In this setting, we could visualize scores sample-by-sample for one
 epoch like so:
 
 ``` r
+
 are_eval_single %>%
   ggplot(aes(x = LLM, y = id)) +
   geom_raster(aes(fill = score), alpha = 2 / 3) +
@@ -262,18 +266,20 @@ are_eval_single %>%
 ![](analysis_files/figure-html/single_sample-1.png)
 
 To model the score probabilities, the cumulative logit model estimates
-$c - 1$ values of
+$`c-1`$ values of
 
-$$\log\left( \frac{Pr\left\lbrack Y_{i} \geq k \right\rbrack}{1 - Pr\left\lbrack Y_{i} \geq k \right\rbrack\rbrack} \right) = \theta_{k} - \left( \beta_{2}x_{i2} + \ldots + \beta_{p}x_{ip} \right)$$
+``` math
+\log\left(\frac{Pr[Y_{i} \ge k]}{1 - Pr[Y_{i} \ge k]]}\right) = \theta_k - (\beta_2x_{i2} + \ldots +  \beta_{p}x_{ip})
+```
 
-for $i = 1\ldots n$ samples evaluated with $j = 2\ldots p$ LLMs which
-produce outcomes $k = 1\ldots c - 1$. The $x_{ij}$ values are binary
+for $`i=1\ldots n`$ samples evaluated with $`j=2\ldots p`$ LLMs which
+produce outcomes $`k=1\ldots c-1`$. The $`x_{ij}`$ values are binary
 indicators for all but one of the LLMs. This is a full-rank
-parameterization; the effect of the LLM corresponding to $j = 1$ is
-captured by the different intercepts ($\theta_{k}$). With this
-parameterization, the $\beta_{j}$ parameters correspond to the effect of
-the LLM $j$ above and beyond the effect of the LLM associated with
-$j = 1$.
+parameterization; the effect of the LLM corresponding to $`j=1`$ is
+captured by the different intercepts ($`\theta_k`$). With this
+parameterization, the $`\beta_j`$ parameters correspond to the effect of
+the LLM $`j`$ above and beyond the effect of the LLM associated with
+$`j=1`$.
 
 This is a *parallel* model because it assumes that the pattern of LLM
 effectiveness is constant across the different outcome categories; in
@@ -287,24 +293,26 @@ estimation, assuming a multinomial distribution. This enables us to
 easily calculate the covariance matrix of the parameters and inferential
 procedures. Because of the properties of maximum likelihood, we can also
 make inferences on functions of the parameters that are monotonic in
-nature (e.g., $log(\beta)$, etc).
+nature (e.g., $`log(\beta)`$, etc).
 
 We’ve ordered the LLMs above so that the worst-performing LLM has an
-index of $j = 1$.[¹](#fn1) This parameterization allows for a direct
-path to inference since the $exp\left( \beta_{j} \right)$ parameters
-increase the odds that LLM $j$ performs *better* than the worst LLM. We
-can easily estimate null hypotheses that test the two LLMs’ differences
-and/or create confidence intervals for the odds.
+index of $`j=1`$.[^1] This parameterization allows for a direct path to
+inference since the $`exp(\beta_j)`$ parameters increase the odds that
+LLM $`j`$ performs *better* than the worst LLM. We can easily estimate
+null hypotheses that test the two LLMs’ differences and/or create
+confidence intervals for the odds.
 
 The model structure is more simple in the one-epoch case:
 
 ``` r
+
 single_mod <- clm(score ~ LLM, data = are_eval_single)
 ```
 
 The estimates are as follows:
 
 ``` r
+
 tidy(single_mod, conf.int = TRUE, conf.level = 0.9) %>%
   mutate(
     LLM = gsub("LLM", "", term),
@@ -321,9 +329,9 @@ tidy(single_mod, conf.int = TRUE, conf.level = 0.9) %>%
 
 The first point of inference is to determine if there is a difference
 between *any* of the LLMs. This is determined by fitting a submodel with
-no $\beta$ parameters. The difference in likelihood values between the
-models can be compared to an appropriate $\chi^{2}$ distribution to
-produce a p-value for the null hypothesis that all of the $\beta_{j}$
+no $`\beta`$ parameters. The difference in likelihood values between the
+models can be compared to an appropriate $`\chi^2`$ distribution to
+produce a p-value for the null hypothesis that all of the $`\beta_j`$
 values are equal. For our analysis that excludes all but one epoch, the
 p-value is 0.861, indicating that there is not evidence that the models
 have different accuracies for these data.
@@ -334,6 +342,7 @@ intervals. Maximum likelihood estimation enables the use of monotonic
 transformations of estimates.
 
 ``` r
+
 single_coef %>% 
   filter(!grepl("\\|", LLM)) %>% 
   select(LLM, estimate, lower = conf.low, upper = conf.high) %>% 
@@ -363,6 +372,7 @@ epoch? To illustrate the structure we’d like to model, we can visualize
 the variation in scores for each sample and LLM similarly to before:
 
 ``` r
+
 are_eval %>%
   ggplot(aes(x = epoch, y = id)) +
   geom_raster(aes(fill = score), alpha = 2 / 3) +
@@ -391,14 +401,16 @@ the data.
 Let’s adjust our model equation and add a random intercept term due to
 replicates:
 
-$$\log\left( \frac{Pr\left\lbrack Y_{i} \geq k \right\rbrack}{1 - Pr\left\lbrack Y_{i} \geq k \right\rbrack\rbrack} \right) = \left( \theta_{k} - \alpha_{\ell} \right) - \left( \beta_{2}x_{i2} + \ldots + \beta_{p}x_{ip} \right)$$
+``` math
+\log\left(\frac{Pr[Y_{i} \ge k]}{1 - Pr[Y_{i} \ge k]]}\right) = (\theta_k - \alpha_{\ell})- (\beta_2x_{i2} + \ldots +  \beta_{p}x_{ip})
+```
 
-where $\alpha_{\ell}$ reflects a random variation in the intercept for
-each category due to replicate $\ell = 1\ldots m$ replicates. We need to
+where $`\alpha_{\ell}`$ reflects a random variation in the intercept for
+each category due to replicate $`\ell=1\ldots m`$ replicates. We need to
 make a probabilistic assumption for these values, and a convenient
 approach is to assume that they are independently distributed as
-$\alpha_{\ell} \sim N\left( 0,\sigma^{2} \right)$. This addition to the
-model reflects that the baseline log-odds can randomly fluctuate with
+$`\alpha_{\ell} \sim N(0, \sigma^2)`$. This addition to the model
+reflects that the baseline log-odds can randomly fluctuate with
 different epochs. Still, the overall relationship between the log odds
 and the LLM parameters does not change (on average).
 
@@ -406,9 +418,9 @@ A more complex estimation method is needed to solve the maximum
 likelihood equations. However, the model shown above is not overly
 complex and, with more than two epochs, should not be difficult to
 train. We can still conduct the same inferential methods as previously
-shown, and, as a bonus, we can use our estimates of the $\alpha_{\ell}$
-to help us understand which samples are most difficult for the LLMs to
-correctly solve.
+shown, and, as a bonus, we can use our estimates of the
+$`\alpha_{\ell}`$ to help us understand which samples are most difficult
+for the LLMs to correctly solve.
 
 To model this structure, we first fit two models. The first is as
 before, additionally incorporating the random effect `(1|id)`. Note that
@@ -416,6 +428,7 @@ the random effect is for the question ID rather than the epoch. The
 second, null model does not account for the `LLM`.
 
 ``` r
+
 multiple_mod <- clmm(score ~ LLM + (1|id), data = are_eval, Hess = TRUE)
 multiple_null <- clmm(score ~ 1 + (1|id), data = are_eval, Hess = TRUE)
 ```
@@ -424,6 +437,7 @@ Comparing these two model fits, then, shows us the effect of
 incorporating the `LLM` variable on the fit:
 
 ``` r
+
 multiple_lrt <- anova(multiple_null, multiple_mod)
 
 multiple_coef <- 
@@ -463,9 +477,10 @@ LLMs’ performance on it alone), too. **Are some questions harder than
 others?**
 
 Since we included `(1|id)` in our model structure, the model estimates
-random effects ${\widehat{\alpha}}_{\ell}$ for each question.
+random effects $`\widehat{\alpha}_{\ell}`$ for each question.
 
 ``` r
+
 multiple_intercepts <- 
   are_eval %>% 
   distinct(id) %>%
@@ -478,6 +493,7 @@ multiple_intercepts <-
 ```
 
 ``` r
+
 effect_range <- max(extendrange(abs(multiple_intercepts$effect)))
 
 multiple_intercepts %>% 
@@ -501,9 +517,10 @@ maximum likelihood. We assumed a binomial likelihood for the outcome,
 and in the case where there were additional hierarchies, we assumed the
 normality of random effects. Once we make these probabilistic
 assumptions, we can maximize the likelihood function to determine our
-estimates of the $\widehat{\theta}$, $\widehat{\beta}$, and potentially,
-$\widehat{\alpha}$ parameters. MLE finds point estimates of the
-parameters to maximize the probability that our training set occurred.
+estimates of the $`\widehat{\theta}`$, $`\widehat{\beta}`$, and
+potentially, $`\widehat{\alpha}`$ parameters. MLE finds point estimates
+of the parameters to maximize the probability that our training set
+occurred.
 
 We can use Bayesian estimation to fit the model. This technique also
 uses the likelihood but blends it with prior knowledge of the
@@ -533,11 +550,11 @@ are not trivial.
 
 That said, let’s train the previous random effects model using Bayesian
 estimation. We have little a priori knowledge of our regression
-parameters (the $\beta$ parameters) or our primary intercepts
-($\theta$), so we can assign them very wide Gaussian prior
+parameters (the $`\beta`$ parameters) or our primary intercepts
+($`\theta`$), so we can assign them very wide Gaussian prior
 distributions. Assigning a very large variance allows some prior beliefs
 but also allows our observed data to influence the model estimates more.
-We’ll assume a wide *t* distribution via $\alpha_{\ell} \sim t(1)$ for
+We’ll assume a wide *t* distribution via $`\alpha_{\ell} \sim t(1)`$ for
 the random effects. This is a slightly more informative distributional
 assumption than the one used in our previous random effects model.
 
@@ -549,6 +566,7 @@ posterior distribution, and the remaining samples are used to
 approximate the distribution.
 
 ``` r
+
 multiple_bayes <-
   brm(
     score ~ LLM + (1|id),
@@ -565,6 +583,7 @@ multiple_bayes <-
 Formatting the results:
 
 ``` r
+
 set.seed(280)
 
 all_post <- as_draws_df(multiple_bayes)
@@ -604,6 +623,7 @@ than a single estimated value). The posterior distributions of our
 regression model parameters can be visualized:
 
 ``` r
+
 post_claude <- bayes_regression_param$value[bayes_regression_param$LLM == "Claude 4 Sonnet"]
 o2_le_zero <- mean(abs(post_claude) < 0.05) * 100
 
@@ -627,11 +647,12 @@ Bayesian analysis does not take the same worldview as null
 hypothesis-driven inference, so there is no p-value to report. We can
 see from the figure that a small area in these posterior distributions
 is near zero. For example, only NA% of the Claude 4 Sonnet posterior is
-within $\pm 0.05$.
+within $`\pm 0.05`$.
 
 We can quantify the posteriors using standard summary statistics:
 
 ``` r
+
 bayes_reg_summary
 ```
 
@@ -652,6 +673,7 @@ difficulty of each sample along with 90% credible intervals to aid
 interpretability:
 
 ``` r
+
 bayes_intercepts <- 
   all_post %>%
   select(contains("r_id")) %>%
@@ -716,8 +738,6 @@ In particular, the Bayesian approach has more flexibility in terms of
 how (and how many) random effects are required to accommodate the data
 hierarchies in the experimental design.
 
-------------------------------------------------------------------------
-
-1.  This ordering ensures all $\beta_{j}$ coefficients have the same
+[^1]: This ordering ensures all $`\beta_j`$ coefficients have the same
     sign, simplifying interpretation. Different orderings produce
     equivalent results but may require inverting odds ratios.

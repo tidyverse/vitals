@@ -23,6 +23,7 @@ example dataset that ships with the package.
 First, load the required packages:
 
 ``` r
+
 library(vitals)
 library(ellmer)
 library(dplyr)
@@ -41,6 +42,7 @@ From the `are` docs:
 > full, partial, or no credit.
 
 ``` r
+
 glimpse(are)
 ```
 
@@ -72,6 +74,7 @@ out the first entry in full so you can get a taste of a typical problem
 in this dataset:
 
 ``` r
+
 cat(are$input[1])
 ```
 
@@ -96,6 +99,7 @@ cat(are$input[1])
 Here’s the suggested solution:
 
 ``` r
+
 cat(are$target[1])
 ```
 
@@ -145,6 +149,7 @@ LLM evaluation with vitals happens in two main steps:
     `Task`.
 
 ``` r
+
 are_task <- Task$new(
   dataset = are,
   solver = generate(chat_claude(model = "claude-3-7-sonnet-latest")),
@@ -160,6 +165,7 @@ are_task
     Inspect log viewer.
 
 ``` r
+
 are_task$eval()
 ```
 
@@ -168,6 +174,7 @@ scoring steps. Here’s what the model responded to that first question
 with:
 
 ``` r
+
 cat(are_task$get_samples()$result[1])
 ```
 
@@ -230,6 +237,7 @@ scoring. That said, it’s not without its faults. Here’s what the grading
 model thought of the response:
 
 ``` r
+
 cat(are_task$get_samples()$scorer_chat[[1]]$last_turn()@text)
 ```
 
@@ -286,6 +294,7 @@ For a cursory analysis, we can start off by visualizing correct
 vs. partially correct vs. incorrect answers:
 
 ``` r
+
 are_task_data <- vitals_bind(are_task)
 
 are_task_data
@@ -307,6 +316,7 @@ are_task_data
     ## # ℹ 19 more rows
 
 ``` r
+
 are_task_data |>
   ggplot() +
   aes(x = score) +
@@ -335,6 +345,7 @@ OpenAI’s GPT-4o, we just need to clone the object and then run `$eval()`
 with a different solver `chat`:
 
 ``` r
+
 are_task_openai <- are_task$clone()
 are_task_openai$eval(solver_chat = chat_openai(model = "gpt-4.1"))
 ```
@@ -346,6 +357,7 @@ parameterizations.
 Using this data, we can quickly juxtapose those evaluation results:
 
 ``` r
+
 are_task_eval <-
   vitals_bind(are_task, are_task_openai) |>
   mutate(
@@ -377,6 +389,7 @@ supply the scores to an ordinal regression model to answer this
 question.
 
 ``` r
+
 library(ordinal)
 ```
 
@@ -388,6 +401,7 @@ library(ordinal)
     ##     slice
 
 ``` r
+
 are_mod <- clm(score ~ model, data = are_task_eval)
 
 are_mod
@@ -415,6 +429,7 @@ difference between GPT-4o and Claude’s performance on this eval is zero
 at the 0.05 significance level.
 
 ``` r
+
 confint(are_mod)
 ```
 

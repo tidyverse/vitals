@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* The log viewer will now appropriately display tool calls called in parallel.
+
 # vitals 0.3.0
 
 ## New features

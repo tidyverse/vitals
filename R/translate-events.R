@@ -91,20 +91,22 @@ translate_events_solver <- function(events, sample, timestamps) {
 
     turn <- solver_turns[[i]]
 
-    # For a tool response turn
+    # For a tool response turn (possibly carrying results of parallel calls)
+    tool_results <- turn_tool_results(turn)
     if (
-      length(turn@contents) == 1 &&
-        inherits(turn@contents[[1]], "ellmer::ContentToolResult")
+      length(tool_results) > 0 &&
+        length(tool_results) == length(turn@contents)
     ) {
-      tool_result <- turn@contents[[1]]
-      events <- c(
-        events,
-        create_tool_event(
-          turn,
-          tool_result,
-          timestamp = timestamps$solve$started_at
+      for (tool_result in tool_results) {
+        events <- c(
+          events,
+          create_tool_event(
+            turn,
+            tool_result,
+            timestamp = timestamps$solve$started_at
+          )
         )
-      )
+      }
       next
     }
 
@@ -143,20 +145,21 @@ translate_events_scorer <- function(events, sample, timestamps = timestamps) {
       events <- c(events, create_tool_state_event(time_scorer, scorer_chat))
 
       tool_result_turns <- purrr::keep(scorer_turns, function(turn) {
-        length(turn@contents) == 1 &&
-          inherits(turn@contents[[1]], "ellmer::ContentToolResult")
+        results <- turn_tool_results(turn)
+        length(results) > 0 && length(results) == length(turn@contents)
       })
 
       for (turn in tool_result_turns) {
-        tool_result <- turn@contents[[1]]
-        events <- c(
-          events,
-          create_tool_event(
-            turn,
-            tool_result,
-            timestamp = timestamps$score$started_at
+        for (tool_result in turn_tool_results(turn)) {
+          events <- c(
+            events,
+            create_tool_event(
+              turn,
+              tool_result,
+              timestamp = timestamps$score$started_at
+            )
           )
-        )
+        }
       }
 
       events <- c(
@@ -403,29 +406,19 @@ create_model_event <- function(turn, sample, timestamp) {
 
   input_messages <- lapply(previous_turns, function(prev_turn) {
     if (prev_turn@role == "user") {
+      tool_results <- turn_tool_results(prev_turn)
       if (
-        length(prev_turn@contents) == 1 &&
-          inherits(prev_turn@contents[[1]], "ellmer::ContentToolResult")
+        length(tool_results) > 0 &&
+          length(tool_results) == length(prev_turn@contents)
       ) {
-        tool_result <- prev_turn@contents[[1]]
-        return(list(
-          id = generate_id(),
-          content = if (!is.null(tool_result@error)) {
-            as.character(tool_result@error)
-          } else {
-            collapse_tool_result(tool_result)
-          },
-          role = "tool",
-          tool_call_id = tool_result@request@id,
-          `function` = tool_result@request@name
-        ))
+        return(purrr::map(tool_results, tool_result_message))
       } else {
-        return(list(
+        return(list(list(
           id = generate_id(),
           content = message_content_from_turn(prev_turn),
           source = "input",
           role = "user"
-        ))
+        )))
       }
     } else {
       message <- list(
@@ -451,9 +444,10 @@ create_model_event <- function(turn, sample, timestamp) {
         message$tool_calls <- tool_calls
       }
 
-      return(message)
+      return(list(message))
     }
   })
+  input_messages <- purrr::list_flatten(input_messages)
 
   has_tool_calls_in_turn <- any(sapply(turn@contents, function(content) {
     inherits(content, "ellmer::ContentToolRequest")
@@ -727,29 +721,19 @@ create_scoring_model_event <- function(turn, sample, timestamp) {
 
   input_messages <- lapply(previous_turns, function(prev_turn) {
     if (prev_turn@role == "user") {
+      tool_results <- turn_tool_results(prev_turn)
       if (
-        length(prev_turn@contents) == 1 &&
-          inherits(prev_turn@contents[[1]], "ellmer::ContentToolResult")
+        length(tool_results) > 0 &&
+          length(tool_results) == length(prev_turn@contents)
       ) {
-        tool_result <- prev_turn@contents[[1]]
-        return(list(
-          id = generate_id(),
-          content = if (!is.null(tool_result@error)) {
-            as.character(tool_result@error)
-          } else {
-            collapse_tool_result(tool_result)
-          },
-          role = "tool",
-          tool_call_id = tool_result@request@id,
-          `function` = tool_result@request@name
-        ))
+        return(purrr::map(tool_results, tool_result_message))
       } else {
-        return(list(
+        return(list(list(
           id = generate_id(),
           content = message_content_from_turn(prev_turn),
           source = "input",
           role = "user"
-        ))
+        )))
       }
     } else {
       message <- list(
@@ -775,9 +759,10 @@ create_scoring_model_event <- function(turn, sample, timestamp) {
         message$tool_calls <- tool_calls
       }
 
-      return(message)
+      return(list(message))
     }
   })
+  input_messages <- purrr::list_flatten(input_messages)
 
   has_tool_calls_in_turn <- any(sapply(turn@contents, function(content) {
     inherits(content, "ellmer::ContentToolRequest")

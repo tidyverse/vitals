@@ -1,7 +1,33 @@
 translate_to_messages <- function(chat) {
   turns <- chat$get_turns(include_system_prompt = TRUE)
   model <- chat$get_model()
-  purrr::map(turns, translate_to_message, model = model)
+  purrr::list_flatten(purrr::map(turns, translate_to_turn_messages, model = model))
+}
+
+# A turn usually maps to one message, but a user turn carrying the results of
+# parallel tool calls maps to one tool message per result.
+translate_to_turn_messages <- function(turn, model) {
+  tool_results <- turn_tool_results(turn)
+  if (turn@role == "user" && length(tool_results) > 1) {
+    return(purrr::map(tool_results, tool_result_message))
+  }
+  list(translate_to_message(turn, model))
+}
+
+turn_tool_results <- function(turn) {
+  purrr::keep(turn@contents, function(content) {
+    inherits(content, "ellmer::ContentToolResult")
+  })
+}
+
+tool_result_message <- function(tool_result) {
+  list(
+    id = generate_id(),
+    content = collapse_tool_result(tool_result),
+    role = "tool",
+    tool_call_id = tool_result@request@id,
+    `function` = tool_result@request@name
+  )
 }
 
 translate_to_message <- function(turn, model) {

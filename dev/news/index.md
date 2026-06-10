@@ -2,7 +2,12 @@
 
 ## vitals (development version)
 
+- The log viewer will now appropriately display tool calls called in
+  parallel.
+
 ## vitals 0.3.0
+
+CRAN release: 2026-05-15
 
 ### New features
 

@@ -20,6 +20,17 @@ inspect eval test/inspect/tools.py  --model anthropic/claude-sonnet-4-5 --log-fo
 
 `/dist` is a bundled version of the Inspect viewer. (See [here](https://github.com/UKGovernmentBEIS/inspect_ai/blob/88d1cd98041a245c1d0cca4536d60e3244630b78/src/inspect_ai/_view/www/README.md) for more information.)
 
+`dist/assets/index.js` carries one local patch on top of the upstream build
+(#208): in `clientApi()`'s `get_log()`, the single shared `pending_log_promise`
+is replaced with a per-file `pending_log_promises` Map. Upstream, any caller
+requesting a log while another log's request is in flight receives that other
+log's contents, which poisons the viewer's IndexedDB cache and swaps metadata
+between logs in the listing. The bug only affects `.json` logs (Inspect itself
+defaults to `.eval`), so it is still present upstream as of `inspect_ai`
+0.3.179+ (viewer source: `meridianlabs-ai/ts-mono`, `client-api.ts`). When
+porting a new viewer version, check whether upstream has fixed this; if not,
+re-apply the patch by searching the new bundle for `pending_log_promise`.
+
 **regenerate-example-objects.R**
 
 The package defines a function `regenerate_example_objects()` in the source that sources the script `inst/regenerate-example-objects.R`.

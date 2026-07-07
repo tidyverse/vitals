@@ -109095,23 +109095,25 @@ self.onmessage = function (e) {
       };
       const get_log = async (log_file2, cached = false) => {
         if (!cached || log_file2 !== current_path || !current_log) {
-          if (pending_log_promise) {
-            return pending_log_promise;
+          const pending = pending_log_promises.get(log_file2);
+          if (pending) {
+            return pending;
           }
-          pending_log_promise = api2.get_log_contents(log_file2, 100).then((log2) => {
+          const promise = api2.get_log_contents(log_file2, 100).then((log2) => {
             current_log = log2;
             current_path = log_file2;
-            pending_log_promise = null;
+            pending_log_promises.delete(log_file2);
             return log2;
           }).catch((err2) => {
-            pending_log_promise = null;
+            pending_log_promises.delete(log_file2);
             throw err2;
           });
-          return pending_log_promise;
+          pending_log_promises.set(log_file2, promise);
+          return promise;
         }
         return current_log;
       };
-      let pending_log_promise = null;
+      const pending_log_promises = /* @__PURE__ */ new Map();
       const get_log_details = async (log_file2) => {
         if (isEvalFile(log_file2)) {
           const remoteLogFile = await remoteEvalFile(log_file2);

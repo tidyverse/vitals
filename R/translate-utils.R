@@ -3,8 +3,12 @@
 # model fields, and model_usage keys. The prefix is normalized so that
 # `ellmer::chat("<prefix>/<model>")` can reconstruct a chat on read-back.
 chat_provider_prefix <- function(chat) {
-  name <- chat$get_provider()@name
-  tolower(gsub("[^[:alnum:]]+", "_", name))
+  provider_prefix(chat$get_provider()@name)
+}
+
+provider_prefix <- function(name) {
+  prefix <- tolower(gsub("[^[:alnum:]]+", "_", name))
+  switch(prefix, lm_studio = "lmstudio", portkeyai = "portkey", prefix)
 }
 
 chat_provider_model <- function(chat) {
@@ -72,19 +76,30 @@ translate_assistant_choices <- function(turn) {
 # 'model_length', 'tool_calls', 'content_filter' or 'unknown'" (#7). ellmer
 # standardizes finish_reason across providers; chats recorded before ellmer
 # tracked finish_reason fall back to inferring from tool requests.
+# `stop_reason_to_finish_reason` is the inverse map, used on read-back in
+# log-read.R; keep the two in sync when adding a finish reason.
+finish_reason_to_stop_reason <- c(
+  success = "stop",
+  tool_use = "tool_calls",
+  max_tokens = "max_tokens",
+  stop_sequence = "stop",
+  content_filter = "content_filter",
+  context_window = "model_length"
+)
+
+stop_reason_to_finish_reason <- c(
+  stop = "success",
+  tool_calls = "tool_use",
+  max_tokens = "max_tokens",
+  model_length = "context_window",
+  content_filter = "content_filter"
+)
+
 turn_stop_reason <- function(turn) {
   finish_reason <- tryCatch(turn@finish_reason, error = function(e) NULL)
   if (!is.null(finish_reason) && !is.na(finish_reason)) {
-    return(switch(
-      finish_reason,
-      success = "stop",
-      tool_use = "tool_calls",
-      max_tokens = "max_tokens",
-      stop_sequence = "stop",
-      content_filter = "content_filter",
-      context_window = "model_length",
-      "unknown"
-    ))
+    res <- finish_reason_to_stop_reason[finish_reason]
+    return(if (is.na(res)) "unknown" else unname(res))
   }
 
   if (any(map_lgl(turn@contents, inherits, "ellmer::ContentToolRequest"))) {
@@ -106,6 +121,8 @@ assistant_message_content <- function(turn) {
       blocks <- c(blocks, list(block))
     } else if (inherits(content, "ellmer::ContentText")) {
       blocks <- c(blocks, list(list(type = "text", text = content@text)))
+    } else if (!inherits(content, "ellmer::ContentToolRequest")) {
+      blocks <- c(blocks, list(translate_ellmer_content(content)))
     }
   }
 
@@ -184,12 +201,14 @@ tool_parameters_schema <- function(tool_def) {
 
 type_to_schema <- function(type) {
   if (inherits(type, "ellmer::TypeObject")) {
-    properties <- lapply(type@properties, type_to_schema)
-    required <- map_lgl(type@properties, function(prop) prop@required)
+    props <- purrr::discard(type@properties, inherits, "ellmer::TypeIgnore")
+    properties <- lapply(props, type_to_schema)
+    required <- map_lgl(props, function(prop) prop@required)
     list(
       type = "object",
+      description = type@description %||% "",
       properties = if (length(properties) == 0) c() else properties,
-      required = as.list(names2(type@properties)[required]),
+      required = as.list(names2(props)[required]),
       additionalProperties = type@additional_properties
     )
   } else if (inherits(type, "ellmer::TypeEnum")) {

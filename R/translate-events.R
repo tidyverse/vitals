@@ -405,27 +405,16 @@ create_model_event <- function(turn, chat, timestamp) {
   )
 
   tool_calls_list <- turn_tool_calls(turn)
-  has_tool_calls_in_turn <- length(tool_calls_list) > 0
-
   tools_list <- chat_tools_list(chat)
+  stop_reason <- turn_stop_reason(turn)
 
-  output_message <- list(
-    id = generate_id(),
-    content = assistant_message_content(turn),
-    source = "generate",
-    role = "assistant"
-  )
-
-  if (has_tool_calls_in_turn) {
-    output_message$tool_calls <- tool_calls_list
-  }
-
+  output_message <- event_input_message(turn)[[1]]
   output_message$model <- chat$get_model()
 
   request_messages <- lapply(input_messages, event_request_message)
 
   response_content <- c(
-    request_content_blocks(assistant_message_content(turn)),
+    request_content_blocks(output_message$content),
     lapply(tool_calls_list, function(tc) {
       list(
         id = tc$id,
@@ -452,7 +441,7 @@ create_model_event <- function(turn, chat, timestamp) {
       choices = list(
         list(
           message = output_message,
-          stop_reason = turn_stop_reason(turn)
+          stop_reason = stop_reason
         )
       ),
       usage = turn_tokens(turn),
@@ -478,7 +467,14 @@ create_model_event <- function(turn, chat, timestamp) {
         content = response_content,
         model = chat$get_model(),
         role = "assistant",
-        stop_reason = if (has_tool_calls_in_turn) "tool_use" else "end_turn",
+        stop_reason = switch(
+          stop_reason,
+          tool_calls = "tool_use",
+          max_tokens = ,
+          model_length = "max_tokens",
+          content_filter = "refusal",
+          "end_turn"
+        ),
         stop_sequence = NULL,
         type = "message",
         usage = turn_tokens(turn)
@@ -536,8 +532,7 @@ turn_tool_calls <- function(turn) {
   })
 }
 
-# reconstructs an Anthropic-style request payload from the message list, for
-# display in the viewer's API view
+# Anthropic-style request payload, for display in the viewer's API view
 event_request_message <- function(msg) {
   if (msg$role == "tool") {
     return(list(

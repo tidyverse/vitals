@@ -202,9 +202,19 @@ translate_to_sample <- function(sample, scores, timestamps) {
 # de-duplicates repeated content into the sample's attachments pool, following
 # Inspect's condense_sample(): model events re-embed the full conversation
 # history, so long strings there grow quadratically with turn count if left
-# inline. In events, any string over 100 characters is pooled; in messages and
-# input, only base64 data URIs are (the viewer resolves refs in exactly these
-# three fields).
+# inline. Only the event types that Python Inspect's resolve_attachments()
+# walks are condensed; pooling anything else (e.g. score events) would leave
+# unresolved attachment:// refs when the log is read via the Python API.
+condensed_event_types <- c(
+  "sample_init",
+  "model",
+  "state",
+  "store",
+  "subtask",
+  "tool",
+  "info"
+)
+
 condense_sample <- function(sample) {
   attachments <- new.env(parent = emptyenv())
 
@@ -214,15 +224,16 @@ condense_sample <- function(sample) {
     attachments,
     data_uris_only = TRUE
   )
-  sample$events <- condense_content(
-    sample$events,
-    attachments,
-    data_uris_only = FALSE
-  )
+  sample$events <- lapply(sample$events, function(event) {
+    if (!(event$event %||% "") %in% condensed_event_types) {
+      return(event)
+    }
+    condense_content(event, attachments, data_uris_only = FALSE)
+  })
 
   pool <- as.list(attachments)
   if (length(pool) > 0) {
-    sample$attachments <- pool
+    sample$attachments <- pool[order(names(pool))]
   }
 
   sample

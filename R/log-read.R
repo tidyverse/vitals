@@ -13,7 +13,7 @@
 #' are not serializable; pass `tools` to re-attach tool definitions by name.
 #'
 #' @param path Path to an eval log file, e.g. an element of the output of
-#' `list.files(vitals_log_dir())`.
+#' `list.files(vitals_log_dir(), full.names = TRUE)`.
 #' @param solver_chat Optional. An [ellmer::Chat] object to use as the base
 #' for reconstructed solver chats. When `NULL`, the chat is constructed with
 #' [ellmer::chat()] using the log's model string; supply this argument when
@@ -55,13 +55,15 @@ vitals_log_read <- function(
 
   log <- eval_log_read(path)
 
+  call <- current_env()
   rows <- purrr::map(log$samples, function(sample) {
     log_sample_row(
       sample,
       model = log$eval$model,
       solver_chat = solver_chat,
       scorer_chat = scorer_chat,
-      tools = tools
+      tools = tools,
+      call = call
     )
   })
 
@@ -72,8 +74,19 @@ vitals_log_read <- function(
   res
 }
 
-log_sample_row <- function(sample, model, solver_chat, scorer_chat, tools) {
-  sample <- resolve_attachments(sample, sample$attachments %||% list())
+log_sample_row <- function(
+  sample,
+  model,
+  solver_chat,
+  scorer_chat,
+  tools,
+  call = rlang::caller_env()
+) {
+  attachments <- list2env(
+    sample$attachments %||% list(),
+    envir = new.env(parent = emptyenv())
+  )
+  sample <- resolve_attachments(sample, attachments)
   events <- split_events_at_scorer(sample$events %||% list())
 
   solver <- chat_from_log_messages(
@@ -81,13 +94,15 @@ log_sample_row <- function(sample, model, solver_chat, scorer_chat, tools) {
     model = model,
     chat = solver_chat,
     tools = tools,
-    model_events = log_model_events(events$solver)
+    model_events = log_model_events(events$solver),
+    call = call
   )
 
   scorer <- scorer_chat_from_events(
     log_model_events(events$scorer),
     chat = scorer_chat,
-    tools = tools
+    tools = tools,
+    call = call
   )
 
   score <- if (length(sample$scores) > 0) sample$scores[[1]] else NULL
@@ -159,6 +174,7 @@ chat_from_model_string <- function(model, call = rlang::caller_env()) {
 }
 
 turns_from_messages <- function(messages, tools = list(), model_events = list()) {
+  events_by_message_id <- model_events_by_message_id(model_events)
   turns <- list()
   requests <- list()
   pending_results <- list()
@@ -205,14 +221,16 @@ turns_from_messages <- function(messages, tools = list(), model_events = list())
     }
 
     assistant_i <- assistant_i + 1L
+    event <- NULL
+    if (!is.null(message$id)) {
+      event <- events_by_message_id[[message$id]]
+    }
+    if (is.null(event) && assistant_i <= length(model_events)) {
+      event <- model_events[[assistant_i]]
+    }
     turns <- c(
       turns,
-      list(assistant_turn_from_log(
-        contents,
-        event = if (assistant_i <= length(model_events)) {
-          model_events[[assistant_i]]
-        }
-      ))
+      list(assistant_turn_from_log(contents, event = event))
     )
   }
 
@@ -237,14 +255,8 @@ assistant_turn_from_log <- function(contents, event = NULL) {
     contents = contents,
     tokens = as.numeric(tokens),
     duration = as.numeric(event$output$time %||% event$working_time %||% NA),
-    finish_reason = switch(
-      stop_reason %||% "unknown",
-      stop = "success",
-      tool_calls = "tool_use",
-      max_tokens = "max_tokens",
-      model_length = "context_window",
-      content_filter = "content_filter",
-      NA_character_
+    finish_reason = unname(
+      stop_reason_to_finish_reason[stop_reason %||% "unknown"]
     )
   )
 }
@@ -275,7 +287,12 @@ tool_result_from_message <- function(message, requests) {
 
 # scorer chats are not stored as a message list, but the final scoring model
 # event carries the full conversation: its input messages plus its output
-scorer_chat_from_events <- function(model_events, chat, tools) {
+scorer_chat_from_events <- function(
+  model_events,
+  chat,
+  tools,
+  call = rlang::caller_env()
+) {
   if (length(model_events) == 0) {
     return(NULL)
   }
@@ -289,7 +306,8 @@ scorer_chat_from_events <- function(model_events, chat, tools) {
     model = last_event$model,
     chat = chat,
     tools = tools,
-    model_events = model_events
+    model_events = model_events,
+    call = call
   )
 }
 
@@ -321,17 +339,7 @@ log_content_block <- function(block) {
   }
 
   if (identical(type, "image")) {
-    image <- block$image
-    if (grepl("^data:", image)) {
-      return(ellmer::ContentImageInline(
-        type = sub("^data:([^;]+);base64,.*$", "\\1", image),
-        data = sub("^data:[^;]+;base64,", "", image)
-      ))
-    }
-    return(ellmer::ContentImageRemote(
-      url = image,
-      detail = block$detail %||% "auto"
-    ))
+    return(content_image_url(block$image, detail = block$detail %||% "auto"))
   }
 
   ellmer::ContentText(
@@ -367,9 +375,25 @@ log_model_events <- function(events) {
   purrr::keep(events, function(event) identical(event$event, "model"))
 }
 
+model_events_by_message_id <- function(model_events) {
+  res <- list()
+  for (event in model_events) {
+    id <- event$output$choices[[1]]$message$id
+    if (!is.null(id)) {
+      res[[id]] <- event
+    }
+  }
+  res
+}
+
+# older Python Inspect logs (and vitals logs) mark the scorer with step
+# events; recent Python Inspect writes span_begin/span_end instead
 split_events_at_scorer <- function(events) {
   is_scorer_step <- purrr::map_lgl(events, function(event) {
-    identical(event$event, "step") && identical(event$type, "scorer")
+    type <- event$type %||% ""
+    (identical(event$event, "step") && identical(type, "scorer")) ||
+      (identical(event$event, "span_begin") &&
+        type %in% c("scorer", "scorers"))
   })
 
   first_scorer <- which(is_scorer_step)[1]
@@ -387,7 +411,7 @@ split_events_at_scorer <- function(events) {
 resolve_attachments <- function(x, attachments) {
   if (is.character(x) && length(x) == 1 && startsWith(x, "attachment://")) {
     hash <- sub("attachment://", "", x, fixed = TRUE)
-    return(attachments[[hash]] %||% x)
+    return(get0(hash, envir = attachments, inherits = FALSE) %||% x)
   }
 
   if (is.list(x)) {
@@ -404,7 +428,7 @@ check_log_read_chat <- function(chat, call = rlang::caller_env()) {
   check_inherits(
     chat,
     "Chat",
-    x_arg = deparse(substitute(chat)),
+    x_arg = rlang::caller_arg(chat),
     call = call
   )
 }

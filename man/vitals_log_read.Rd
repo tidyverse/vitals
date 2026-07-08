@@ -8,7 +8,7 @@ vitals_log_read(path, solver_chat = NULL, scorer_chat = NULL, tools = list())
 }
 \arguments{
 \item{path}{Path to an eval log file, e.g. an element of the output of
-\code{list.files(vitals_log_dir())}.}
+\code{list.files(vitals_log_dir(), full.names = TRUE)}.}
 
 \item{solver_chat}{Optional. An \link[ellmer:Chat]{ellmer::Chat} object to use as the base
 for reconstructed solver chats. When \code{NULL}, the chat is constructed with

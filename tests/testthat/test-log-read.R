@@ -1,76 +1,12 @@
-mock_chat_template <- function() {
-  ellmer::chat_openai_compatible(
-    base_url = "https://example.com",
-    model = "placeholder",
-    credentials = function() "fake-key"
-  )
-}
-
 test_that("vitals_log_read round-trips a task log", {
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
-  tool_def <- ellmer::tool(
-    function(a, b) a + b,
-    name = "add",
-    description = "Add two numbers.",
-    arguments = list(
-      a = ellmer::type_number("First number."),
-      b = ellmer::type_number("Second number.")
-    )
-  )
-
-  request <- ellmer::ContentToolRequest(
-    id = "call_1",
-    name = "add",
-    arguments = list(a = 1, b = 2),
-    tool = tool_def
-  )
-
-  chat <- ellmer::chat_openai_compatible(
-    base_url = "https://example.com",
-    model = "test-model",
-    system_prompt = "Be terse.",
-    credentials = function() "fake-key"
-  )
-  chat$register_tool(tool_def)
-  chat$set_turns(list(
-    ellmer::UserTurn("What is 1 + 2?"),
-    ellmer::AssistantTurn(
-      contents = list(
-        ellmer::ContentThinking(
-          thinking = "I should use the tool.",
-          extra = list(signature = "sig")
-        ),
-        ellmer::ContentText("Let me add those."),
-        request
-      ),
-      tokens = c(10, 5, 3),
-      duration = 1.5,
-      finish_reason = "tool_use"
-    ),
-    ellmer::UserTurn(contents = list(
-      ellmer::ContentToolResult(value = 3, request = request)
-    )),
-    ellmer::AssistantTurn(
-      contents = list(ellmer::ContentText("The answer is 3.")),
-      tokens = c(20, 6, 10),
-      duration = 0.7,
-      finish_reason = "success"
-    )
-  ))
-
-  tsk <- Task$new(
-    dataset = tibble::tibble(input = "What is 1 + 2?", target = "3"),
-    solver = function(inputs) {
-      list(result = "The answer is 3.", solver_chat = list(chat))
-    },
-    scorer = function(samples) {
-      list(score = factor("C", levels = c("I", "C"), ordered = TRUE))
-    }
-  )
+  fixture <- example_tool_fixture()
+  tool_def <- fixture$tool_def
+  tsk <- fixture$task
   tsk$eval()
   log_path <- tsk$log()
 
@@ -157,6 +93,29 @@ test_that("vitals_log_read resolves attachment references", {
     x@text
   })
   expect_false(any(grepl("attachment://", turn_texts, fixed = TRUE)))
+})
+
+test_that("vitals_log_read splits out scorers marked with span events", {
+  log_file <- system.file(
+    "test/inspect/logs",
+    "2025-06-04T10-45-58-05-00_system-prompt_FzH5aCHPGhLT6CGuF5Xdmj.json",
+    package = "vitals"
+  )
+  skip_if(identical(log_file, ""), "Test log files not available")
+
+  res <- vitals_log_read(
+    log_file,
+    solver_chat = mock_chat_template(),
+    scorer_chat = mock_chat_template()
+  )
+
+  expect_true("scorer_chat" %in% names(res))
+  scorer <- res$scorer_chat[[1]]
+  expect_match(scorer$last_turn()@text, "GRADE")
+
+  solver_turn <- res$solver_chat[[1]]$last_turn()
+  expect_false(grepl("GRADE", solver_turn@text, fixed = TRUE))
+  expect_gt(solver_turn@tokens[1], 0)
 })
 
 test_that("vitals_log_read reconstructs scorer chats", {

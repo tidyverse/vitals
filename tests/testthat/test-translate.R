@@ -162,62 +162,7 @@ test_that("vitals writes valid eval logs with reasoning and typed tools", {
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
 
-  tool_def <- ellmer::tool(
-    function(a, b) a + b,
-    name = "add",
-    description = "Add two numbers.",
-    arguments = list(
-      a = ellmer::type_number("First number."),
-      b = ellmer::type_number("Second number.")
-    )
-  )
-
-  request <- ellmer::ContentToolRequest(
-    id = "call_1",
-    name = "add",
-    arguments = list(a = 1, b = 2),
-    tool = tool_def
-  )
-
-  chat <- ellmer::chat_openai_compatible(
-    base_url = "https://example.com",
-    model = "test-model",
-    credentials = function() "fake-key"
-  )
-  chat$register_tool(tool_def)
-  chat$set_turns(list(
-    ellmer::UserTurn("What is 1 + 2?"),
-    ellmer::AssistantTurn(
-      contents = list(
-        ellmer::ContentThinking(
-          thinking = "I should use the tool.",
-          extra = list(signature = "sig")
-        ),
-        ellmer::ContentText("Let me add those."),
-        request
-      ),
-      tokens = c(10, 5, 3),
-      finish_reason = "tool_use"
-    ),
-    ellmer::UserTurn(contents = list(
-      ellmer::ContentToolResult(value = 3, request = request)
-    )),
-    ellmer::AssistantTurn(
-      contents = list(ellmer::ContentText("The answer is 3.")),
-      tokens = c(20, 6, 10),
-      finish_reason = "success"
-    )
-  ))
-
-  tsk <- Task$new(
-    dataset = tibble::tibble(input = "What is 1 + 2?", target = "3"),
-    solver = function(inputs) {
-      list(result = "The answer is 3.", solver_chat = list(chat))
-    },
-    scorer = function(samples) {
-      list(score = factor("C", levels = c("I", "C"), ordered = TRUE))
-    }
-  )
+  tsk <- example_tool_fixture()$task
   tsk$eval()
   log_path <- tsk$log()
   expect_valid_log(log_path)
@@ -226,7 +171,7 @@ test_that("vitals writes valid eval logs with reasoning and typed tools", {
   expect_equal(log$eval$model, "openai_compatible/test-model")
 
   sample <- log$samples[[1]]
-  assistant <- sample$messages[[2]]
+  assistant <- sample$messages[[3]]
   expect_equal(assistant$content[[1]]$type, "reasoning")
   expect_equal(assistant$content[[1]]$reasoning, "I should use the tool.")
   expect_equal(assistant$content[[1]]$signature, "sig")
@@ -237,6 +182,8 @@ test_that("vitals writes valid eval logs with reasoning and typed tools", {
   )
   expect_equal(model_events[[1]]$output$choices[[1]]$stop_reason, "tool_calls")
   expect_equal(model_events[[2]]$output$choices[[1]]$stop_reason, "stop")
+  expect_equal(model_events[[1]]$call$response$stop_reason, "tool_use")
+  expect_equal(model_events[[2]]$call$response$stop_reason, "end_turn")
   expect_equal(model_events[[1]]$output$usage$input_tokens_cache_read, 3)
   expect_equal(model_events[[1]]$model, "openai_compatible/test-model")
 
@@ -257,11 +204,7 @@ test_that("repeated long content is condensed into sample attachments", {
   )
   image_uri <- paste0("data:image/png;base64,", strrep("abcd", 50))
 
-  chat <- ellmer::chat_openai_compatible(
-    base_url = "https://example.com",
-    model = "test-model",
-    credentials = function() "fake-key"
-  )
+  chat <- mock_chat_template(model = "test-model")
   chat$set_turns(list(
     ellmer::UserTurn(contents = list(
       ellmer::ContentText("Describe this image at length."),
@@ -297,6 +240,7 @@ test_that("repeated long content is condensed into sample attachments", {
   expect_gt(length(sample$attachments), 0)
   expect_true(long_answer %in% unlist(sample$attachments))
   expect_true(image_uri %in% unlist(sample$attachments))
+  expect_equal(names(sample$attachments), sort(names(sample$attachments)))
 
   events_json <- jsonlite::toJSON(sample$events, auto_unbox = TRUE)
   expect_false(grepl(long_answer, events_json, fixed = TRUE))
@@ -305,17 +249,35 @@ test_that("repeated long content is condensed into sample attachments", {
   expect_equal(sample$messages[[2]]$content[[1]]$text, long_answer)
   expect_match(sample$messages[[1]]$content[[2]]$image, "^attachment://")
 
-  res <- vitals_log_read(
-    log_path,
-    solver_chat = ellmer::chat_openai_compatible(
-      base_url = "https://example.com",
-      model = "placeholder",
-      credentials = function() "fake-key"
-    )
-  )
+  res <- vitals_log_read(log_path, solver_chat = mock_chat_template())
   turns <- res$solver_chat[[1]]$get_turns()
   expect_equal(turns[[2]]@text, long_answer)
   expect_equal(turns[[1]]@contents[[2]]@data, strrep("abcd", 50))
+})
+
+test_that("score events are not condensed", {
+  skip_on_cran()
+  tmp_dir <- withr::local_tempdir()
+
+  log_path <- example_task()$log(tmp_dir)
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  sample <- log$samples[[1]]
+
+  score_events <- purrr::keep(
+    sample$events,
+    function(event) identical(event$event, "score")
+  )
+  expect_gt(length(score_events), 0)
+  score_json <- jsonlite::toJSON(score_events, auto_unbox = TRUE)
+  expect_false(grepl("attachment://", score_json, fixed = TRUE))
+
+  model_events_json <- jsonlite::toJSON(
+    purrr::keep(sample$events, function(event) {
+      identical(event$event, "model")
+    }),
+    auto_unbox = TRUE
+  )
+  expect_true(grepl("attachment://", model_events_json, fixed = TRUE))
 })
 
 test_that("tool errors are logged in the message error field", {

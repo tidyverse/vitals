@@ -245,6 +245,79 @@ test_that("vitals writes valid eval logs with reasoning and typed tools", {
   expect_equal(tool_schema$properties$a$type, "number")
 })
 
+test_that("repeated long content is condensed into sample attachments", {
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  long_answer <- paste(
+    rep("All work and no play makes Jack a dull boy.", 10),
+    collapse = " "
+  )
+  image_uri <- paste0("data:image/png;base64,", strrep("abcd", 50))
+
+  chat <- ellmer::chat_openai_compatible(
+    base_url = "https://example.com",
+    model = "test-model",
+    credentials = function() "fake-key"
+  )
+  chat$set_turns(list(
+    ellmer::UserTurn(contents = list(
+      ellmer::ContentText("Describe this image at length."),
+      ellmer::ContentImageInline(type = "image/png", data = strrep("abcd", 50))
+    )),
+    ellmer::AssistantTurn(
+      contents = list(ellmer::ContentText(long_answer)),
+      finish_reason = "success"
+    ),
+    ellmer::UserTurn("Again, please."),
+    ellmer::AssistantTurn(
+      contents = list(ellmer::ContentText(long_answer)),
+      finish_reason = "success"
+    )
+  ))
+
+  tsk <- Task$new(
+    dataset = tibble::tibble(input = "Describe this image.", target = "A story."),
+    solver = function(inputs) {
+      list(result = long_answer, solver_chat = list(chat))
+    },
+    scorer = function(samples) {
+      list(score = factor("C", levels = c("I", "C"), ordered = TRUE))
+    }
+  )
+  tsk$eval()
+  log_path <- tsk$log()
+  expect_valid_log(log_path)
+
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  sample <- log$samples[[1]]
+
+  expect_gt(length(sample$attachments), 0)
+  expect_true(long_answer %in% unlist(sample$attachments))
+  expect_true(image_uri %in% unlist(sample$attachments))
+
+  events_json <- jsonlite::toJSON(sample$events, auto_unbox = TRUE)
+  expect_false(grepl(long_answer, events_json, fixed = TRUE))
+  expect_true(grepl("attachment://", events_json, fixed = TRUE))
+
+  expect_equal(sample$messages[[2]]$content[[1]]$text, long_answer)
+  expect_match(sample$messages[[1]]$content[[2]]$image, "^attachment://")
+
+  res <- vitals_log_read(
+    log_path,
+    solver_chat = ellmer::chat_openai_compatible(
+      base_url = "https://example.com",
+      model = "placeholder",
+      credentials = function() "fake-key"
+    )
+  )
+  turns <- res$solver_chat[[1]]$get_turns()
+  expect_equal(turns[[2]]@text, long_answer)
+  expect_equal(turns[[1]]@contents[[2]]@data, strrep("abcd", 50))
+})
+
 test_that("tool errors are logged in the message error field", {
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))

@@ -113,7 +113,11 @@ translate_events_solver <- function(events, sample, timestamps) {
     if (turn@role == "assistant") {
       events <- c(
         events,
-        create_model_event(turn, sample, timestamp = timestamps$solve$started_at)
+        create_model_event(
+          turn,
+          solver_chat,
+          timestamp = timestamps$solve$started_at
+        )
       )
     }
   }
@@ -196,9 +200,9 @@ translate_events_scorer <- function(events, sample, timestamps = timestamps) {
       if (identical(turn, scorer_turn) || has_tool_request) {
         events <- c(
           events,
-          create_scoring_model_event(
+          create_model_event(
             turn,
-            sample,
+            scorer_chat,
             time_scorer
           )
         )
@@ -264,7 +268,7 @@ create_sample_init_event <- function(turn, sample, timestamp) {
       tool_choice = NULL,
       store = c(),
       output = list(
-        model = sample$solver_chat[[1]]$get_model(),
+        model = chat_provider_model(sample$solver_chat[[1]]),
         choices = list()
       ),
       completed = FALSE,
@@ -314,12 +318,7 @@ create_tool_state_event <- function(timestamp, chat) {
         value = list(
           name = tool_name,
           description = tool_def@description,
-          parameters = list(
-            type = "object",
-            properties = c(),
-            required = list(),
-            additionalProperties = FALSE
-          )
+          parameters = tool_parameters_schema(tool_def)
         )
       )
 
@@ -390,11 +389,8 @@ create_solver_begin_event <- function(timestamp) {
   ))
 }
 
-create_model_event <- function(turn, sample, timestamp) {
-  user_message_id <- generate_id()
-  solver_chat <- sample$solver_chat[[1]]
-
-  turns <- solver_chat$get_turns()
+create_model_event <- function(turn, chat, timestamp) {
+  turns <- chat$get_turns()
   previous_turns <- list()
 
   for (j in seq_along(turns)) {
@@ -404,201 +400,44 @@ create_model_event <- function(turn, sample, timestamp) {
     previous_turns[[length(previous_turns) + 1]] <- turns[[j]]
   }
 
-  input_messages <- lapply(previous_turns, function(prev_turn) {
-    if (prev_turn@role == "user") {
-      tool_results <- turn_tool_results(prev_turn)
-      if (
-        length(tool_results) > 0 &&
-          length(tool_results) == length(prev_turn@contents)
-      ) {
-        return(purrr::map(tool_results, tool_result_message))
-      } else {
-        return(list(list(
-          id = generate_id(),
-          content = message_content_from_turn(prev_turn),
-          source = "input",
-          role = "user"
-        )))
-      }
-    } else {
-      message <- list(
-        id = generate_id(),
-        content = list(list(type = "text", text = prev_turn@text)),
-        source = "generate",
-        role = "assistant"
-      )
-
-      tool_requests <- purrr::keep(prev_turn@contents, function(content) {
-        inherits(content, "ellmer::ContentToolRequest")
-      })
-
-      if (length(tool_requests) > 0) {
-        tool_calls <- lapply(tool_requests, function(req) {
-          list(
-            id = req@id,
-            `function` = req@name,
-            arguments = req@arguments
-          )
-        })
-
-        message$tool_calls <- tool_calls
-      }
-
-      return(list(message))
-    }
-  })
-  input_messages <- purrr::list_flatten(input_messages)
-
-  has_tool_calls_in_turn <- any(sapply(turn@contents, function(content) {
-    inherits(content, "ellmer::ContentToolRequest")
-  }))
-
-  tool_calls_list <- list()
-  if (has_tool_calls_in_turn) {
-    tool_requests <- purrr::keep(turn@contents, function(content) {
-      inherits(content, "ellmer::ContentToolRequest")
-    })
-
-    tool_calls_list <- lapply(tool_requests, function(req) {
-      list(
-        id = req@id,
-        `function` = req@name,
-        arguments = req@arguments
-      )
-    })
-  }
-
-  stop_reason <- ifelse(has_tool_calls_in_turn, "tool_calls", "stop")
-
-  tools_list <- chat_tools_list(solver_chat)
-
-  output_message <- list(
-    id = generate_id(),
-    content = list(list(type = "text", text = turn@text)),
-    source = "generate",
-    role = "assistant"
+  input_messages <- purrr::list_flatten(
+    lapply(previous_turns, event_input_message)
   )
 
-  if (has_tool_calls_in_turn) {
-    output_message$tool_calls <- tool_calls_list
-  }
+  tool_calls_list <- turn_tool_calls(turn)
+  tools_list <- chat_tools_list(chat)
+  stop_reason <- turn_stop_reason(turn)
 
-  output_message$model <- solver_chat$get_model()
+  output_message <- event_input_message(turn)[[1]]
+  output_message$model <- chat$get_model()
 
-  request_messages <- lapply(input_messages, function(msg) {
-    if (msg$role == "tool") {
-      return(list(
-        role = "user",
-        content = list(list(
-          tool_use_id = msg$tool_call_id,
-          type = "tool_result",
-          content = if (is.character(msg$content)) {
-            list(list(type = "text", text = msg$content))
-          } else {
-            # Handle tool results that may contain image objects
-            lapply(msg$content, function(item) {
-              if (
-                is.list(item) &&
-                  identical(item$type, "image") &&
-                  !is.null(item$source)
-              ) {
-                # Convert image object to ContentImage format
-                list(
-                  type = "image",
-                  image = paste0(
-                    "data:",
-                    item$source$media_type,
-                    ";base64,",
-                    item$source$data
-                  )
-                )
-              } else {
-                item
-              }
-            })
-          },
-          # This depends specifically on previous helpers using
-          # `as_character()` on conditions to extract error messages
-          is_error = if (is.character(msg$content)) {
-            grepl("Error in", msg$content)
-          } else {
-            FALSE
-          }
-        ))
-      ))
-    } else if (msg$role == "user") {
-      return(list(
-        role = "user",
-        content = ensure_content_list(msg$content)
-      ))
-    } else if (msg$role == "assistant") {
-      if ("tool_calls" %in% names(msg)) {
-        tool_use_elements <- lapply(msg$tool_calls, function(tc) {
-          list(
-            type = "tool_use",
-            id = tc$id,
-            name = tc$`function`,
-            input = tc$arguments
-          )
-        })
+  request_messages <- lapply(input_messages, event_request_message)
 
-        combined_content <- c(
-          list(list(type = "text", text = msg$content[[1]]$text)),
-          tool_use_elements
-        )
-
-        return(list(
-          role = "assistant",
-          content = combined_content
-        ))
-      } else {
-        # Handle content that may contain image objects
-        processed_content <- if (is.list(msg$content)) {
-          lapply(msg$content, function(item) {
-            if (
-              is.list(item) &&
-                identical(item$type, "image") &&
-                !is.null(item$source)
-            ) {
-              # Convert image object to ContentImage format
-              list(
-                type = "image",
-                image = paste0(
-                  "data:",
-                  item$source$media_type,
-                  ";base64,",
-                  item$source$data
-                )
-              )
-            } else {
-              item
-            }
-          })
-        } else {
-          msg$content
-        }
-
-        return(list(
-          role = "assistant",
-          content = processed_content
-        ))
-      }
-    }
-  })
+  response_content <- c(
+    request_content_blocks(output_message$content),
+    lapply(tool_calls_list, function(tc) {
+      list(
+        id = tc$id,
+        input = tc$arguments,
+        name = tc$`function`,
+        type = "tool_use"
+      )
+    })
+  )
 
   list(list(
     timestamp = events_timestamp(timestamp),
     working_start = attr(turn, "working_start"),
     event = "model",
-    model = solver_chat$get_model(),
+    model = chat_provider_model(chat),
     input = input_messages,
     tools = tools_list,
     tool_choice = if (length(tools_list) > 0) "auto" else "none",
     config = drop_nulls(list(
-      max_tokens = solver_chat$get_provider()@params$max_tokens
+      max_tokens = chat$get_provider()@params$max_tokens
     )),
     output = list(
-      model = solver_chat$get_model(),
+      model = chat$get_model(),
       choices = list(
         list(
           message = output_message,
@@ -617,40 +456,25 @@ create_model_event <- function(turn, sample, timestamp) {
         } else {
           "none"
         },
-        model = solver_chat$get_model(),
-        max_tokens = solver_chat$get_provider()@params$max_tokens,
+        model = chat$get_model(),
+        max_tokens = chat$get_provider()@params$max_tokens,
         extra_headers = list(
           `x-irid` = generate_id()
         )
       )),
       response = list(
         id = paste0("msg_", generate_id()),
-        content = if (has_tool_calls_in_turn) {
-          c(
-            list(list(
-              citations = NULL,
-              text = turn@text,
-              type = "text"
-            )),
-            lapply(tool_calls_list, function(tc) {
-              list(
-                id = tc$id,
-                input = tc$arguments,
-                name = tc$`function`,
-                type = "tool_use"
-              )
-            })
-          )
-        } else {
-          list(list(
-            citations = NULL,
-            text = turn@text,
-            type = "text"
-          ))
-        },
-        model = solver_chat$get_model(),
+        content = response_content,
+        model = chat$get_model(),
         role = "assistant",
-        stop_reason = if (has_tool_calls_in_turn) "tool_use" else "end_turn",
+        stop_reason = switch(
+          stop_reason,
+          tool_calls = "tool_use",
+          max_tokens = ,
+          model_length = "max_tokens",
+          content_filter = "refusal",
+          "end_turn"
+        ),
         stop_sequence = NULL,
         type = "message",
         usage = turn_tokens(turn)
@@ -660,6 +484,102 @@ create_model_event <- function(turn, sample, timestamp) {
     completed = events_timestamp(timestamp),
     working_time = attr(turn, "working_time")
   ))
+}
+
+event_input_message <- function(prev_turn) {
+  if (prev_turn@role == "user") {
+    tool_results <- turn_tool_results(prev_turn)
+    if (
+      length(tool_results) > 0 &&
+        length(tool_results) == length(prev_turn@contents)
+    ) {
+      return(purrr::map(tool_results, tool_result_message))
+    }
+    return(list(list(
+      id = generate_id(),
+      content = message_content_from_turn(prev_turn),
+      source = "input",
+      role = "user"
+    )))
+  }
+
+  message <- list(
+    id = generate_id(),
+    content = assistant_message_content(prev_turn),
+    source = "generate",
+    role = "assistant"
+  )
+
+  tool_calls <- turn_tool_calls(prev_turn)
+  if (length(tool_calls) > 0) {
+    message$tool_calls <- tool_calls
+  }
+
+  list(message)
+}
+
+turn_tool_calls <- function(turn) {
+  tool_requests <- purrr::keep(turn@contents, function(content) {
+    inherits(content, "ellmer::ContentToolRequest")
+  })
+
+  lapply(tool_requests, function(req) {
+    list(
+      id = req@id,
+      `function` = req@name,
+      arguments = req@arguments
+    )
+  })
+}
+
+# Anthropic-style request payload, for display in the viewer's API view
+event_request_message <- function(msg) {
+  if (msg$role == "tool") {
+    return(list(
+      role = "user",
+      content = list(list(
+        tool_use_id = msg$tool_call_id,
+        type = "tool_result",
+        content = request_content_blocks(msg$content),
+        is_error = !is.null(msg$error)
+      ))
+    ))
+  }
+
+  if (msg$role == "user") {
+    return(list(
+      role = "user",
+      content = ensure_content_list(msg$content)
+    ))
+  }
+
+  tool_use_elements <- lapply(msg$tool_calls, function(tc) {
+    list(
+      type = "tool_use",
+      id = tc$id,
+      name = tc$`function`,
+      input = tc$arguments
+    )
+  })
+
+  list(
+    role = "assistant",
+    content = c(request_content_blocks(msg$content), tool_use_elements)
+  )
+}
+
+request_content_blocks <- function(content) {
+  if (is.character(content)) {
+    return(list(list(type = "text", text = content)))
+  }
+
+  lapply(content, function(block) {
+    if (identical(block$type, "reasoning")) {
+      list(type = "thinking", thinking = block$reasoning)
+    } else {
+      block
+    }
+  })
 }
 
 chat_tools_list <- function(chat) {
@@ -675,12 +595,7 @@ chat_tools_list <- function(chat) {
     list(
       name = tool_name,
       description = tool@description,
-      parameters = list(
-        type = "object",
-        properties = c(),
-        required = list(),
-        additionalProperties = FALSE
-      )
+      parameters = tool_parameters_schema(tool)
     )
   })
 }
@@ -704,269 +619,6 @@ create_scorer_begin_event <- function(timestamp, working_start) {
     action = "begin",
     type = "scorer",
     name = "model_graded_qa"
-  ))
-}
-
-create_scoring_model_event <- function(turn, sample, timestamp) {
-  scorer_chat <- sample$scorer_chat[[1]]
-  turns <- scorer_chat$get_turns()
-  previous_turns <- list()
-
-  for (j in seq_along(turns)) {
-    if (identical(turns[[j]], turn)) {
-      break
-    }
-    previous_turns[[length(previous_turns) + 1]] <- turns[[j]]
-  }
-
-  input_messages <- lapply(previous_turns, function(prev_turn) {
-    if (prev_turn@role == "user") {
-      tool_results <- turn_tool_results(prev_turn)
-      if (
-        length(tool_results) > 0 &&
-          length(tool_results) == length(prev_turn@contents)
-      ) {
-        return(purrr::map(tool_results, tool_result_message))
-      } else {
-        return(list(list(
-          id = generate_id(),
-          content = message_content_from_turn(prev_turn),
-          source = "input",
-          role = "user"
-        )))
-      }
-    } else {
-      message <- list(
-        id = generate_id(),
-        content = list(list(type = "text", text = prev_turn@text)),
-        source = "generate",
-        role = "assistant"
-      )
-
-      tool_requests <- purrr::keep(prev_turn@contents, function(content) {
-        inherits(content, "ellmer::ContentToolRequest")
-      })
-
-      if (length(tool_requests) > 0) {
-        tool_calls <- lapply(tool_requests, function(req) {
-          list(
-            id = req@id,
-            `function` = req@name,
-            arguments = req@arguments
-          )
-        })
-
-        message$tool_calls <- tool_calls
-      }
-
-      return(list(message))
-    }
-  })
-  input_messages <- purrr::list_flatten(input_messages)
-
-  has_tool_calls_in_turn <- any(sapply(turn@contents, function(content) {
-    inherits(content, "ellmer::ContentToolRequest")
-  }))
-
-  tool_calls_list <- list()
-  if (has_tool_calls_in_turn) {
-    tool_requests <- purrr::keep(turn@contents, function(content) {
-      inherits(content, "ellmer::ContentToolRequest")
-    })
-
-    tool_calls_list <- lapply(tool_requests, function(req) {
-      list(
-        id = req@id,
-        `function` = req@name,
-        arguments = req@arguments
-      )
-    })
-  }
-
-  stop_reason <- ifelse(has_tool_calls_in_turn, "tool_calls", "stop")
-  tools_list <- chat_tools_list(scorer_chat)
-
-  output_message <- list(
-    id = generate_id(),
-    content = list(list(type = "text", text = turn@text)),
-    source = "generate",
-    role = "assistant"
-  )
-
-  if (has_tool_calls_in_turn) {
-    output_message$tool_calls <- tool_calls_list
-  }
-
-  output_message$model <- scorer_chat$get_model()
-
-  request_messages <- lapply(input_messages, function(msg) {
-    if (msg$role == "tool") {
-      return(list(
-        role = "user",
-        content = list(list(
-          tool_use_id = msg$tool_call_id,
-          type = "tool_result",
-          content = if (is.character(msg$content)) {
-            list(list(type = "text", text = msg$content))
-          } else {
-            lapply(msg$content, function(item) {
-              if (
-                is.list(item) &&
-                  identical(item$type, "image") &&
-                  !is.null(item$source)
-              ) {
-                list(
-                  type = "image",
-                  image = paste0(
-                    "data:",
-                    item$source$media_type,
-                    ";base64,",
-                    item$source$data
-                  )
-                )
-              } else {
-                item
-              }
-            })
-          },
-          is_error = if (is.character(msg$content)) {
-            grepl("Error in", msg$content)
-          } else {
-            FALSE
-          }
-        ))
-      ))
-    } else if (msg$role == "user") {
-      return(list(
-        role = "user",
-        content = ensure_content_list(msg$content)
-      ))
-    } else if (msg$role == "assistant") {
-      if ("tool_calls" %in% names(msg)) {
-        tool_use_elements <- lapply(msg$tool_calls, function(tc) {
-          list(
-            type = "tool_use",
-            id = tc$id,
-            name = tc$`function`,
-            input = tc$arguments
-          )
-        })
-
-        combined_content <- c(
-          list(list(type = "text", text = msg$content[[1]]$text)),
-          tool_use_elements
-        )
-
-        return(list(
-          role = "assistant",
-          content = combined_content
-        ))
-      } else {
-        processed_content <- if (is.list(msg$content)) {
-          lapply(msg$content, function(item) {
-            if (
-              is.list(item) &&
-                identical(item$type, "image") &&
-                !is.null(item$source)
-            ) {
-              list(
-                type = "image",
-                image = paste0(
-                  "data:",
-                  item$source$media_type,
-                  ";base64,",
-                  item$source$data
-                )
-              )
-            } else {
-              item
-            }
-          })
-        } else {
-          msg$content
-        }
-
-        return(list(
-          role = "assistant",
-          content = processed_content
-        ))
-      }
-    }
-  })
-
-  list(list(
-    timestamp = events_timestamp(timestamp),
-    working_start = attr(turn, "working_start"),
-    event = "model",
-    model = scorer_chat$get_model(),
-    input = input_messages,
-    tools = tools_list,
-    tool_choice = if (length(tools_list) > 0) "auto" else "none",
-    config = drop_nulls(list(
-      max_tokens = scorer_chat$get_provider()@params$max_tokens
-    )),
-    output = list(
-      model = scorer_chat$get_model(),
-      choices = list(
-        list(
-          message = output_message,
-          stop_reason = stop_reason
-        )
-      ),
-      usage = turn_tokens(turn),
-      time = attr(turn, "working_time")
-    ),
-    call = list(
-      request = drop_nulls(list(
-        messages = request_messages,
-        tools = tools_list,
-        tool_choice = if (length(tools_list) > 0) {
-          list(type = "auto")
-        } else {
-          "none"
-        },
-        model = scorer_chat$get_model(),
-        max_tokens = scorer_chat$get_provider()@params$max_tokens,
-        extra_headers = list(
-          `x-irid` = generate_id()
-        )
-      )),
-      response = list(
-        id = paste0("msg_", generate_id()),
-        content = if (has_tool_calls_in_turn) {
-          c(
-            list(list(
-              citations = NULL,
-              text = turn@text,
-              type = "text"
-            )),
-            lapply(tool_calls_list, function(tc) {
-              list(
-                id = tc$id,
-                input = tc$arguments,
-                name = tc$`function`,
-                type = "tool_use"
-              )
-            })
-          )
-        } else {
-          list(list(
-            citations = NULL,
-            text = turn@text,
-            type = "text"
-          ))
-        },
-        model = scorer_chat$get_model(),
-        role = "assistant",
-        stop_reason = if (has_tool_calls_in_turn) "tool_use" else "end_turn",
-        stop_sequence = NULL,
-        type = "message",
-        usage = turn_tokens(turn),
-        time = attr(turn, "working_time")
-      )
-    ),
-    completed = events_timestamp(timestamp),
-    working_time = attr(turn, "working_time")
   ))
 }
 
@@ -1038,11 +690,16 @@ turn_tokens <- function(turn) {
 
   input_tokens <- if (is.na(tokens_io[1])) 0L else as.integer(tokens_io[1])
   output_tokens <- if (is.na(tokens_io[2])) 0L else as.integer(tokens_io[2])
+  cached_tokens <- if (length(tokens_io) < 3 || is.na(tokens_io[3])) {
+    0L
+  } else {
+    as.integer(tokens_io[3])
+  }
 
   list(
     input_tokens = input_tokens,
     input_tokens_cache_write = 0L,
-    input_tokens_cache_read = 0L,
+    input_tokens_cache_read = cached_tokens,
     output_tokens = output_tokens
   )
 }

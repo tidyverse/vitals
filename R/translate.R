@@ -160,7 +160,7 @@ translate_to_sample <- function(sample, scores, timestamps) {
   } else {
     input_value
   }
-  list(
+  res <- list(
     id = sample$id,
     epoch = if ("epoch" %in% colnames(sample)) {
       sample$epoch
@@ -195,6 +195,75 @@ translate_to_sample <- function(sample, scores, timestamps) {
     model_usage = sum_model_usage(list(chat)),
     attachments = c()
   )
+
+  condense_sample(res)
+}
+
+# de-duplicates repeated content into the sample's attachments pool, following
+# Inspect's condense_sample(): model events re-embed the full conversation
+# history, so long strings there grow quadratically with turn count if left
+# inline. Only the event types that Python Inspect's resolve_attachments()
+# walks are condensed; pooling anything else (e.g. score events) would leave
+# unresolved attachment:// refs when the log is read via the Python API.
+condensed_event_types <- c(
+  "sample_init",
+  "model",
+  "state",
+  "store",
+  "subtask",
+  "tool",
+  "info"
+)
+
+condense_sample <- function(sample) {
+  attachments <- new.env(parent = emptyenv())
+
+  sample$input <- condense_content(sample$input, attachments, data_uris_only = TRUE)
+  sample$messages <- condense_content(
+    sample$messages,
+    attachments,
+    data_uris_only = TRUE
+  )
+  sample$events <- lapply(sample$events, function(event) {
+    if (!(event$event %||% "") %in% condensed_event_types) {
+      return(event)
+    }
+    condense_content(event, attachments, data_uris_only = FALSE)
+  })
+
+  pool <- as.list(attachments)
+  if (length(pool) > 0) {
+    sample$attachments <- pool[order(names(pool))]
+  }
+
+  sample
+}
+
+condense_content <- function(x, attachments, data_uris_only) {
+  if (is.character(x) && length(x) == 1 && !is.na(x)) {
+    pool <- if (data_uris_only) {
+      startsWith(x, "data:")
+    } else {
+      nchar(x) > 100
+    }
+    if (pool) {
+      hash <- rlang::hash(x)
+      assign(hash, x, envir = attachments)
+      return(paste0("attachment://", hash))
+    }
+    return(x)
+  }
+
+  if (is.list(x)) {
+    return(lapply(
+      x,
+      condense_content,
+      attachments = attachments,
+      data_uris_only = data_uris_only
+    ))
+  }
+
+  x
 }
 
 # sub-level entries ------------------------------------------------------------

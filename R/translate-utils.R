@@ -1,7 +1,24 @@
+# model naming -----------------------------------------------------------------
+# Inspect writes model strings as "provider/model" in eval$model, event-level
+# model fields, and model_usage keys. The prefix is normalized so that
+# `ellmer::chat("<prefix>/<model>")` can reconstruct a chat on read-back.
+chat_provider_prefix <- function(chat) {
+  provider_prefix(chat$get_provider()@name)
+}
+
+provider_prefix <- function(name) {
+  prefix <- tolower(gsub("[^[:alnum:]]+", "_", name))
+  switch(prefix, lm_studio = "lmstudio", portkeyai = "portkey", prefix)
+}
+
+chat_provider_model <- function(chat) {
+  paste0(chat_provider_prefix(chat), "/", chat$get_model())
+}
+
 # model usage ------------------------------------------------------------------
 translate_to_model_usage <- function(chat) {
   tokens <- as.data.frame(chat$get_tokens())
-  model <- chat$get_model()
+  model <- chat_provider_model(chat)
 
   dots_list(
     !!model := list(
@@ -27,7 +44,7 @@ sum_model_usage <- function(solvers) {
   res <- Reduce(function(x, y) Map(`+`, x, y), usage_per_solver)
 
   # TODO: ultimately, this needs to be per-model
-  dots_list(!!chat$get_model() := res)
+  dots_list(!!chat_provider_model(chat) := res)
 }
 
 # output ----------------------------------------------------------------------
@@ -43,32 +60,118 @@ translate_to_output <- function(chat) {
 }
 
 translate_assistant_choices <- function(turn) {
-  text_contents <- first_text_contents(turn)
-  text <- if (!is.null(text_contents)) text_contents@text else ""
   list(list(
     message = list(
       id = generate_id(),
-      content = list(list(
-        type = "text",
-        text = text
-      )),
+      content = assistant_message_content(turn),
       source = "generate",
       role = turn@role
     ),
-    # turn@json$stop_reason gives the actual stop reason (often 'end_turn'), but
-    # Inspect requires "Input should be 'stop', 'max_tokens', 'model_length',
-    # 'tool_calls', 'content_filter' or 'unknown'" . (#7)
-    stop_reason = "stop"
+    stop_reason = turn_stop_reason(turn)
   ))
 }
 
-# miscellaneous ----------------------------------------------------------------
-first_text_contents <- function(turn) {
-  turn_contents <- turn@contents
-  is_text <- vapply(turn_contents, inherits, logical(1), "ellmer::ContentText")
-  turn_contents[[which(is_text)[1]]]
+# turn@json$stop_reason gives the provider-specific stop reason (e.g.
+# 'end_turn'), but Inspect requires "Input should be 'stop', 'max_tokens',
+# 'model_length', 'tool_calls', 'content_filter' or 'unknown'" (#7). ellmer
+# standardizes finish_reason across providers; chats recorded before ellmer
+# tracked finish_reason fall back to inferring from tool requests.
+# `stop_reason_to_finish_reason` is the inverse map, used on read-back in
+# log-read.R; keep the two in sync when adding a finish reason.
+finish_reason_to_stop_reason <- c(
+  success = "stop",
+  tool_use = "tool_calls",
+  max_tokens = "max_tokens",
+  stop_sequence = "stop",
+  content_filter = "content_filter",
+  context_window = "model_length"
+)
+
+stop_reason_to_finish_reason <- c(
+  stop = "success",
+  tool_calls = "tool_use",
+  max_tokens = "max_tokens",
+  model_length = "context_window",
+  content_filter = "content_filter"
+)
+
+turn_stop_reason <- function(turn) {
+  finish_reason <- tryCatch(turn@finish_reason, error = function(e) NULL)
+  if (!is.null(finish_reason) && !is.na(finish_reason)) {
+    res <- finish_reason_to_stop_reason[finish_reason]
+    return(if (is.na(res)) "unknown" else unname(res))
+  }
+
+  if (any(map_lgl(turn@contents, inherits, "ellmer::ContentToolRequest"))) {
+    "tool_calls"
+  } else {
+    "stop"
+  }
 }
 
+# `AssistantTurn(finish_reason =)` and `Chat$set_model()` landed in ellmer
+# 0.4.1.9000; detect them rather than checking versions so vitals works with
+# the CRAN release (and keeps working if either is reverted before the next).
+ellmer_tracks_finish_reason <- function() {
+  "finish_reason" %in% names(formals(ellmer::AssistantTurn))
+}
+
+assistant_turn <- function(
+  contents,
+  tokens = c(NA_real_, NA_real_, NA_real_),
+  duration = NA_real_,
+  finish_reason = NA_character_
+) {
+  if (ellmer_tracks_finish_reason()) {
+    ellmer::AssistantTurn(
+      contents = contents,
+      tokens = tokens,
+      duration = duration,
+      finish_reason = finish_reason
+    )
+  } else {
+    ellmer::AssistantTurn(
+      contents = contents,
+      tokens = tokens,
+      duration = duration
+    )
+  }
+}
+
+chat_set_model <- function(chat, model) {
+  if (is.function(chat$set_model)) {
+    chat$set_model(model)
+  } else {
+    chat$.__enclos_env__$private$provider@model <- model
+  }
+  invisible(chat)
+}
+
+assistant_message_content <- function(turn) {
+  blocks <- list()
+  for (content in turn@contents) {
+    if (inherits(content, "ellmer::ContentThinking")) {
+      block <- list(type = "reasoning", reasoning = content@thinking)
+      signature <- content@extra$signature
+      if (!is.null(signature)) {
+        block$signature <- signature
+      }
+      blocks <- c(blocks, list(block))
+    } else if (inherits(content, "ellmer::ContentText")) {
+      blocks <- c(blocks, list(list(type = "text", text = content@text)))
+    } else if (!inherits(content, "ellmer::ContentToolRequest")) {
+      blocks <- c(blocks, list(translate_ellmer_content(content)))
+    }
+  }
+
+  if (!any(map_lgl(blocks, function(block) block$type == "text"))) {
+    blocks <- c(blocks, list(list(type = "text", text = turn@text)))
+  }
+
+  blocks
+}
+
+# miscellaneous ----------------------------------------------------------------
 message_content_from_turn <- function(turn) {
   contents <- turn@contents
   if (length(contents) == 0) {
@@ -107,9 +210,8 @@ translate_ellmer_content <- function(content) {
 
   if (inherits(content, "ellmer::ContentImageRemote")) {
     detail <- content@detail %||% "auto"
-    data_uri <- remote_url_to_data_uri(content@url)
-    result <- list(type = "image", image = data_uri)
-    if (!is.null(detail)) {
+    result <- list(type = "image", image = content@url)
+    if (nchar(detail) > 0) {
       result$detail <- detail
     }
     return(result)
@@ -122,16 +224,48 @@ translate_ellmer_content <- function(content) {
   list(type = "text", text = fallback)
 }
 
-remote_url_to_data_uri <- function(url) {
-  resp <- httr2::request(url) |>
-    httr2::req_perform()
+tool_parameters_schema <- function(tool_def) {
+  arguments <- tool_def@arguments
+  if (is.null(arguments)) {
+    return(list(
+      type = "object",
+      properties = c(),
+      required = list(),
+      additionalProperties = FALSE
+    ))
+  }
+  type_to_schema(arguments)
+}
 
-  content_type <- httr2::resp_content_type(resp)
-  raw_data <- httr2::resp_body_raw(resp)
-
-  base64_data <- jsonlite::base64_enc(raw_data)
-
-  paste0("data:", content_type, ";base64,", base64_data)
+type_to_schema <- function(type) {
+  if (inherits(type, "ellmer::TypeObject")) {
+    props <- purrr::discard(type@properties, inherits, "ellmer::TypeIgnore")
+    properties <- lapply(props, type_to_schema)
+    required <- map_lgl(props, function(prop) prop@required)
+    list(
+      type = "object",
+      description = type@description %||% "",
+      properties = if (length(properties) == 0) c() else properties,
+      required = as.list(names2(props)[required]),
+      additionalProperties = type@additional_properties
+    )
+  } else if (inherits(type, "ellmer::TypeEnum")) {
+    list(
+      type = "string",
+      description = type@description %||% "",
+      enum = as.list(type@values)
+    )
+  } else if (inherits(type, "ellmer::TypeArray")) {
+    list(
+      type = "array",
+      description = type@description %||% "",
+      items = type_to_schema(type@items)
+    )
+  } else if (inherits(type, "ellmer::TypeJsonSchema")) {
+    type@json
+  } else {
+    list(type = type@type, description = type@description %||% "")
+  }
 }
 
 is_content_list <- function(x) {

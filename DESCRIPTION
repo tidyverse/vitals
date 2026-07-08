@@ -1,6 +1,6 @@
 Package: vitals
 Title: Large Language Model Evaluation
-Version: 0.3.0.9000
+Version: 0.3.0.9001
 Authors@R: c(
     person("Simon", "Couch", , "simon.couch@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5676-5107")),
@@ -25,10 +25,9 @@ Depends:
 Imports:
     cli,
     dplyr,
-    ellmer (>= 0.4.0),
+    ellmer (>= 0.4.1),
     glue,
     httpuv,
-    httr2,
     jsonlite,
     purrr,
     R6,
@@ -56,4 +55,4 @@ Config/testthat/start-first: task, translate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0

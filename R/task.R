@@ -411,7 +411,7 @@ Task <- R6::R6Class(
             sample_ids = as.list(seq_len(length(unique(samples$id)))),
             shuffled = FALSE
           ),
-          model = private$solver_description(),
+          model = chat_provider_model(samples$solver_chat[[1]]),
           scorers = translate_to_eval_scorers(
             name = samples$scorer[[1]]
           )

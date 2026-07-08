@@ -21,13 +21,25 @@ turn_tool_results <- function(turn) {
 }
 
 tool_result_message <- function(tool_result) {
-  list(
+  message <- list(
     id = generate_id(),
     content = collapse_tool_result(tool_result),
     role = "tool",
     tool_call_id = tool_result@request@id,
     `function` = tool_result@request@name
   )
+  error <- tool_result_error(tool_result)
+  if (!is.null(error)) {
+    message$error <- error
+  }
+  message
+}
+
+tool_result_error <- function(tool_result) {
+  if (is.null(tool_result@error)) {
+    return(NULL)
+  }
+  list(type = "unknown", message = as.character(tool_result@error))
 }
 
 translate_to_message <- function(turn, model) {
@@ -45,33 +57,17 @@ translate_to_message <- function(turn, model) {
       length(turn@contents) == 1 &&
         inherits(turn@contents[[1]], "ellmer::ContentToolResult")
     ) {
-      tool_result <- turn@contents[[1]]
-      message$content <- collapse_tool_result(tool_result)
-      message$role <- "tool"
-      message$tool_call_id <- tool_result@request@id
-      message$`function` <- tool_result@request@name
-      return(message)
+      return(tool_result_message(turn@contents[[1]]))
     } else {
       message$content <- message_content_from_turn(turn)
       message$source <- source
     }
   } else {
-    message$content <- list(list(type = "text", text = turn@text))
+    message$content <- assistant_message_content(turn)
     message$source <- source
 
-    tool_requests <- purrr::keep(turn@contents, function(content) {
-      inherits(content, "ellmer::ContentToolRequest")
-    })
-
-    if (length(tool_requests) > 0) {
-      tool_calls <- lapply(tool_requests, function(req) {
-        list(
-          id = req@id,
-          `function` = req@name,
-          arguments = req@arguments
-        )
-      })
-
+    tool_calls <- turn_tool_calls(turn)
+    if (length(tool_calls) > 0) {
       message$tool_calls <- tool_calls
     }
 

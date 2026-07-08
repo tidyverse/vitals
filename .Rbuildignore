@@ -13,7 +13,7 @@
 CLAUDE.md
 ^vignettes/articles$
 R/README.md
-logs/
+^logs/
 
 inst/hex
 inst/sandbox
@@ -25,8 +25,10 @@ inst/log_dump
 ^vignettes/articles/\.quarto$
 ^vignettes/articles/*_files$
 
-inst/test/inspect/logs
+inst/test/inspect/logs/.*arithmetic-with-tool
+inst/test/inspect/logs/.*system-prompt
 .claude/
 inst/inspect_ai
 inst/ellmer
 inst/debug
+plans/

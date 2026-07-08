@@ -8,11 +8,11 @@ generate_structured(solver_chat = NULL, type = NULL)
 }
 \arguments{
 \item{solver_chat}{An ellmer chat object, such as from
-\code{\link[ellmer:chat_anthropic]{ellmer::chat_claude()}}, or a zero-argument function that returns one.}
+\code{\link[ellmer:chat_claude]{ellmer::chat_claude()}}, or a zero-argument function that returns one.}
 
 \item{type}{A type specification for the extracted data, created with
-ellmer's \verb{type_*()} functions (e.g., \code{\link[ellmer:type_boolean]{ellmer::type_object()}},
-\code{\link[ellmer:type_boolean]{ellmer::type_string()}}). This defines the schema for the structured
+ellmer's \verb{type_*()} functions (e.g., \code{\link[ellmer:type_object]{ellmer::type_object()}},
+\code{\link[ellmer:type_string]{ellmer::type_string()}}). This defines the schema for the structured
 output.}
 }
 \value{
@@ -25,7 +25,7 @@ information on the return type.
 }
 \description{
 \code{generate_structured()} is a variant of \code{\link[=generate]{generate()}} that uses
-\code{\link[ellmer:parallel_chat]{ellmer::parallel_chat_structured()}} to extract structured data from
+\code{\link[ellmer:parallel_chat_structured]{ellmer::parallel_chat_structured()}} to extract structured data from
 the model's responses. This allows you to define a schema for the
 expected output using ellmer's \verb{type_*()} functions.
 
@@ -78,6 +78,6 @@ if (FALSE) {
 }
 }
 \seealso{
-\code{\link[=generate]{generate()}} for unstructured output, \code{\link[ellmer:type_boolean]{ellmer::type_object()}} and
+\code{\link[=generate]{generate()}} for unstructured output, \code{\link[ellmer:type_object]{ellmer::type_object()}} and
 related functions for defining type specifications.
 }

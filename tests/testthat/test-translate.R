@@ -156,6 +156,151 @@ test_that("vitals writes valid eval logs (solver errors on tool call, claude)", 
   expect_valid_log(log_file[1])
 })
 
+test_that("vitals writes valid eval logs with reasoning and typed tools", {
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  tool_def <- ellmer::tool(
+    function(a, b) a + b,
+    name = "add",
+    description = "Add two numbers.",
+    arguments = list(
+      a = ellmer::type_number("First number."),
+      b = ellmer::type_number("Second number.")
+    )
+  )
+
+  request <- ellmer::ContentToolRequest(
+    id = "call_1",
+    name = "add",
+    arguments = list(a = 1, b = 2),
+    tool = tool_def
+  )
+
+  chat <- ellmer::chat_openai_compatible(
+    base_url = "https://example.com",
+    model = "test-model",
+    credentials = function() "fake-key"
+  )
+  chat$register_tool(tool_def)
+  chat$set_turns(list(
+    ellmer::UserTurn("What is 1 + 2?"),
+    ellmer::AssistantTurn(
+      contents = list(
+        ellmer::ContentThinking(
+          thinking = "I should use the tool.",
+          extra = list(signature = "sig")
+        ),
+        ellmer::ContentText("Let me add those."),
+        request
+      ),
+      tokens = c(10, 5, 3),
+      finish_reason = "tool_use"
+    ),
+    ellmer::UserTurn(contents = list(
+      ellmer::ContentToolResult(value = 3, request = request)
+    )),
+    ellmer::AssistantTurn(
+      contents = list(ellmer::ContentText("The answer is 3.")),
+      tokens = c(20, 6, 10),
+      finish_reason = "success"
+    )
+  ))
+
+  tsk <- Task$new(
+    dataset = tibble::tibble(input = "What is 1 + 2?", target = "3"),
+    solver = function(inputs) {
+      list(result = "The answer is 3.", solver_chat = list(chat))
+    },
+    scorer = function(samples) {
+      list(score = factor("C", levels = c("I", "C"), ordered = TRUE))
+    }
+  )
+  tsk$eval()
+  log_path <- tsk$log()
+  expect_valid_log(log_path)
+
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  expect_equal(log$eval$model, "openai_compatible/test-model")
+
+  sample <- log$samples[[1]]
+  assistant <- sample$messages[[2]]
+  expect_equal(assistant$content[[1]]$type, "reasoning")
+  expect_equal(assistant$content[[1]]$reasoning, "I should use the tool.")
+  expect_equal(assistant$content[[1]]$signature, "sig")
+
+  model_events <- purrr::keep(
+    sample$events,
+    function(event) identical(event$event, "model")
+  )
+  expect_equal(model_events[[1]]$output$choices[[1]]$stop_reason, "tool_calls")
+  expect_equal(model_events[[2]]$output$choices[[1]]$stop_reason, "stop")
+  expect_equal(model_events[[1]]$output$usage$input_tokens_cache_read, 3)
+  expect_equal(model_events[[1]]$model, "openai_compatible/test-model")
+
+  tool_schema <- model_events[[1]]$tools[[1]]$parameters
+  expect_named(tool_schema$properties, c("a", "b"))
+  expect_equal(tool_schema$properties$a$type, "number")
+})
+
+test_that("tool errors are logged in the message error field", {
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  request <- ellmer::ContentToolRequest(
+    id = "call_1",
+    name = "add",
+    arguments = list(a = 1, b = 2)
+  )
+
+  chat <- ellmer::chat_openai_compatible(
+    base_url = "https://example.com",
+    model = "test-model",
+    credentials = function() "fake-key"
+  )
+  chat$set_turns(list(
+    ellmer::UserTurn("What is 1 + 2?"),
+    ellmer::AssistantTurn(
+      contents = list(request),
+      finish_reason = "tool_use"
+    ),
+    ellmer::UserTurn(contents = list(
+      ellmer::ContentToolResult(
+        error = "tool add is unavailable",
+        request = request
+      )
+    )),
+    ellmer::AssistantTurn(
+      contents = list(ellmer::ContentText("I couldn't compute that.")),
+      finish_reason = "success"
+    )
+  ))
+
+  tsk <- Task$new(
+    dataset = tibble::tibble(input = "What is 1 + 2?", target = "3"),
+    solver = function(inputs) {
+      list(result = "I couldn't compute that.", solver_chat = list(chat))
+    },
+    scorer = function(samples) {
+      list(score = factor("I", levels = c("I", "C"), ordered = TRUE))
+    }
+  )
+  tsk$eval()
+  log_path <- tsk$log()
+  expect_valid_log(log_path)
+
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  tool_message <- purrr::detect(
+    log$samples[[1]]$messages,
+    function(message) identical(message$role, "tool")
+  )
+  expect_equal(tool_message$error$message, "tool add is unavailable")
+})
+
 test_that("vitals writes valid logs with numeric solver results (#145)", {
   vcr::local_cassette("translate-numeric-results")
   key_get("ANTHROPIC_API_KEY")

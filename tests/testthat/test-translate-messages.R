@@ -95,8 +95,7 @@ test_that("translate_to_messages handles remote image URLs", {
   expect_valid_log(log_path)
 
   log_content <- readLines(log_path)
-  expect_true(any(grepl("data:image", log_content, fixed = TRUE)))
-  expect_false(any(grepl("https://www.r-project.org", log_content, fixed = TRUE)))
+  expect_true(any(grepl("https://www.r-project.org", log_content, fixed = TRUE)))
 })
 
 

@@ -28,7 +28,6 @@ Imports:
     ellmer (>= 0.4.0),
     glue,
     httpuv,
-    httr2,
     jsonlite,
     purrr,
     R6,

@@ -29,13 +29,12 @@
 #' a `scorer_chat` column is included as well.
 #'
 #' @examples
-#' log_file <- system.file(
-#'   "test/inspect/logs",
-#'   "2025-03-24T10-39-36-05-00_simple-arithmetic_fQ9mYnqZFhtEuUenPpJgKL.json",
-#'   package = "vitals"
+#' logs <- list.files(
+#'   system.file("test/inspect/logs", package = "vitals"),
+#'   full.names = TRUE
 #' )
 #'
-#' samples <- vitals_log_read(log_file)
+#' samples <- vitals_log_read(logs[1])
 #'
 #' samples$solver_chat[[1]]
 #'

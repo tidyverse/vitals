@@ -73,6 +73,7 @@ example_task <- function(solved = TRUE, scored = TRUE) {
 
   res$.__enclos_env__$private$samples$score <- tsk$get_samples()$score
   res$.__enclos_env__$private$samples$scorer_chat <- tsk$get_samples()$scorer_chat
+  res$.__enclos_env__$private$samples$scorer <- tsk$get_samples()$scorer
   res$.__enclos_env__$private$scored <- TRUE
 
   res

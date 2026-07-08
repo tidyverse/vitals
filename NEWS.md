@@ -1,5 +1,21 @@
 # vitals (development version)
 
+* New `vitals_log_read()` reads an eval log file back into a tibble of
+  samples, reconstructing solver (and, for model-graded scorers, scorer)
+  chats as ellmer Chat objects.
+
+* Eval logs are substantially more faithful to their source chats. Reasoning
+  content, standardized stop reasons, per-turn cached token counts, tool
+  parameter schemas, and structured tool errors are now written to the log
+  rather than dropped or approximated, and model strings follow Inspect's
+  `provider/model` convention. Remote image URLs are logged as-is instead of
+  being downloaded and inlined as data URIs.
+
+* Eval log files are dramatically smaller (roughly 4x for multi-turn,
+  tool-heavy evals). Repeated content in a sample's events and base64 images
+  in its messages are now de-duplicated into the sample's `attachments`
+  pool, mirroring Python Inspect's behavior.
+
 * The log viewer will now appropriately display tool calls called in parallel.
 
 # vitals 0.3.0

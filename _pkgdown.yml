@@ -29,6 +29,7 @@ reference:
   contents:
   - vitals_log_dir
   - vitals_log_dir_set
+  - vitals_log_read
   - vitals_view
   - vitals_bundle
   - vitals_bind

@@ -44,6 +44,7 @@
 <li><p>Eval logs are substantially more faithful to their source chats. Reasoning content, standardized stop reasons, per-turn cached token counts, tool parameter schemas, and structured tool errors are now written to the log rather than dropped or approximated, and model strings follow Inspect’s <code>provider/model</code> convention. Remote image URLs are logged as-is instead of being downloaded and inlined as data URIs.</p></li>
 <li><p>Eval log files are dramatically smaller (roughly 4x for multi-turn, tool-heavy evals). Repeated content in a sample’s events and base64 images in its messages are now de-duplicated into the sample’s <code>attachments</code> pool, mirroring Python Inspect’s behavior.</p></li>
 <li><p>The log viewer will now appropriately display tool calls called in parallel.</p></li>
+<li><p>Fixed an issue where the log viewer could display one log’s metadata (task name, model, score) in place of another’s, both in the log listing and when clicking into a log (<a href="https://github.com/tidyverse/vitals/issues/208" class="external-link">#208</a>).</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="vitals-030">vitals 0.3.0<a class="anchor" aria-label="anchor" href="#vitals-030"></a></h2><p class="text-muted">CRAN release: 2026-05-15</p>

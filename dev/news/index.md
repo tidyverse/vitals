@@ -24,6 +24,11 @@
 - The log viewer will now appropriately display tool calls called in
   parallel.
 
+- Fixed an issue where the log viewer could display one log’s metadata
+  (task name, model, score) in place of another’s, both in the log
+  listing and when clicking into a log
+  ([\#208](https://github.com/tidyverse/vitals/issues/208)).
+
 ## vitals 0.3.0
 
 CRAN release: 2026-05-15

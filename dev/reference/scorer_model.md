@@ -101,16 +101,10 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   tsk$eval()
 }
 #> ℹ Solving
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Solving
-#> ✔ Solving [5.8s]
+#> ✔ Solving [2.6s]
 #> 
 #> ℹ Scoring
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Scoring
-#> ✔ Scoring [8.5s]
+#> ✔ Scoring [4.2s]
 #> 
 
 # Factual response -------------------------------
@@ -147,6 +141,6 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [13s]
+#> ✔ Scoring [5.1s]
 #> 
 ```

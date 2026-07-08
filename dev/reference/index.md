@@ -29,6 +29,8 @@
 - [`vitals_log_dir()`](https://vitals.tidyverse.org/dev/reference/vitals_log_dir.md)
   [`vitals_log_dir_set()`](https://vitals.tidyverse.org/dev/reference/vitals_log_dir.md)
   : The log directory
+- [`vitals_log_read()`](https://vitals.tidyverse.org/dev/reference/vitals_log_read.md)
+  : Read an eval log back into ellmer chats
 - [`vitals_view()`](https://vitals.tidyverse.org/dev/reference/vitals_view.md)
   : Interactively view local evaluation logs
 - [`vitals_bundle()`](https://vitals.tidyverse.org/dev/reference/vitals_bundle.md)

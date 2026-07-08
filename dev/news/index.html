@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li>The log viewer will now appropriately display tool calls called in parallel.</li>
+<ul><li><p>New <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> reads an eval log file back into a tibble of samples, reconstructing solver (and, for model-graded scorers, scorer) chats as ellmer Chat objects.</p></li>
+<li><p>Eval logs are substantially more faithful to their source chats. Reasoning content, standardized stop reasons, per-turn cached token counts, tool parameter schemas, and structured tool errors are now written to the log rather than dropped or approximated, and model strings follow Inspect’s <code>provider/model</code> convention. Remote image URLs are logged as-is instead of being downloaded and inlined as data URIs.</p></li>
+<li><p>Eval log files are dramatically smaller (roughly 4x for multi-turn, tool-heavy evals). Repeated content in a sample’s events and base64 images in its messages are now de-duplicated into the sample’s <code>attachments</code> pool, mirroring Python Inspect’s behavior.</p></li>
+<li><p>The log viewer will now appropriately display tool calls called in parallel.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="vitals-030">vitals 0.3.0<a class="anchor" aria-label="anchor" href="#vitals-030"></a></h2><p class="text-muted">CRAN release: 2026-05-15</p>
@@ -108,7 +111,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
   </div></footer></body></html>

@@ -48,7 +48,7 @@ for two built-in approaches to scoring.
 
 ### Public methods
 
-- [`Task$new()`](#method-Task-new)
+- [`Task$new()`](#method-Task-initialize)
 
 - [`Task$eval()`](#method-Task-eval)
 
@@ -76,7 +76,7 @@ for two built-in approaches to scoring.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Task$new()`
 
 The typical flow of LLM evaluation with vitals tends to involve first
 calling this method and then `$eval()` on the resulting object.
@@ -180,7 +180,7 @@ A new Task object.
 
 ------------------------------------------------------------------------
 
-### Method [`eval()`](https://rdrr.io/r/base/eval.html)
+### `Task$eval()`
 
 Evaluates the task by running the solver, scorer, logging results, and
 viewing (if interactive). This method works by calling `$solve()`,
@@ -224,7 +224,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `get_samples()`
+### `Task$get_samples()`
 
 The task's samples represent the evaluation in a data frame format.
 
@@ -243,7 +243,7 @@ this data.
 
 ------------------------------------------------------------------------
 
-### Method [`solve()`](https://rdrr.io/r/base/solve.html)
+### `Task$solve()`
 
 Solve the task by running the solver
 
@@ -270,7 +270,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `score()`
+### `Task$score()`
 
 Score the task by running the scorer and then applying metrics to its
 results.
@@ -291,7 +291,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `measure()`
+### `Task$measure()`
 
 Applies metrics to a scored Task.
 
@@ -305,7 +305,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method [`log()`](https://rdrr.io/r/base/Log.html)
+### `Task$log()`
 
 Log the task to a directory.
 
@@ -328,7 +328,7 @@ The path to the logged file, invisibly.
 
 ------------------------------------------------------------------------
 
-### Method [`view()`](https://tibble.tidyverse.org/reference/view.html)
+### `Task$view()`
 
 View the task results in the Inspect log viewer
 
@@ -342,7 +342,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `set_solver()`
+### `Task$set_solver()`
 
 Set the solver function
 
@@ -381,7 +381,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `set_scorer()`
+### `Task$set_scorer()`
 
 Set the scorer function
 
@@ -425,7 +425,7 @@ The Task object (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `set_metrics()`
+### `Task$set_metrics()`
 
 Set the metrics that will be applied in `$measure()` (and thus
 `$eval()`).
@@ -447,7 +447,7 @@ The Task (invisibly)
 
 ------------------------------------------------------------------------
 
-### Method `get_cost()`
+### `Task$get_cost()`
 
 The cost of this eval This is a wrapper around ellmer's `$token_usage()`
 function. That function is called at the beginning and end of each call
@@ -465,7 +465,7 @@ model, separately for the solver and scorer.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Task$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -522,20 +522,20 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Solving
-#> ✔ Solving [8.5s]
+#> ✔ Solving [2.9s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [11.9s]
+#> ✔ Scoring [3s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:24900>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:41296>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:31741>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:10974>
 
 # The `input` column can be a list of 1-row tibbles for per-sample metadata.
 # Custom solvers can then extract columns from each input:

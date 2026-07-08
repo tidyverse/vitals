@@ -79,23 +79,18 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   vitals_view()
 }
 #> ℹ Solving
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Solving
-#> ✔ Solving [8.8s]
+#> ✔ Solving [2.6s]
 #> 
 #> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ℹ Scoring
-#> ✔ Scoring [4.8s]
+#> ✔ Scoring [6.2s]
 #> 
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:26308>
-#> ✔ Inspect Viewer running at: <http://127.0.0.1:21035>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:30674>
+#> ✔ Inspect Viewer running at: <http://127.0.0.1:25706>
 
 # The `input` column can be a list of 1-row tibbles for per-sample metadata.
 # Custom solvers can then extract columns from each input:

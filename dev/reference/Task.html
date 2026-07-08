@@ -35,7 +35,7 @@ recommended for expert use."><meta property="og:image" content="https://vitals.t
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,7 +96,7 @@ scoring.</p></div>
 to <code><a href="vitals_log_dir.html">vitals_log_dir()</a></code>.</p></dd>
 
 
-<dt><code>metrics</code></dt>
+    <dt><code>metrics</code></dt>
 <dd><p>A named vector of metric values resulting from <code>$measure()</code>
 (called inside of <code>$eval()</code>). Will be <code>NULL</code> if metrics have yet to
 be applied.</p></dd>
@@ -109,8 +109,7 @@ be applied.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-Task-new"><code>Task$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-Task-initialize"><code>Task$new()</code></a></p></li>
 <li><p><a href="#method-Task-eval"><code>Task$eval()</code></a></p></li>
 <li><p><a href="#method-Task-get_samples"><code>Task$get_samples()</code></a></p></li>
 <li><p><a href="#method-Task-solve"><code>Task$solve()</code></a></p></li>
@@ -123,8 +122,8 @@ be applied.</p></dd>
 <li><p><a href="#method-Task-set_metrics"><code>Task$set_metrics()</code></a></p></li>
 <li><p><a href="#method-Task-get_cost"><code>Task$get_cost()</code></a></p></li>
 <li><p><a href="#method-Task-clone"><code>Task$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-Task-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-Task-initialize"></a><div class="section">
+<h3 id="task-new-"><code>Task$new()</code><a class="anchor" aria-label="anchor" href="#task-new-"></a></h3>
 <p>The typical flow of LLM evaluation with vitals tends to involve first
 calling this method and then <code>$eval()</code> on the resulting object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -137,9 +136,7 @@ calling this method and then <code>$eval()</code> on the resulting object.</p><d
 <span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="../reference/vitals_log_dir.html">vitals_log_dir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dataset</code></dt>
 <dd><p>A tibble with, minimally, columns <code>input</code> and <code>target</code>.
@@ -147,8 +144,7 @@ The <code>input</code> column can be either a character vector or a list-column
 of 1-row tibbles. Using 1-row tibbles allows per-sample customization
 by including additional metadata that custom solvers can access.</p></dd>
 
-
-<dt><code>solver</code></dt>
+      <dt><code>solver</code></dt>
 <dd><p>A function that takes a vector of inputs from the
 dataset's <code>input</code> column as its first argument and determines values
 approximating <code>dataset$target</code>. Its return value must be a list with
@@ -164,8 +160,7 @@ or <code>$eval(...)</code>. See the definition of <code><a href="generate.html">
 outputs a valid solver that just passes inputs to ellmer Chat objects'
 <code>$chat()</code> method in parallel.</p></dd>
 
-
-<dt><code>scorer</code></dt>
+      <dt><code>scorer</code></dt>
 <dd><p>A function that evaluates how well the solver's return value
 approximates the corresponding elements of <code>dataset$target</code>. The function
 should take in the <code>$get_samples()</code> slot of a Task object and return a list with
@@ -184,37 +179,34 @@ equal to <code>nrow(samples)</code>.</p></li>
 <code>samples$result</code> specifically. See <a href="scorer_model.html">model-based scoring</a>
 for examples.</p></dd>
 
-
-<dt><code>metrics</code></dt>
+      <dt><code>metrics</code></dt>
 <dd><p>A named list of functions that take in a vector of scores
 (as in <code>task$get_samples()$score</code>) and output a single numeric value.</p></dd>
 
-
-<dt><code>epochs</code></dt>
+      <dt><code>epochs</code></dt>
 <dd><p>The number of times to repeat each sample. Evaluate each sample
 multiple times to better quantify variation. Optional, defaults to <code>1L</code>.
 The value of <code>epochs</code> supplied to <code>$eval()</code> or <code>$score()</code> will take
 precedence over the value in <code>$new()</code>.</p></dd>
 
-
-<dt><code>name</code></dt>
+      <dt><code>name</code></dt>
 <dd><p>A name for the evaluation task. Defaults to
 <code>deparse(substitute(dataset))</code>.</p></dd>
 
-
-<dt><code>dir</code></dt>
+      <dt><code>dir</code></dt>
 <dd><p>Directory where logs should be stored.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>A new Task object.</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-eval"></a><div class="section">
-<h3 id="method-eval-">Method <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code><a class="anchor" aria-label="anchor" href="#method-eval-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-eval"></a><div class="section">
+<h3 id="task-eval-"><code>Task$eval()</code><a class="anchor" aria-label="anchor" href="#task-eval-"></a></h3>
 <p>Evaluates the task by running the solver, scorer, logging results, and
 viewing (if interactive). This method works by calling <code>$solve()</code>,
 <code>$score()</code>, <code>$log()</code>, and <code>$view()</code> in sequence.</p>
@@ -222,9 +214,7 @@ viewing (if interactive). This method works by calling <code>$solve()</code>,
 calling <code>$new()</code> and then this method on the resulting object.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span><span class="va">...</span>, epochs <span class="op">=</span> <span class="cn">NULL</span>, view <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments passed to the solver and scorer functions.
@@ -235,56 +225,52 @@ scorer. Arguments matching both go to both. Unmatched arguments are passed
 to any function with <code>...</code> in its signature. An error is raised if an
 argument matches neither function and neither accepts <code>...</code>.</p></dd>
 
-
-<dt><code>epochs</code></dt>
+      <dt><code>epochs</code></dt>
 <dd><p>The number of times to repeat each sample. Evaluate each sample
 multiple times to better quantify variation. Optional, defaults to <code>1L</code>.
 The value of <code>epochs</code> supplied to <code>$eval()</code> or <code>$score()</code> will take
 precedence over the value in <code>$new()</code>.</p></dd>
 
-
-<dt><code>view</code></dt>
+      <dt><code>view</code></dt>
 <dd><p>Automatically open the viewer after evaluation (defaults to
 TRUE if interactive, FALSE otherwise).</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-get_samples"></a><div class="section">
-<h3 id="method-get-samples-">Method <code>get_samples()</code><a class="anchor" aria-label="anchor" href="#method-get-samples-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-get_samples"></a><div class="section">
+<h3 id="task-get-samples-"><code>Task$get_samples()</code><a class="anchor" aria-label="anchor" href="#task-get-samples-"></a></h3>
 <p>The task's samples represent the evaluation in a data frame format.</p>
 <p><code><a href="vitals_bind.html">vitals_bind()</a></code> row-binds the output of this
 function called across several tasks.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">get_samples</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A tibble representing the evaluation. Based on the <code>dataset</code>,
 <code>epochs</code> may duplicate rows, and the solver and scorer will append
 columns to this data.</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-solve"></a><div class="section">
-<h3 id="method-solve-">Method <code><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve()</a></code><a class="anchor" aria-label="anchor" href="#method-solve-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-solve"></a><div class="section">
+<h3 id="task-solve-"><code>Task$solve()</code><a class="anchor" aria-label="anchor" href="#task-solve-"></a></h3>
 <p>Solve the task by running the solver</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">solve</span><span class="op">(</span><span class="va">...</span>, epochs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments passed to the solver function.</p></dd>
 
-
-<dt><code>epochs</code></dt>
+      <dt><code>epochs</code></dt>
 <dd><p>The number of times to repeat each sample. Evaluate each sample
 multiple times to better quantify variation. Optional, defaults to <code>1L</code>.
 The value of <code>epochs</code> supplied to <code>$eval()</code> or <code>$score()</code> will take
@@ -292,87 +278,84 @@ precedence over the value in <code>$new()</code>.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-score"></a><div class="section">
-<h3 id="method-score-">Method <code>score()</code><a class="anchor" aria-label="anchor" href="#method-score-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-score"></a><div class="section">
+<h3 id="task-score-"><code>Task$score()</code><a class="anchor" aria-label="anchor" href="#task-score-"></a></h3>
 <p>Score the task by running the scorer and then applying metrics to
 its results.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">score</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Additional arguments passed to the scorer function.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-measure"></a><div class="section">
-<h3 id="method-measure-">Method <code>measure()</code><a class="anchor" aria-label="anchor" href="#method-measure-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-measure"></a><div class="section">
+<h3 id="task-measure-"><code>Task$measure()</code><a class="anchor" aria-label="anchor" href="#task-measure-"></a></h3>
 <p>Applies metrics to a scored Task.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">measure</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-log"></a><div class="section">
-<h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-log"></a><div class="section">
+<h3 id="task-log-"><code>Task$log()</code><a class="anchor" aria-label="anchor" href="#task-log-"></a></h3>
 <p>Log the task to a directory.</p>
 <p>Note that, if an <code>VITALS_LOG_DIR</code> envvar is set, this will happen
 automatically in <code>$eval()</code>.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span>dir <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">dir</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dir</code></dt>
 <dd><p>The directory to write the log to.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>The path to the logged file, invisibly.</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-view"></a><div class="section">
-<h3 id="method-view-">Method <code><a href="https://tibble.tidyverse.org/reference/view.html" class="external-link">view()</a></code><a class="anchor" aria-label="anchor" href="#method-view-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-view"></a><div class="section">
+<h3 id="task-view-"><code>Task$view()</code><a class="anchor" aria-label="anchor" href="#task-view-"></a></h3>
 <p>View the task results in the Inspect log viewer</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">view</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-set_solver"></a><div class="section">
-<h3 id="method-set-solver-">Method <code>set_solver()</code><a class="anchor" aria-label="anchor" href="#method-set-solver-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-set_solver"></a><div class="section">
+<h3 id="task-set-solver-"><code>Task$set_solver()</code><a class="anchor" aria-label="anchor" href="#task-set-solver-"></a></h3>
 <p>Set the solver function</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">set_solver</span><span class="op">(</span><span class="va">solver</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>solver</code></dt>
 <dd><p>A function that takes a vector of inputs from the
@@ -392,20 +375,19 @@ outputs a valid solver that just passes inputs to ellmer Chat objects'
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-set_scorer"></a><div class="section">
-<h3 id="method-set-scorer-">Method <code>set_scorer()</code><a class="anchor" aria-label="anchor" href="#method-set-scorer-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-set_scorer"></a><div class="section">
+<h3 id="task-set-scorer-"><code>Task$set_scorer()</code><a class="anchor" aria-label="anchor" href="#task-set-scorer-"></a></h3>
 <p>Set the scorer function</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">set_scorer</span><span class="op">(</span><span class="va">scorer</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>scorer</code></dt>
 <dd><p>A function that evaluates how well the solver's return value
@@ -428,20 +410,19 @@ for examples.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>The Task object (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-set_metrics"></a><div class="section">
-<h3 id="method-set-metrics-">Method <code>set_metrics()</code><a class="anchor" aria-label="anchor" href="#method-set-metrics-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-set_metrics"></a><div class="section">
+<h3 id="task-set-metrics-"><code>Task$set_metrics()</code><a class="anchor" aria-label="anchor" href="#task-set-metrics-"></a></h3>
 <p>Set the metrics that will be applied in <code>$measure()</code> (and thus <code>$eval()</code>).</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">set_metrics</span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>metrics</code></dt>
 <dd><p>A named list of functions that take in a vector of scores
@@ -449,14 +430,15 @@ for examples.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>The Task (invisibly)</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-get_cost"></a><div class="section">
-<h3 id="method-get-cost-">Method <code>get_cost()</code><a class="anchor" aria-label="anchor" href="#method-get-cost-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-get_cost"></a><div class="section">
+<h3 id="task-get-cost-"><code>Task$get_cost()</code><a class="anchor" aria-label="anchor" href="#task-get-cost-"></a></h3>
 <p>The cost of this eval
 This is a wrapper around ellmer's <code>$token_usage()</code> function.
 That function is called at the beginning and end of each call to
@@ -464,22 +446,20 @@ That function is called at the beginning and end of each call to
 by taking the differences in values of <code>$token_usage()</code> over time.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">get_cost</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>A tibble displaying the cost of solving and scoring the
 evaluation by model, separately for the solver and scorer.</p>
 </div>
 
-</div><p></p><hr><a id="method-Task-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Task-clone"></a><div class="section">
+<h3 id="task-clone-"><code>Task$clone()</code><a class="anchor" aria-label="anchor" href="#task-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Task</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -489,6 +469,7 @@ evaluation by model, separately for the solver and scorer.</p>
 </div>
 
 </div>
+
 
     </div>
 
@@ -534,20 +515,20 @@ evaluation by model, separately for the solver and scorer.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Solving</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[8.5s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Solving <span style="color: #B2B2B2;">[2.9s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Scoring</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Scoring</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[11.9s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Scoring <span style="color: #B2B2B2;">[3s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 1 -&gt; 1 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [working] (0 + 0) -&gt; 0 -&gt; 2 | <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Inspect Viewer running at: <span style="color: #0000BB; font-style: italic;">&lt;http://127.0.0.1:24900&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Inspect Viewer running at: <span style="color: #0000BB; font-style: italic;">&lt;http://127.0.0.1:41296&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Inspect Viewer running at: <span style="color: #0000BB; font-style: italic;">&lt;http://127.0.0.1:31741&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Inspect Viewer running at: <span style="color: #0000BB; font-style: italic;">&lt;http://127.0.0.1:10974&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The `input` column can be a list of 1-row tibbles for per-sample metadata.</span></span></span>
 <span class="r-in"><span><span class="co"># Custom solvers can then extract columns from each input:</span></span></span>
@@ -584,7 +565,7 @@ evaluation by model, separately for the solver and scorer.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
   </div></footer></body></html>

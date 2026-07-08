@@ -41,7 +41,9 @@ test_that("vitals_log_read round-trips a task log", {
   expect_false(is.null(assistant@contents[[3]]@tool))
   expect_equal(assistant@tokens, c(10, 5, 3))
   expect_equal(assistant@duration, 1.5)
-  expect_equal(assistant@finish_reason, "tool_use")
+  if (ellmer_tracks_finish_reason()) {
+    expect_equal(assistant@finish_reason, "tool_use")
+  }
 
   tool_turn <- turns[[3]]
   result <- tool_turn@contents[[1]]
@@ -49,7 +51,9 @@ test_that("vitals_log_read round-trips a task log", {
   expect_equal(result@value, "3")
   expect_equal(result@request@id, "call_1")
 
-  expect_equal(turns[[4]]@finish_reason, "success")
+  if (ellmer_tracks_finish_reason()) {
+    expect_equal(turns[[4]]@finish_reason, "success")
+  }
   expect_equal(turns[[4]]@tokens, c(20, 6, 10))
 })
 
@@ -75,7 +79,9 @@ test_that("vitals_log_read reads logs written by Python Inspect", {
     turns[[3]]@contents[[1]]@request@id,
     turns[[2]]@contents[[2]]@id
   )
-  expect_equal(turns[[2]]@finish_reason, "tool_use")
+  if (ellmer_tracks_finish_reason()) {
+    expect_equal(turns[[2]]@finish_reason, "tool_use")
+  }
   expect_gt(turns[[2]]@tokens[1], 0)
 })
 

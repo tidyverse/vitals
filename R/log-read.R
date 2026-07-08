@@ -130,7 +130,7 @@ chat_from_log_messages <- function(
 ) {
   res <- if (!is.null(chat)) {
     template <- chat$clone()
-    template$set_model(sub("^[^/]+/", "", model))
+    chat_set_model(template, sub("^[^/]+/", "", model))
     template
   } else {
     chat_from_model_string(model, call = call)
@@ -251,7 +251,7 @@ assistant_turn_from_log <- function(contents, event = NULL) {
 
   stop_reason <- event$output$choices[[1]]$stop_reason
 
-  ellmer::AssistantTurn(
+  assistant_turn(
     contents = contents,
     tokens = as.numeric(tokens),
     duration = as.numeric(event$output$time %||% event$working_time %||% NA),

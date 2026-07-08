@@ -29,7 +29,7 @@ example_tool_fixture <- function() {
   chat$register_tool(tool_def)
   chat$set_turns(list(
     ellmer::UserTurn("What is 1 + 2?"),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(
         ellmer::ContentThinking(
           thinking = "I should use the tool.",
@@ -45,7 +45,7 @@ example_tool_fixture <- function() {
     ellmer::UserTurn(contents = list(
       ellmer::ContentToolResult(value = 3, request = request)
     )),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(ellmer::ContentText("The answer is 3.")),
       tokens = c(20, 6, 10),
       duration = 0.7,

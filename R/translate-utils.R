@@ -109,6 +109,44 @@ turn_stop_reason <- function(turn) {
   }
 }
 
+# `AssistantTurn(finish_reason =)` and `Chat$set_model()` landed in ellmer
+# 0.4.1.9000; detect them rather than checking versions so vitals works with
+# the CRAN release (and keeps working if either is reverted before the next).
+ellmer_tracks_finish_reason <- function() {
+  "finish_reason" %in% names(formals(ellmer::AssistantTurn))
+}
+
+assistant_turn <- function(
+  contents,
+  tokens = c(NA_real_, NA_real_, NA_real_),
+  duration = NA_real_,
+  finish_reason = NA_character_
+) {
+  if (ellmer_tracks_finish_reason()) {
+    ellmer::AssistantTurn(
+      contents = contents,
+      tokens = tokens,
+      duration = duration,
+      finish_reason = finish_reason
+    )
+  } else {
+    ellmer::AssistantTurn(
+      contents = contents,
+      tokens = tokens,
+      duration = duration
+    )
+  }
+}
+
+chat_set_model <- function(chat, model) {
+  if (is.function(chat$set_model)) {
+    chat$set_model(model)
+  } else {
+    chat$.__enclos_env__$private$provider@model <- model
+  }
+  invisible(chat)
+}
+
 assistant_message_content <- function(turn) {
   blocks <- list()
   for (content in turn@contents) {

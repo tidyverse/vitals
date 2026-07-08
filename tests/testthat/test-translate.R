@@ -210,12 +210,12 @@ test_that("repeated long content is condensed into sample attachments", {
       ellmer::ContentText("Describe this image at length."),
       ellmer::ContentImageInline(type = "image/png", data = strrep("abcd", 50))
     )),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(ellmer::ContentText(long_answer)),
       finish_reason = "success"
     ),
     ellmer::UserTurn("Again, please."),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(ellmer::ContentText(long_answer)),
       finish_reason = "success"
     )
@@ -299,7 +299,7 @@ test_that("tool errors are logged in the message error field", {
   )
   chat$set_turns(list(
     ellmer::UserTurn("What is 1 + 2?"),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(request),
       finish_reason = "tool_use"
     ),
@@ -309,7 +309,7 @@ test_that("tool errors are logged in the message error field", {
         request = request
       )
     )),
-    ellmer::AssistantTurn(
+    assistant_turn(
       contents = list(ellmer::ContentText("I couldn't compute that.")),
       finish_reason = "success"
     )

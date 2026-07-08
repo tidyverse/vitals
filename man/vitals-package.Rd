@@ -22,6 +22,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Simon Couch \email{simon.couch@posit.co} (\href{https://orcid.org/0000-0001-5676-5107}{ORCID})
 
+Authors:
+\itemize{
+  \item Simon Couch \email{simon.couch@posit.co} (\href{https://orcid.org/0000-0001-5676-5107}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Max Kuhn \email{max@posit.co} [contributor]

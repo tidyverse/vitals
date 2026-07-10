@@ -457,10 +457,7 @@ create_model_event <- function(turn, chat, timestamp) {
           "none"
         },
         model = chat$get_model(),
-        max_tokens = chat$get_provider()@params$max_tokens,
-        extra_headers = list(
-          `x-irid` = generate_id()
-        )
+        max_tokens = chat$get_provider()@params$max_tokens
       )),
       response = list(
         id = paste0("msg_", generate_id()),

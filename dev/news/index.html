@@ -40,7 +40,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p>New <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> reads an eval log file back into a tibble of samples, reconstructing solver (and, for model-graded scorers, scorer) chats as ellmer Chat objects.</p></li>
+<ul><li><p><code>$log()</code> now records its fallback temporary directory on the task and reports the path it wrote to when no <code>VITALS_LOG_DIR</code> is set, so the automatic <code>$view()</code> succeeds.</p></li>
+<li><p><code><a href="../reference/scorer_detect.html">detect_pattern()</a></code> now supports <code>case_sensitive = TRUE</code> on R 4.5 and later.</p></li>
+<li><p><code>Task$new()</code> now assigns a valid task name when given an inline (unnamed) <code>dataset</code>, so <code>$log()</code> succeeds.</p></li>
+<li><p>New <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> reads an eval log file back into a tibble of samples, reconstructing solver (and, for model-graded scorers, scorer) chats as ellmer Chat objects.</p></li>
 <li><p>Eval logs are substantially more faithful to their source chats. Reasoning content, standardized stop reasons, per-turn cached token counts, tool parameter schemas, and structured tool errors are now written to the log rather than dropped or approximated, and model strings follow Inspect’s <code>provider/model</code> convention. Remote image URLs are logged as-is instead of being downloaded and inlined as data URIs.</p></li>
 <li><p>Eval log files are dramatically smaller (roughly 4x for multi-turn, tool-heavy evals). Repeated content in a sample’s events and base64 images in its messages are now de-duplicated into the sample’s <code>attachments</code> pool, mirroring Python Inspect’s behavior.</p></li>
 <li><p>The log viewer will now appropriately display tool calls called in parallel.</p></li>

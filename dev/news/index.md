@@ -2,6 +2,16 @@
 
 ## vitals (development version)
 
+- `$log()` now records its fallback temporary directory on the task and
+  reports the path it wrote to when no `VITALS_LOG_DIR` is set, so the
+  automatic `$view()` succeeds.
+
+- [`detect_pattern()`](https://vitals.tidyverse.org/dev/reference/scorer_detect.md)
+  now supports `case_sensitive = TRUE` on R 4.5 and later.
+
+- `Task$new()` now assigns a valid task name when given an inline
+  (unnamed) `dataset`, so `$log()` succeeds.
+
 - New
   [`vitals_log_read()`](https://vitals.tidyverse.org/dev/reference/vitals_log_read.md)
   reads an eval log file back into a tibble of samples, reconstructing

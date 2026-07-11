@@ -85,10 +85,7 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> ✔ Solving [1.4s]
 #> 
 #> ℹ Scoring
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
-#> ℹ Scoring
-#> ✔ Scoring [2.5s]
+#> ✔ Scoring [2.6s]
 #> 
-#> ✔ Bundle /tmp/Rtmp2vwvTQ created!
+#> ✔ Bundle /tmp/RtmpPwvXQC created!
 ```

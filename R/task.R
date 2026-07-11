@@ -163,10 +163,12 @@ Task <- R6::R6Class(
       scorer,
       metrics = NULL,
       epochs = NULL,
-      name = deparse(substitute(dataset)),
+      name = NULL,
       dir = vitals_log_dir()
     ) {
-      force(name)
+      if (is.null(name)) {
+        name <- task_dataset_name(substitute(dataset))
+      }
 
       solver_name <- deparse(substitute(solver))
       scorer_name <- deparse(substitute(scorer))
@@ -1055,4 +1057,11 @@ numeric_price <- function(price) {
   result <- as.numeric(gsub("\\$", "", price))
   result[is.na(result)] <- 0
   result
+}
+
+task_dataset_name <- function(expr) {
+  if (is.symbol(expr)) {
+    return(deparse(expr))
+  }
+  "dataset"
 }

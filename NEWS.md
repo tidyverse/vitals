@@ -18,6 +18,10 @@
 
 * The log viewer will now appropriately display tool calls called in parallel.
 
+* The log viewer serves log files as-is rather than parsing and re-serializing
+  them, making opening a log effectively instant (previously several seconds
+  for logs tens of MBs in size).
+
 * Fixed an issue where the log viewer could display one log's metadata (task
   name, model, score) in place of another's, both in the log listing and when
   clicking into a log (#208).

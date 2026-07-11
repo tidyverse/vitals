@@ -326,17 +326,24 @@ get_api_log_file <- function(dir, file, query) {
     return(list(status = 404, body = "File not found"))
   }
 
-  content <- jsonlite::fromJSON(file_path)
-
   header_only <- query$`header-only`
   if (!is.null(header_only)) {
     header_only <- as.numeric(header_only)
     file_size_mb <- file.info(file_path)$size / (1024 * 1024)
 
     if (!is.na(header_only) && file_size_mb > header_only) {
+      content <- jsonlite::fromJSON(file_path, simplifyVector = FALSE)
       content$samples <- NULL
+      return(json_response(content))
     }
   }
 
-  json_response(content)
+  list(
+    status = 200,
+    headers = list(
+      'Content-Type' = 'application/json',
+      'Cache-Control' = 'no-cache'
+    ),
+    body = readBin(file_path, "raw", file.info(file_path)$size)
+  )
 }

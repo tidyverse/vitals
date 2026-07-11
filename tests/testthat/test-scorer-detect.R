@@ -84,7 +84,6 @@ test_that("detect_match works", {
 
 test_that("detect_pattern works", {
   skip_on_cran()
-  skip_if(getRversion() > "4.4.3")
   tsk <- example_task(scored = FALSE)
   tsk$set_scorer(detect_pattern("(\\d+)\\s*=\\s*(\\d+)"))
   tsk$score()

@@ -223,8 +223,12 @@ detect_pattern <- function(pattern, case_sensitive = FALSE, all = FALSE) {
 }
 
 detect_pattern_impl <- function(sample, pattern, case_sensitive, all) {
-  flags <- if (!case_sensitive) ignore.case = TRUE else NULL
-  matches <- regexec(pattern, sample$result, perl = TRUE, flags)
+  matches <- regexec(
+    pattern,
+    sample$result,
+    perl = TRUE,
+    ignore.case = !case_sensitive
+  )
   if (matches[[1]][1] == -1) {
     return(list(
       result = FALSE,

@@ -1,5 +1,14 @@
 # vitals (development version)
 
+* `$log()` now records its fallback temporary directory on the task and reports
+  the path it wrote to when no `VITALS_LOG_DIR` is set, so the automatic
+  `$view()` succeeds.
+
+* `detect_pattern()` now supports `case_sensitive = TRUE` on R 4.5 and later.
+
+* `Task$new()` now assigns a valid task name when given an inline (unnamed)
+  `dataset`, so `$log()` succeeds.
+
 * New `vitals_log_read()` reads an eval log file back into a tibble of
   samples, reconstructing solver (and, for model-graded scorers, scorer)
   chats as ellmer Chat objects.

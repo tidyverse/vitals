@@ -447,11 +447,17 @@ Task <- R6::R6Class(
         )
       )
 
-      if (is.na(dir)) {
+      used_tempdir <- is.na(dir)
+      if (used_tempdir) {
         dir <- tempdir()
       }
+      self$dir <- dir
 
       log_path <- eval_log_write(eval_log, dir = dir)
+
+      if (used_tempdir) {
+        cli::cli_inform("Log written to {.file {log_path}}")
+      }
 
       invisible(log_path)
     },

@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
-<ul><li><p><code>$log()</code> now records its fallback temporary directory on the task and reports the path it wrote to when no <code>VITALS_LOG_DIR</code> is set, so the automatic <code>$view()</code> succeeds.</p></li>
+<ul><li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> now reads only the leading bytes of each log file when generating the homepage; listing a directory of large logs is roughly 250x faster.</p></li>
+<li><p><code>$log()</code> now records its fallback temporary directory on the task and reports the path it wrote to when no <code>VITALS_LOG_DIR</code> is set, so the automatic <code>$view()</code> succeeds.</p></li>
 <li><p><code><a href="../reference/scorer_detect.html">detect_pattern()</a></code> now supports <code>case_sensitive = TRUE</code> on R 4.5 and later.</p></li>
 <li><p><code>Task$new()</code> now assigns a valid task name when given an inline (unnamed) <code>dataset</code>, so <code>$log()</code> succeeds.</p></li>
 <li><p>New <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> reads an eval log file back into a tibble of samples, reconstructing solver (and, for model-graded scorers, scorer) chats as ellmer Chat objects.</p></li>

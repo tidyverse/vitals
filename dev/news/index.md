@@ -2,6 +2,10 @@
 
 ## vitals (development version)
 
+- [`vitals_view()`](https://vitals.tidyverse.org/dev/reference/vitals_view.md)
+  now reads only the leading bytes of each log file when generating the
+  homepage; listing a directory of large logs is roughly 250x faster.
+
 - `$log()` now records its fallback temporary directory on the task and
   reports the path it wrote to when no `VITALS_LOG_DIR` is set, so the
   automatic `$view()` succeeds.

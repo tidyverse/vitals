@@ -80,17 +80,43 @@ eval_log_write <- function(x = eval_log(), dir = vitals_log_dir()) {
   path
 }
 
-# eval log files are quite relational, where the `samples` and `logging` fields
-# take up the most storage by far. reading with `simplifyVector = FALSE` is
-# much faster, so read the whole thing, subset out what we need, and
-# then write/read the simplified version. (#26)
+# eval log files are quite relational, where the `samples` field takes up the
+# most storage by far. every header field we need precedes the top-level
+# `samples` key in the written JSON (see eval_log()), so read only the leading
+# bytes up to that key rather than parsing the whole file. (#26)
 header_fields <-
   c("version", "status", "eval", "plan", "results", "stats")
 
 eval_log_read_headers <- function(x) {
-  # read only the needed fields without simplifying
-  res_fields <- jsonlite::fromJSON(x, simplifyVector = FALSE)[header_fields]
+  header_json <- read_log_header_json(x)
+  if (is.null(header_json)) {
+    res_fields <- jsonlite::fromJSON(x, simplifyVector = FALSE)[header_fields]
+    return(jsonlite::fromJSON(jsonlite::toJSON(res_fields, auto_unbox = TRUE)))
+  }
 
-  # write/read the small fields, simplifying this time around
-  jsonlite::fromJSON(jsonlite::toJSON(res_fields, auto_unbox = TRUE))
+  jsonlite::fromJSON(header_json)[header_fields]
+}
+
+read_log_header_json <- function(x, cap = 1048576L) {
+  con <- file(x, "rb")
+  on.exit(close(con))
+
+  buffer <- ""
+  repeat {
+    chunk <- readChar(con, 65536L, useBytes = TRUE)
+    if (length(chunk) == 0L || !nzchar(chunk)) {
+      return(NULL)
+    }
+    buffer <- paste0(buffer, chunk)
+
+    at <- regexpr('\n  "samples"', buffer, fixed = TRUE)
+    if (at > 0L) {
+      header <- sub(",[[:space:]]*$", "", substr(buffer, 1L, at - 1L))
+      return(paste0(header, "\n}"))
+    }
+
+    if (nchar(buffer, type = "bytes") > cap) {
+      return(NULL)
+    }
+  }
 }

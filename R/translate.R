@@ -5,6 +5,9 @@ eval_log <- function(
   stats = translate_to_stats(),
   samples
 ) {
+  # The order of these fields matters for the log file format: `samples` must
+  # remain last so that eval_log_read_headers() can read just the header
+  # without parsing the (much larger) samples.
   res <-
     list(
       version = 2L,

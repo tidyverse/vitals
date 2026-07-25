@@ -158,3 +158,44 @@ test_that("vitals_log_read errors informatively", {
     vitals_log_read(log_path, solver_chat = "not a chat")
   )
 })
+
+test_that("turns_from_messages merges consecutive user-role messages", {
+  messages <- list(
+    list(role = "user", content = "environment context"),
+    list(role = "user", content = "the actual prompt"),
+    list(role = "assistant", content = "the answer")
+  )
+
+  turns <- turns_from_messages(messages)
+
+  expect_length(turns, 2)
+  expect_equal(turns[[1]]@role, "user")
+  expect_length(turns[[1]]@contents, 2)
+  expect_equal(turns[[2]]@role, "assistant")
+})
+
+test_that("turns_from_messages coalesces parallel tool results into one turn", {
+  messages <- list(
+    list(role = "user", content = "prompt"),
+    list(
+      role = "assistant",
+      content = "calling tools",
+      tool_calls = list(
+        list(id = "a", `function` = "f", arguments = list()),
+        list(id = "b", `function` = "f", arguments = list())
+      )
+    ),
+    list(role = "tool", content = "result a", tool_call_id = "a"),
+    list(role = "tool", content = "result b", tool_call_id = "b"),
+    list(role = "assistant", content = "done")
+  )
+
+  turns <- turns_from_messages(messages)
+
+  expect_length(turns, 4)
+  expect_equal(
+    purrr::map_chr(turns, function(turn) turn@role),
+    c("user", "assistant", "user", "assistant")
+  )
+  expect_length(turns[[3]]@contents, 2)
+})

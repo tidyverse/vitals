@@ -135,3 +135,34 @@ test_that("claude_code end to end", {
   expect_equal(samples$score, factor("C", levels = c("I", "C")))
   expect_valid_log(tsk$log())
 })
+
+test_that("agent solvers reject reserved arguments", {
+  expect_snapshot(
+    error = TRUE,
+    claude_code(model = "anthropic/some-model", agent_args = list(version = "2.1.37"))
+  )
+  expect_snapshot(
+    error = TRUE,
+    claude_code(model = "anthropic/some-model", epochs = 2)
+  )
+  expect_snapshot(
+    error = TRUE,
+    codex(model = "openai/some-model", log_dir = "logs")
+  )
+})
+
+test_that("coerce_whole_numbers leaves doubles beyond integer range alone", {
+  expect_identical(coerce_whole_numbers(list(a = 1e10))$a, 1e10)
+})
+
+test_that("ellmer_model_string maps Inspect provider prefixes", {
+  expect_equal(
+    ellmer_model_string("google/gemini-2.5-pro"),
+    "google_gemini/gemini-2.5-pro"
+  )
+  expect_equal(
+    ellmer_model_string("anthropic/some-model"),
+    "anthropic/some-model"
+  )
+  expect_equal(ellmer_model_string("some-model"), "some-model")
+})

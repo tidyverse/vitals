@@ -157,7 +157,7 @@ chat_from_log_messages <- function(
 
 chat_from_model_string <- function(model, call = rlang::caller_env()) {
   tryCatch(
-    ellmer::chat(model),
+    ellmer::chat(ellmer_model_string(model)),
     error = function(cnd) {
       cli::cli_abort(
         c(
@@ -170,6 +170,21 @@ chat_from_model_string <- function(model, call = rlang::caller_env()) {
       )
     }
   )
+}
+
+ellmer_model_string <- function(model) {
+  if (!grepl("/", model, fixed = TRUE)) {
+    return(model)
+  }
+  provider <- sub("/.*", "", model)
+  provider <- switch(
+    provider,
+    google = "google_gemini",
+    vertex = "google_vertex",
+    bedrock = "aws_bedrock",
+    provider
+  )
+  paste0(provider, sub("^[^/]+", "", model))
 }
 
 turns_from_messages <- function(messages, tools = list(), model_events = list()) {

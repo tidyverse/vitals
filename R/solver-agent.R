@@ -23,8 +23,10 @@
 #'
 #' @param model A string identifying the model that will power the agent,
 #' in Python Inspect's `"provider/model"` format, e.g.
-#' `"anthropic/claude-sonnet-4-5"`. For providers other than Anthropic,
-#' OpenAI, Google, and Mistral, you may need to make the provider's Python
+#' `"anthropic/claude-sonnet-4-5"`. The provider must be supported by both
+#' Inspect (which serves the model) and ellmer (which reconstructs the
+#' agent's transcript). Python SDKs for common providers are resolved
+#' automatically; for less common ones, you may need to make the provider's
 #' SDK available yourself with [reticulate::py_require()].
 #' @param system_prompt Optional. A string containing additional system
 #' prompt content to append to the agent's default system prompt.
@@ -32,15 +34,17 @@
 #' to disallow (Claude Code only).
 #' @param version A string specifying the agent CLI version to use.
 #' `"auto"` (the default) uses a version already installed in the sandbox,
-#' falling back to the current stable release. Pass a specific version
-#' (e.g. `"2.1.37"`) for reproducibility.
+#' falling back to the current stable (Claude Code) or latest (Codex)
+#' release. Pass a specific version (e.g. `"2.1.37"`) for reproducibility.
 #' @param sandbox A string specifying the Inspect sandbox type in which the
 #' agent runs. Defaults to `"docker"`, which is required on macOS and
 #' Windows; on Linux hosts, `"local"` runs the agent directly on the host.
 #' @param agent_args Optional. A named list of additional arguments passed
-#' to the underlying inspect_swe agent (e.g. `attempts`, `cwd`, `env`).
+#' to the underlying inspect_swe agent (e.g. `cwd`, `env`).
 #' @param ... Additional arguments passed to Python Inspect's `eval()`,
 #' e.g. `max_samples`, `max_sandboxes`, `time_limit`, or `token_limit`.
+#' (`epochs` is the exception: pass it to [Task]'s `$eval()` method as
+#' usual.)
 #'
 #' @returns
 #' A solver function that can be passed directly to the `solver` argument of
@@ -49,6 +53,10 @@
 #' objects reconstructed from the agent's transcript. Each sample's
 #' `solver_metadata` records the path to the intermediate Inspect log,
 #' the sample's token usage by model, and the agent's error message (if any).
+#'
+#' Token usage is recorded in the task's log and in `solver_metadata`, but
+#' not in [Task]'s `$token_usage()` method, which only reflects API calls
+#' made through ellmer in the current R session.
 #'
 #' @examples
 #' if (FALSE) {
@@ -84,8 +92,11 @@ claude_code <- function(
   check_character(disallowed_tools, allow_null = TRUE)
   check_string(version)
   check_string(sandbox)
-  check_agent_args(agent_args)
-  eval_args <- list2(...)
+  check_agent_args(
+    agent_args,
+    reserved = c("system_prompt", "disallowed_tools", "version")
+  )
+  eval_args <- check_eval_args(list2(...))
 
   agent_args <- c(
     purrr::compact(list(
@@ -122,8 +133,8 @@ codex <- function(
   check_string(system_prompt, allow_null = TRUE)
   check_string(version)
   check_string(sandbox)
-  check_agent_args(agent_args)
-  eval_args <- list2(...)
+  check_agent_args(agent_args, reserved = c("system_prompt", "version"))
+  eval_args <- check_eval_args(list2(...))
 
   agent_args <- c(
     purrr::compact(list(
@@ -157,6 +168,7 @@ solve_with_inspect_agent <- function(
   call = rlang::caller_env()
 ) {
   check_inspect_agent_deps(sandbox, call = call)
+  check_agent_model(model, call = call)
   reticulate::py_require(unique(c(
     "inspect-ai",
     "inspect-swe",
@@ -164,9 +176,32 @@ solve_with_inspect_agent <- function(
     packages
   )))
 
-  inspect <- reticulate::import("inspect_ai")
-  inspect_dataset <- reticulate::import("inspect_ai.dataset")
-  inspect_swe <- reticulate::import("inspect_swe")
+  imports <- tryCatch(
+    list(
+      inspect = reticulate::import("inspect_ai"),
+      inspect_dataset = reticulate::import("inspect_ai.dataset"),
+      inspect_swe = reticulate::import("inspect_swe")
+    ),
+    error = function(cnd) {
+      cli::cli_abort(
+        c(
+          "Unable to import the {.pkg inspect_ai} and {.pkg inspect_swe}
+           Python packages.",
+          i = "If reticulate is configured to use an existing Python
+               environment (e.g. via {.envvar RETICULATE_PYTHON}), install
+               them there; otherwise vitals installs them automatically via
+               {.fun reticulate::py_require}."
+        ),
+        parent = cnd,
+        call = call
+      )
+    }
+  )
+  inspect <- imports$inspect
+  inspect_dataset <- imports$inspect_dataset
+  inspect_swe <- imports$inspect_swe
+
+  agent_args <- coerce_whole_numbers(agent_args)
 
   inputs <- purrr::map_chr(as.list(inputs), input_string)
   samples <- purrr::imap(
@@ -211,6 +246,8 @@ import_inspect_log <- function(log_path, inputs, call = rlang::caller_env()) {
         "The Inspect eval powering this solver did not complete successfully
          (status {.val {log$status}}).",
         i = log$error$message %||% character(),
+        i = "{length(log$samples)} sample transcript{?s} completed before
+             the failure and remain{?s/} in the log.",
         i = "See {.file {log_path}} for the full log."
       ),
       call = call
@@ -274,7 +311,12 @@ import_inspect_sample <- function(sample, input, model, call) {
 
   result <- sample$output$completion
   if (is.null(result) || identical(result, "")) {
-    result <- error %||% chat$last_turn()@text
+    last_turn <- chat$last_turn()
+    fallback <- ""
+    if (!is.null(last_turn) && identical(last_turn@role, "assistant")) {
+      fallback <- last_turn@text
+    }
+    result <- error %||% fallback
   }
 
   list(
@@ -299,6 +341,7 @@ errored_chat <- function(input, error, model) {
 check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
   rlang::check_installed(
     "reticulate",
+    version = "1.41",
     reason = "to evaluate coding agent solvers."
   )
 
@@ -333,7 +376,30 @@ check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
   invisible()
 }
 
-check_agent_args <- function(agent_args, call = rlang::caller_env()) {
+check_agent_model <- function(model, call = rlang::caller_env()) {
+  tryCatch(
+    ellmer::chat(ellmer_model_string(model)),
+    error = function(cnd) {
+      cli::cli_abort(
+        c(
+          "ellmer must be able to construct a Chat for {.val {model}} so
+           that the agent's transcript can be read back after solving.",
+          i = "Choose a model from a provider that both Inspect and ellmer
+               support."
+        ),
+        parent = cnd,
+        call = call
+      )
+    }
+  )
+  invisible()
+}
+
+check_agent_args <- function(
+  agent_args,
+  reserved = character(),
+  call = rlang::caller_env()
+) {
   if (
     !is.list(agent_args) ||
       (length(agent_args) > 0 &&
@@ -344,7 +410,41 @@ check_agent_args <- function(agent_args, call = rlang::caller_env()) {
       call = call
     )
   }
+
+  clashes <- intersect(names(agent_args), reserved)
+  if (length(clashes) > 0) {
+    cli::cli_abort(
+      "Pass {.arg {clashes}} as {? its/their} own argument{?s} rather than
+       in {.arg agent_args}.",
+      call = call
+    )
+  }
+
   invisible()
+}
+
+check_eval_args <- function(eval_args, call = rlang::caller_env()) {
+  if ("epochs" %in% names(eval_args)) {
+    cli::cli_abort(
+      c(
+        "{.arg epochs} can't be set on an agent solver.",
+        i = "Pass it to {.help [Task](vitals::Task)}'s {.fun $eval} method
+             instead."
+      ),
+      call = call
+    )
+  }
+
+  overwritten <- intersect(names(eval_args), c("log_dir", "log_format"))
+  if (length(overwritten) > 0) {
+    cli::cli_abort(
+      "{.arg {overwritten}} {?is/are} determined by the solver and can't
+       be set.",
+      call = call
+    )
+  }
+
+  eval_args
 }
 
 inspect_provider_packages <- function(model) {
@@ -374,7 +474,8 @@ coerce_whole_numbers <- function(args) {
       is.double(x) &&
         length(x) == 1 &&
         !is.na(x) &&
-        identical(x, trunc(x))
+        identical(x, trunc(x)) &&
+        abs(x) <= .Machine$integer.max
     ) {
       as.integer(x)
     } else {

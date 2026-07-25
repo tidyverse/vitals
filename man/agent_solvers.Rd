@@ -28,8 +28,10 @@ codex(
 \arguments{
 \item{model}{A string identifying the model that will power the agent,
 in Python Inspect's \code{"provider/model"} format, e.g.
-\code{"anthropic/claude-sonnet-4-5"}. For providers other than Anthropic,
-OpenAI, Google, and Mistral, you may need to make the provider's Python
+\code{"anthropic/claude-sonnet-4-5"}. The provider must be supported by both
+Inspect (which serves the model) and ellmer (which reconstructs the
+agent's transcript). Python SDKs for common providers are resolved
+automatically; for less common ones, you may need to make the provider's
 SDK available yourself with \code{\link[reticulate:py_require]{reticulate::py_require()}}.}
 
 \item{system_prompt}{Optional. A string containing additional system
@@ -40,18 +42,20 @@ to disallow (Claude Code only).}
 
 \item{version}{A string specifying the agent CLI version to use.
 \code{"auto"} (the default) uses a version already installed in the sandbox,
-falling back to the current stable release. Pass a specific version
-(e.g. \code{"2.1.37"}) for reproducibility.}
+falling back to the current stable (Claude Code) or latest (Codex)
+release. Pass a specific version (e.g. \code{"2.1.37"}) for reproducibility.}
 
 \item{sandbox}{A string specifying the Inspect sandbox type in which the
 agent runs. Defaults to \code{"docker"}, which is required on macOS and
 Windows; on Linux hosts, \code{"local"} runs the agent directly on the host.}
 
 \item{agent_args}{Optional. A named list of additional arguments passed
-to the underlying inspect_swe agent (e.g. \code{attempts}, \code{cwd}, \code{env}).}
+to the underlying inspect_swe agent (e.g. \code{cwd}, \code{env}).}
 
 \item{...}{Additional arguments passed to Python Inspect's \code{eval()},
-e.g. \code{max_samples}, \code{max_sandboxes}, \code{time_limit}, or \code{token_limit}.}
+e.g. \code{max_samples}, \code{max_sandboxes}, \code{time_limit}, or \code{token_limit}.
+(\code{epochs} is the exception: pass it to \link{Task}'s \verb{$eval()} method as
+usual.)}
 }
 \value{
 A solver function that can be passed directly to the \code{solver} argument of
@@ -60,6 +64,10 @@ through an ellmer Chat, the solver's \code{solver_chat} output contains Chat
 objects reconstructed from the agent's transcript. Each sample's
 \code{solver_metadata} records the path to the intermediate Inspect log,
 the sample's token usage by model, and the agent's error message (if any).
+
+Token usage is recorded in the task's log and in \code{solver_metadata}, but
+not in \link{Task}'s \verb{$token_usage()} method, which only reflects API calls
+made through ellmer in the current R session.
 }
 \description{
 \code{claude_code()} and \code{codex()} are solvers that evaluate the Claude Code

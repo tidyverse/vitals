@@ -203,7 +203,7 @@ write_log_dir_manifest <- function(log_dir) {
 log_header_to_overview <- function(header) {
   primary_metric <- NULL
   if (!is.null(header$results) &&
-      !is.null(header$results$scores) &&
+      is.data.frame(header$results$scores) &&
       nrow(header$results$scores) > 0) {
     metrics_df <- header$results$scores$metrics[[1]]
     if (!is.null(metrics_df) && nrow(metrics_df) > 0) {

@@ -308,6 +308,33 @@ confint(are_mod)
 If we had evaluated this model across multiple epochs, the question ID could become a "nuisance parameter" in a mixed model, e.g. with the model structure `ordinal::clmm(score ~ model + (1|id), ...)`.
 :::
 
+## Evaluating coding agents
+
+The solvers above are harnesses you assemble yourself with ellmer. To see how an off-the-shelf coding agent stacks up on the same problems, vitals provides the solvers `claude_code()` and `codex()`, which evaluate the Claude Code and Codex agents on a task's dataset:
+
+```{r}
+#| label: are-claude-code
+#| eval: false
+are_claude_code <- Task$new(
+  dataset = are,
+  solver = claude_code(model = "anthropic/claude-sonnet-4-5"),
+  scorer = model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()),
+  name = "An R Eval"
+)
+
+are_claude_code$eval()
+```
+
+These solvers run the agent's command line interface in a Docker sandbox via Python Inspect (resolved automatically with reticulate—you'll need the reticulate package installed and a running Docker daemon). The agent's model calls are proxied, so your API key never enters the sandbox, and its transcript is read back into ellmer Chat objects: tool calls appear in the log viewer, and token usage is tallied as usual.
+
+Since these are ordinary solvers, the same R scorer grades both your harness and the agent, and results compare directly:
+
+```{r}
+#| label: bind-claude-code
+#| eval: false
+vitals_bind(btw = are_btw, claude_code = are_claude_code)
+```
+
 This article demonstrated using a custom solver by modifying the built-in `generate()` to allow models to make tool calls that peruse package documentation. With vitals, tool calling "just works"; calls to any tool registered with ellmer will automatically be incorporated into evaluation logs.
 
 ```{r}

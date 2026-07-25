@@ -2,6 +2,8 @@
 
 S3method(print,Task)
 export(Task)
+export(claude_code)
+export(codex)
 export(detect_answer)
 export(detect_exact)
 export(detect_includes)

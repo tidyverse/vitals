@@ -43,6 +43,7 @@ Suggests:
     knitr,
     magick,
     ordinal,
+    reticulate (>= 1.41),
     rmarkdown,
     testthat (>= 3.0.0),
     vcr (>= 2.0.0)

@@ -50,10 +50,13 @@
 #' system prompt and [ellmer::params()] are passed along to Inspect; the same
 #' chat is then reused to reconstruct the agent's transcript. The agent
 #' reaches the model through Inspect rather than directly, so credentials are
-#' read on the host and any provider Inspect can serve will work, whatever
-#' agent it powers. Python SDKs for common providers are resolved
-#' automatically; for less common ones, you may need to make the provider's
-#' SDK available yourself with [reticulate::py_require()].
+#' read on the host from the usual environment variables, and any agent can
+#' be powered by any of the providers Inspect and ellmer agree on:
+#' [ellmer::chat_anthropic()], [ellmer::chat_openai()],
+#' [ellmer::chat_google_gemini()], [ellmer::chat_google_vertex()],
+#' [ellmer::chat_aws_bedrock()], [ellmer::chat_groq()],
+#' [ellmer::chat_mistral()], [ellmer::chat_ollama()],
+#' [ellmer::chat_openrouter()], and [ellmer::chat_perplexity()].
 #' @param ... Additional named arguments, routed by name to either the
 #' inspect_swe agent—e.g. `system_prompt`, `disallowed_tools`, `cwd`, or
 #' `env`, documented in
@@ -155,11 +158,13 @@ agent_solver <- function(
   chat <- solver_chat
 
   function(inputs, ..., solver_chat = chat) {
+    # force the chat here so an invalid one is reported before Docker's absence
+    solver_chat <- agent_chat(solver_chat)
     solve_with_inspect_agent(
       inputs = inputs,
       agent = agent,
       bridge_package = bridge_package,
-      chat = agent_chat(solver_chat),
+      chat = solver_chat,
       args = args,
       sandbox = sandbox
     )
@@ -175,8 +180,8 @@ solve_with_inspect_agent <- function(
   sandbox,
   call = rlang::caller_env()
 ) {
+  model <- inspect_model_string(chat, call = call)
   check_inspect_agent_deps(sandbox, call = call)
-  model <- inspect_model_string(chat)
   # Inspect's bridge talks to the agent in the agent's own API dialect, so it
   # needs that SDK whatever provider ends up serving the model
   reticulate::py_require(unique(c(
@@ -471,14 +476,15 @@ check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
     reason = "to evaluate coding agent solvers."
   )
 
-  if (!identical(sandbox, "docker")) {
+  if (!identical(sandbox[[1]], "docker")) {
     return(invisible())
   }
 
   if (Sys.which("docker") == "") {
     cli::cli_abort(
       c(
-        "Coding agent solvers require Docker when {.code sandbox = \"docker\"}.",
+        "Coding agent solvers require Docker when {.arg sandbox} is a Docker
+         sandbox.",
         i = "Install Docker Desktop or similar and ensure {.code docker} is
              on your {.envvar PATH}."
       ),
@@ -518,6 +524,38 @@ agent_chat <- function(solver_chat, call = rlang::caller_env()) {
   }
 
   chat$clone()
+}
+
+# Inspect serves the model itself, so a provider only works here if Inspect
+# supports it and reads its credentials from the same place ellmer does
+inspect_agent_providers <- c(
+  anthropic = "anthropic",
+  openai = "openai",
+  google_gemini = "google",
+  google_vertex = "google/vertex",
+  aws_bedrock = "bedrock",
+  groq = "groq",
+  mistral = "mistral",
+  ollama = "ollama",
+  openrouter = "openrouter",
+  perplexity = "perplexity"
+)
+
+inspect_model_string <- function(chat, call = rlang::caller_env()) {
+  provider <- unname(inspect_agent_providers[chat_provider_prefix(chat)])
+  if (is.na(provider)) {
+    supported <- paste0("ellmer::chat_", names(inspect_agent_providers), "()")
+    cli::cli_abort(
+      c(
+        "{.arg solver_chat} uses the {.val {chat$get_provider()@name}}
+         provider, which Inspect can't serve to the agent.",
+        i = "Supported providers: {.code {supported}}."
+      ),
+      call = call
+    )
+  }
+
+  paste0(provider, "/", chat$get_model())
 }
 
 with_chat_args <- function(
@@ -605,6 +643,24 @@ check_agent_dots <- function(args, call = rlang::caller_env()) {
     )
   }
 
+  subsetting <- intersect(
+    names(args),
+    c("limit", "sample_id", "log_samples", "run_samples")
+  )
+  if (length(subsetting) > 0) {
+    cli::cli_abort(
+      c(
+        "{.arg {subsetting}} can't be set on an agent solver.",
+        i = "The solver needs one logged sample per input, and
+             {cli::qty(subsetting)}{?this argument/these arguments} can leave
+             the log with fewer.",
+        i = "To evaluate a subset of the dataset, subset it before passing it
+             to {.help [Task](vitals::Task)}."
+      ),
+      call = call
+    )
+  }
+
   invisible()
 }
 
@@ -665,14 +721,13 @@ inspect_provider_packages <- function(model) {
     provider,
     anthropic = "anthropic",
     openai = ,
-    `openai-api` = ,
-    together = ,
     perplexity = ,
     openrouter = ,
     ollama = "openai",
     google = "google-genai",
     mistral = "mistralai",
     groq = "groq",
+    bedrock = "aioboto3",
     character(0)
   )
 }

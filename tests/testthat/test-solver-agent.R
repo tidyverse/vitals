@@ -150,6 +150,17 @@ test_that("import_inspect_sample gives partial transcripts a response", {
   )
 })
 
+test_that("check_inspect_agent_deps checks docker for configured sandboxes", {
+  skip_if_not_installed("reticulate")
+  withr::local_envvar(PATH = "")
+
+  expect_snapshot(
+    error = TRUE,
+    check_inspect_agent_deps(c("docker", "compose.yaml"))
+  )
+  expect_no_error(check_inspect_agent_deps("local"))
+})
+
 test_that("agent progress tallies samples and events", {
   agent_progress_begin(3)
   withr::defer(agent_progress_end())
@@ -176,7 +187,8 @@ test_that("inspect_provider_packages maps providers to python packages", {
   expect_equal(inspect_provider_packages("google/some-model"), "google-genai")
   expect_equal(inspect_provider_packages("mistral/some-model"), "mistralai")
   expect_equal(inspect_provider_packages("groq/some-model"), "groq")
-  expect_equal(inspect_provider_packages("bedrock/some-model"), character(0))
+  expect_equal(inspect_provider_packages("bedrock/some-model"), "aioboto3")
+  expect_equal(inspect_provider_packages("google/vertex/some-model"), "google-genai")
   expect_equal(inspect_provider_packages("hf/some-model"), character(0))
 })
 
@@ -220,6 +232,10 @@ test_that("agent solvers reject reserved arguments", {
   expect_snapshot(
     error = TRUE,
     codex(mock_chat_template(), log_dir = "logs")
+  )
+  expect_snapshot(
+    error = TRUE,
+    claude_code(mock_chat_template(), limit = 1, log_samples = FALSE)
   )
 })
 
@@ -292,8 +308,25 @@ test_that("with_chat_args errors on params Inspect can't pass along", {
 
 test_that("inspect_model_string maps ellmer providers", {
   expect_equal(
-    inspect_model_string(mock_chat_template(model = "some-model")),
-    "openai_compatible/some-model"
+    inspect_model_string(ellmer::chat_anthropic(
+      model = "some-model",
+      credentials = function() "fake-key"
+    )),
+    "anthropic/some-model"
+  )
+  expect_equal(
+    inspect_model_string(ellmer::chat_google_gemini(
+      model = "some-model",
+      credentials = function() "fake-key"
+    )),
+    "google/some-model"
+  )
+})
+
+test_that("inspect_model_string rejects providers Inspect can't serve", {
+  expect_snapshot(
+    error = TRUE,
+    inspect_model_string(mock_chat_template(model = "some-model"))
   )
 })
 

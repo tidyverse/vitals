@@ -17,10 +17,13 @@ Its provider and model choose the model that powers the agent, and its
 system prompt and \code{\link[ellmer:params]{ellmer::params()}} are passed along to Inspect; the same
 chat is then reused to reconstruct the agent's transcript. The agent
 reaches the model through Inspect rather than directly, so credentials are
-read on the host and any provider Inspect can serve will work, whatever
-agent it powers. Python SDKs for common providers are resolved
-automatically; for less common ones, you may need to make the provider's
-SDK available yourself with \code{\link[reticulate:py_require]{reticulate::py_require()}}.}
+read on the host from the usual environment variables, and any agent can
+be powered by any of the providers Inspect and ellmer agree on:
+\code{\link[ellmer:chat_anthropic]{ellmer::chat_anthropic()}}, \code{\link[ellmer:chat_openai]{ellmer::chat_openai()}},
+\code{\link[ellmer:chat_google_gemini]{ellmer::chat_google_gemini()}}, \code{\link[ellmer:chat_google_vertex]{ellmer::chat_google_vertex()}},
+\code{\link[ellmer:chat_aws_bedrock]{ellmer::chat_aws_bedrock()}}, \code{\link[ellmer:chat_groq]{ellmer::chat_groq()}},
+\code{\link[ellmer:chat_mistral]{ellmer::chat_mistral()}}, \code{\link[ellmer:chat_ollama]{ellmer::chat_ollama()}},
+\code{\link[ellmer:chat_openrouter]{ellmer::chat_openrouter()}}, and \code{\link[ellmer:chat_perplexity]{ellmer::chat_perplexity()}}.}
 
 \item{...}{Additional named arguments, routed by name to either the
 inspect_swe agent—e.g. \code{system_prompt}, \code{disallowed_tools}, \code{cwd}, or

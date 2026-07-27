@@ -191,15 +191,6 @@ ellmer_model_string <- function(model) {
   paste0(provider, sub("^[^/]+", "", model))
 }
 
-inspect_model_string <- function(chat) {
-  provider <- chat_provider_prefix(chat)
-  matched <- match(provider, inspect_ellmer_providers)
-  if (!is.na(matched)) {
-    provider <- names(inspect_ellmer_providers)[matched]
-  }
-  paste0(provider, "/", chat$get_model())
-}
-
 turns_from_messages <- function(messages, tools = list(), model_events = list()) {
   events_by_message_id <- model_events_by_message_id(model_events)
   turns <- list()

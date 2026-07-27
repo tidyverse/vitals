@@ -60,6 +60,15 @@
       ! The Inspect log contains 1 sample but 2 inputs were provided.
       i See '<log_path>' for the full log.
 
+# check_inspect_agent_deps checks docker for configured sandboxes
+
+    Code
+      check_inspect_agent_deps(c("docker", "compose.yaml"))
+    Condition
+      Error:
+      ! Coding agent solvers require Docker when `sandbox` is a Docker sandbox.
+      i Install Docker Desktop or similar and ensure `docker` is on your `PATH`.
+
 # agent solvers reject reserved arguments
 
     Code
@@ -76,6 +85,16 @@
     Condition
       Error in `codex()`:
       ! `log_dir` is determined by the solver and can't be set.
+
+---
+
+    Code
+      claude_code(mock_chat_template(), limit = 1, log_samples = FALSE)
+    Condition
+      Error in `claude_code()`:
+      ! `limit` and `log_samples` can't be set on an agent solver.
+      i The solver needs one logged sample per input, and these arguments can leave the log with fewer.
+      i To evaluate a subset of the dataset, subset it before passing it to Task (`?vitals::Task()`).
 
 # split_agent_args routes arguments by signature
 
@@ -95,4 +114,13 @@
       Error:
       ! `solver_chat` sets `made_up`, which Inspect can't pass along to the model serving the agent.
       i Drop it from `ellmer::params()`.
+
+# inspect_model_string rejects providers Inspect can't serve
+
+    Code
+      inspect_model_string(mock_chat_template(model = "some-model"))
+    Condition
+      Error:
+      ! `solver_chat` uses the "OpenAI-compatible" provider, which Inspect can't serve to the agent.
+      i Supported providers: `ellmer::chat_anthropic()`, `ellmer::chat_openai()`, `ellmer::chat_google_gemini()`, `ellmer::chat_google_vertex()`, `ellmer::chat_aws_bedrock()`, `ellmer::chat_groq()`, `ellmer::chat_mistral()`, `ellmer::chat_ollama()`, `ellmer::chat_openrouter()`, and `ellmer::chat_perplexity()`.
 

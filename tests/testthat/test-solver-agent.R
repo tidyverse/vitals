@@ -16,7 +16,11 @@ test_that("claude_code checks inputs", {
   expect_snapshot(error = TRUE, claude_code(model = 1))
   expect_snapshot(
     error = TRUE,
-    claude_code(model = "anthropic/some-model", agent_args = list(1))
+    claude_code(model = "anthropic/some-model", "boop")
+  )
+  expect_snapshot(
+    error = TRUE,
+    claude_code(model = "anthropic/some-model", sandbox = c("docker", 1, 2))
   )
 })
 
@@ -100,11 +104,49 @@ test_that("import_inspect_sample recovers from errored samples", {
   expect_equal(res$metadata$error, "agent crashed")
 })
 
+test_that("import_inspect_sample gives partial transcripts a response", {
+  sample <- list(
+    id = 1L,
+    messages = list(list(role = "user", content = "hey there")),
+    output = NULL,
+    error = list(message = "agent crashed"),
+    model_usage = NULL
+  )
+
+  res <- import_inspect_sample(
+    sample,
+    input = "hey there",
+    model = "anthropic/claude-haiku-4-5-20251001",
+    call = rlang::current_env()
+  )
+
+  expect_equal(res$result, "agent crashed")
+  turns <- res$solver_chat$get_turns()
+  expect_equal(
+    purrr::map_chr(turns, function(turn) turn@role),
+    c("user", "assistant")
+  )
+  expect_equal(turns[[2]]@text, "agent crashed")
+
+  sample$error <- NULL
+  res <- import_inspect_sample(
+    sample,
+    input = "hey there",
+    model = "anthropic/claude-haiku-4-5-20251001",
+    call = rlang::current_env()
+  )
+
+  expect_equal(res$result, "The agent returned no response.")
+  expect_equal(res$solver_chat$last_turn()@text, "The agent returned no response.")
+})
+
 test_that("inspect_provider_packages maps providers to python packages", {
   expect_equal(inspect_provider_packages("anthropic/some-model"), "anthropic")
   expect_equal(inspect_provider_packages("openai/some-model"), "openai")
   expect_equal(inspect_provider_packages("google/some-model"), "google-genai")
   expect_equal(inspect_provider_packages("mistral/some-model"), "mistralai")
+  expect_equal(inspect_provider_packages("groq/some-model"), "groq")
+  expect_equal(inspect_provider_packages("bedrock/some-model"), character(0))
   expect_equal(inspect_provider_packages("hf/some-model"), character(0))
 })
 
@@ -141,15 +183,33 @@ test_that("claude_code end to end", {
 test_that("agent solvers reject reserved arguments", {
   expect_snapshot(
     error = TRUE,
-    claude_code(model = "anthropic/some-model", agent_args = list(version = "2.1.37"))
-  )
-  expect_snapshot(
-    error = TRUE,
     claude_code(model = "anthropic/some-model", epochs = 2)
   )
   expect_snapshot(
     error = TRUE,
     codex(model = "openai/some-model", log_dir = "logs")
+  )
+})
+
+test_that("split_agent_args routes arguments by signature", {
+  args <- split_agent_args(
+    list(system_prompt = "be brief", max_samples = 2L),
+    agent_params = c("system_prompt", "version"),
+    eval_params = c("max_samples", "model"),
+    call = rlang::current_env()
+  )
+
+  expect_equal(args$agent, list(system_prompt = "be brief"))
+  expect_equal(args$eval, list(max_samples = 2L))
+
+  expect_snapshot(
+    error = TRUE,
+    split_agent_args(
+      list(not_an_argument = 1),
+      agent_params = "system_prompt",
+      eval_params = "max_samples",
+      call = rlang::current_env()
+    )
   )
 })
 

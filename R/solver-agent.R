@@ -8,43 +8,68 @@
 #' These solvers bridge to Python Inspect's
 #' [inspect_swe](https://meridianlabs-ai.github.io/inspect_swe/) package,
 #' which runs the agent's command line interface in a Docker sandbox and
-#' proxies its model calls: the sandbox never sees your API key, and every
-#' model call the agent makes is recorded in the resulting transcript. The
-#' agent's transcript is then read back into ellmer Chat objects so that
-#' scoring and logging work exactly as they do for any other solver.
+#' proxies its model calls. The agent's transcript is then read back into
+#' ellmer Chat objects so that scoring and logging work exactly as they do
+#' for any other solver.
 #'
 #' @section Requirements:
 #' These solvers require the reticulate package and a running Docker daemon
 #' ([Docker Desktop](https://www.docker.com/products/docker-desktop/) or
-#' similar); the first evaluation will pull Inspect's default sandbox image.
-#' Python dependencies are resolved automatically with
-#' [reticulate::py_require()]. Set your API key (e.g. `ANTHROPIC_API_KEY`)
-#' as usual—it's read on the host by Inspect and never enters the sandbox.
+#' similar). Python dependencies are resolved automatically with
+#' [reticulate::py_require()]. The first evaluation additionally pulls the
+#' sandbox image and downloads the agent's command line interface into it, so
+#' it takes a few minutes longer than the ones that follow.
+#'
+#' @section The agent's workspace:
+#' Each sample gets its own container, discarded when the sample completes,
+#' so the agent's edits never touch your machine and never leak from one
+#' sample to the next. The agent starts in its image's working directory,
+#' falling back to the sandbox user's home directory when the image sets
+#' none; pass `cwd` to place it somewhere else.
+#'
+#' By default that image is Inspect's own, which contains little more than a
+#' Python installation. To give the agent a repository to work in, or any
+#' other starting state, put a `Dockerfile` or `compose.yaml` in your working
+#' directory and Inspect will build the sandbox from it, or point `sandbox`
+#' at one directly:
+#'
+#' ```r
+#' claude_code(
+#'   model = "anthropic/claude-sonnet-4-5",
+#'   sandbox = c("docker", "path/to/compose.yaml")
+#' )
+#' ```
+#'
+#' See Inspect's
+#' [sandboxing documentation](https://inspect.aisi.org.uk/sandboxing.html)
+#' for the configuration these files support.
 #'
 #' @param model A string identifying the model that will power the agent,
 #' in Python Inspect's `"provider/model"` format, e.g.
 #' `"anthropic/claude-sonnet-4-5"`. The provider must be supported by both
 #' Inspect (which serves the model) and ellmer (which reconstructs the
-#' agent's transcript). Python SDKs for common providers are resolved
+#' agent's transcript). The agent reaches the model through Inspect rather
+#' than directly, so it needs no credentials of its own: set your API key on
+#' the host as usual and any provider Inspect can serve will work, whatever
+#' agent it powers. Python SDKs for common providers are resolved
 #' automatically; for less common ones, you may need to make the provider's
 #' SDK available yourself with [reticulate::py_require()].
-#' @param system_prompt Optional. A string containing additional system
-#' prompt content to append to the agent's default system prompt.
-#' @param disallowed_tools Optional. A character vector of agent tool names
-#' to disallow (Claude Code only).
+#' @param ... Additional named arguments, routed by name to either the
+#' inspect_swe agent—e.g. `system_prompt`, `disallowed_tools`, `cwd`, or
+#' `env`, documented in
+#' [inspect_swe's reference](https://meridianlabs-ai.github.io/inspect_swe/reference/)—or
+#' to Python Inspect's `eval()`, e.g. `max_samples`, `max_sandboxes`,
+#' `time_limit`, or `token_limit`. (`epochs` is the exception: pass it to
+#' [Task]'s `$eval()` method as usual.)
 #' @param version A string specifying the agent CLI version to use.
 #' `"auto"` (the default) uses a version already installed in the sandbox,
 #' falling back to the current stable (Claude Code) or latest (Codex)
 #' release. Pass a specific version (e.g. `"2.1.37"`) for reproducibility.
-#' @param sandbox A string specifying the Inspect sandbox type in which the
-#' agent runs. Defaults to `"docker"`, which is required on macOS and
-#' Windows; on Linux hosts, `"local"` runs the agent directly on the host.
-#' @param agent_args Optional. A named list of additional arguments passed
-#' to the underlying inspect_swe agent (e.g. `cwd`, `env`).
-#' @param ... Additional arguments passed to Python Inspect's `eval()`,
-#' e.g. `max_samples`, `max_sandboxes`, `time_limit`, or `token_limit`.
-#' (`epochs` is the exception: pass it to [Task]'s `$eval()` method as
-#' usual.)
+#' @param sandbox The Inspect sandbox in which the agent runs: a string
+#' naming the sandbox type, or a length-2 vector pairing a type with a
+#' configuration file, e.g. `c("docker", "compose.yaml")`. Defaults to
+#' `"docker"`, which is required on macOS and Windows; on Linux hosts,
+#' `"local"` runs the agent directly on the host.
 #'
 #' @returns
 #' A solver function that can be passed directly to the `solver` argument of
@@ -78,81 +103,54 @@
 #'
 #' @name agent_solvers
 #' @export
-claude_code <- function(
-  model,
-  system_prompt = NULL,
-  disallowed_tools = NULL,
-  version = "auto",
-  sandbox = "docker",
-  agent_args = list(),
-  ...
-) {
-  check_string(model)
-  check_string(system_prompt, allow_null = TRUE)
-  check_character(disallowed_tools, allow_null = TRUE)
-  check_string(version)
-  check_string(sandbox)
-  check_agent_args(
-    agent_args,
-    reserved = c("system_prompt", "disallowed_tools", "version")
+claude_code <- function(model, ..., version = "auto", sandbox = "docker") {
+  agent_solver(
+    agent = "claude_code",
+    bridge_package = "anthropic",
+    model = model,
+    args = list2(...),
+    version = version,
+    sandbox = sandbox
   )
-  eval_args <- check_eval_args(list2(...))
-
-  agent_args <- c(
-    purrr::compact(list(
-      system_prompt = system_prompt,
-      disallowed_tools = as.list(disallowed_tools),
-      version = version
-    )),
-    agent_args
-  )
-
-  function(inputs, ...) {
-    solve_with_inspect_agent(
-      inputs = inputs,
-      agent = "claude_code",
-      agent_args = agent_args,
-      model = model,
-      sandbox = sandbox,
-      eval_args = eval_args
-    )
-  }
 }
 
 #' @rdname agent_solvers
 #' @export
-codex <- function(
-  model,
-  system_prompt = NULL,
-  version = "auto",
-  sandbox = "docker",
-  agent_args = list(),
-  ...
-) {
-  check_string(model)
-  check_string(system_prompt, allow_null = TRUE)
-  check_string(version)
-  check_string(sandbox)
-  check_agent_args(agent_args, reserved = c("system_prompt", "version"))
-  eval_args <- check_eval_args(list2(...))
-
-  agent_args <- c(
-    purrr::compact(list(
-      system_prompt = system_prompt,
-      version = version
-    )),
-    agent_args
+codex <- function(model, ..., version = "auto", sandbox = "docker") {
+  agent_solver(
+    agent = "codex_cli",
+    bridge_package = "openai",
+    model = model,
+    args = list2(...),
+    version = version,
+    sandbox = sandbox
   )
+}
+
+agent_solver <- function(
+  agent,
+  bridge_package,
+  model,
+  args,
+  version,
+  sandbox,
+  call = rlang::caller_env()
+) {
+  check_string(model, call = call)
+  check_string(version, call = call)
+  check_sandbox(sandbox, call = call)
+  check_agent_dots(args, call = call)
+
+  args$version <- version
 
   function(inputs, ...) {
     solve_with_inspect_agent(
       inputs = inputs,
-      agent = "codex_cli",
-      agent_args = agent_args,
+      agent = agent,
+      bridge_package = bridge_package,
+      args = args,
       model = model,
-      sandbox = sandbox,
-      eval_args = eval_args,
-      packages = "openai"
+      sandbox = sandbox
     )
   }
 }
@@ -160,20 +158,21 @@ codex <- function(
 solve_with_inspect_agent <- function(
   inputs,
   agent,
-  agent_args,
+  bridge_package,
+  args,
   model,
   sandbox,
-  eval_args,
-  packages = character(),
   call = rlang::caller_env()
 ) {
   check_inspect_agent_deps(sandbox, call = call)
   check_agent_model(model, call = call)
+  # Inspect's bridge talks to the agent in the agent's own API dialect, so it
+  # needs that SDK whatever provider ends up serving the model
   reticulate::py_require(unique(c(
     "inspect-ai",
     "inspect-swe",
-    inspect_provider_packages(model),
-    packages
+    bridge_package,
+    inspect_provider_packages(model)
   )))
 
   imports <- tryCatch(
@@ -199,9 +198,14 @@ solve_with_inspect_agent <- function(
   )
   inspect <- imports$inspect
   inspect_dataset <- imports$inspect_dataset
-  inspect_swe <- imports$inspect_swe
+  agent_fn <- reticulate::py_get_attr(imports$inspect_swe, agent)
 
-  agent_args <- coerce_whole_numbers(agent_args)
+  args <- split_agent_args(
+    coerce_whole_numbers(args),
+    agent_params = py_argument_names(agent_fn),
+    eval_params = c(py_argument_names(inspect$eval), py_generate_config_names()),
+    call = call
+  )
 
   inputs <- purrr::map_chr(as.list(inputs), input_string)
   samples <- purrr::imap(
@@ -211,15 +215,15 @@ solve_with_inspect_agent <- function(
 
   task <- inspect$Task(
     dataset = inspect_dataset$MemoryDataset(samples),
-    solver = do.call(reticulate::py_get_attr(inspect_swe, agent), agent_args),
-    sandbox = sandbox,
+    solver = do.call(agent_fn, args$agent),
+    sandbox = inspect_sandbox(sandbox),
     name = agent
   )
 
   log_dir <- file.path(tempdir(), "inspect-logs", generate_id())
   dir.create(log_dir, recursive = TRUE, showWarnings = FALSE)
 
-  eval_args <- coerce_whole_numbers(eval_args)
+  eval_args <- args$eval
   eval_args$display <- eval_args$display %||% "plain"
   eval_args$fail_on_error <- eval_args$fail_on_error %||% FALSE
   eval_args$log_dir <- log_dir
@@ -309,19 +313,14 @@ import_inspect_sample <- function(sample, input, model, call) {
     errored_chat(input, error %||% "The agent returned no messages.", model)
   }
 
-  result <- sample$output$completion
-  if (is.null(result) || identical(result, "")) {
-    last_turn <- chat$last_turn()
-    fallback <- ""
-    if (!is.null(last_turn) && identical(last_turn@role, "assistant")) {
-      fallback <- last_turn@text
-    }
-    result <- error %||% fallback
-  }
+  result <- nonempty(sample$output$completion) %||%
+    nonempty(error) %||%
+    nonempty(response_text(chat)) %||%
+    "The agent returned no response."
 
   list(
     result = result,
-    solver_chat = chat,
+    solver_chat = with_response(chat, result),
     metadata = purrr::compact(list(
       model_usage = sample$model_usage,
       error = error
@@ -336,6 +335,31 @@ errored_chat <- function(input, error, model) {
     ellmer::AssistantTurn(contents = list(ellmer::ContentText(error)))
   ))
   chat
+}
+
+response_text <- function(chat) {
+  turns <- chat$get_turns()
+  last_turn <- if (length(turns) > 0) turns[[length(turns)]]
+  if (!is.null(last_turn) && identical(last_turn@role, "assistant")) {
+    last_turn@text
+  }
+}
+
+# an agent that errors partway can leave a transcript with no response in it,
+# which both scoring and log translation assume is there
+with_response <- function(chat, text) {
+  if (!is.null(response_text(chat))) {
+    return(chat)
+  }
+  chat$set_turns(c(
+    chat$get_turns(),
+    list(ellmer::AssistantTurn(contents = list(ellmer::ContentText(text))))
+  ))
+  chat
+}
+
+nonempty <- function(x) {
+  if (is.null(x) || identical(x, "")) NULL else x
 }
 
 check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
@@ -395,27 +419,15 @@ check_agent_model <- function(model, call = rlang::caller_env()) {
   invisible()
 }
 
-check_agent_args <- function(
-  agent_args,
-  reserved = character(),
-  call = rlang::caller_env()
-) {
+check_sandbox <- function(sandbox, call = rlang::caller_env()) {
   if (
-    !is.list(agent_args) ||
-      (length(agent_args) > 0 &&
-        (is.null(names(agent_args)) || any(names(agent_args) == "")))
+    !is.character(sandbox) ||
+      !length(sandbox) %in% c(1L, 2L) ||
+      anyNA(sandbox)
   ) {
     cli::cli_abort(
-      "{.arg agent_args} must be a named list.",
-      call = call
-    )
-  }
-
-  clashes <- intersect(names(agent_args), reserved)
-  if (length(clashes) > 0) {
-    cli::cli_abort(
-      "Pass {.arg {clashes}} as {? its/their} own argument{?s} rather than
-       in {.arg agent_args}.",
+      "{.arg sandbox} must be a sandbox type or a pair of sandbox type and
+       configuration file, e.g. {.code c(\"docker\", \"compose.yaml\")}.",
       call = call
     )
   }
@@ -423,8 +435,15 @@ check_agent_args <- function(
   invisible()
 }
 
-check_eval_args <- function(eval_args, call = rlang::caller_env()) {
-  if ("epochs" %in% names(eval_args)) {
+check_agent_dots <- function(args, call = rlang::caller_env()) {
+  if (length(args) > 0 && !is_named(args)) {
+    cli::cli_abort(
+      "All arguments in {.arg ...} must be named.",
+      call = call
+    )
+  }
+
+  if ("epochs" %in% names(args)) {
     cli::cli_abort(
       c(
         "{.arg epochs} can't be set on an agent solver.",
@@ -435,18 +454,69 @@ check_eval_args <- function(eval_args, call = rlang::caller_env()) {
     )
   }
 
-  overwritten <- intersect(names(eval_args), c("log_dir", "log_format"))
-  if (length(overwritten) > 0) {
+  reserved <- intersect(names(args), c("solver", "log_dir", "log_format"))
+  if (length(reserved) > 0) {
     cli::cli_abort(
-      "{.arg {overwritten}} {?is/are} determined by the solver and can't
+      "{.arg {reserved}} {?is/are} determined by the solver and can't
        be set.",
       call = call
     )
   }
 
-  eval_args
+  invisible()
 }
 
+split_agent_args <- function(args, agent_params, eval_params, call) {
+  is_agent <- names(args) %in% agent_params
+  is_eval <- !is_agent & names(args) %in% eval_params
+
+  unknown <- names(args)[!is_agent & !is_eval]
+  if (length(unknown) > 0) {
+    cli::cli_abort(
+      c(
+        "{.arg {unknown}} {?is/are} not {?an argument/arguments} of the agent
+         or of Python Inspect's {.fun eval}.",
+        i = "See {.url https://meridianlabs-ai.github.io/inspect_swe/reference/}
+             for the agent's arguments."
+      ),
+      call = call
+    )
+  }
+
+  list(agent = args[is_agent], eval = args[is_eval])
+}
+
+py_argument_names <- function(fn) {
+  py_inspect <- reticulate::import("inspect")
+  params <- py_inspect$signature(fn)$parameters
+  names <- reticulate::import_builtins()$list(params)
+  kinds <- purrr::map_int(names, function(name) {
+    as.integer(params[[name]]$kind)
+  })
+  variadic <- c(
+    py_inspect$Parameter$VAR_POSITIONAL,
+    py_inspect$Parameter$VAR_KEYWORD
+  )
+  names[!kinds %in% as.integer(variadic)]
+}
+
+# `eval()` takes generation options like `max_tokens` as **kwargs, so they
+# don't show up in its signature
+py_generate_config_names <- function() {
+  config <- reticulate::import("inspect_ai.model")$GenerateConfig
+  reticulate::import_builtins()$list(config$model_fields)
+}
+
+inspect_sandbox <- function(sandbox) {
+  if (length(sandbox) == 1) {
+    return(sandbox)
+  }
+  reticulate::tuple(sandbox[[1]], sandbox[[2]])
+}
+
+# inspect-ai keeps provider SDKs as optional dependencies and raises a
+# `pip install <sdk>` error on first use, which isn't actionable when
+# reticulate is resolving the environment
 inspect_provider_packages <- function(model) {
   provider <- sub("/.*", "", model)
   switch(
@@ -454,20 +524,20 @@ inspect_provider_packages <- function(model) {
     anthropic = "anthropic",
     openai = ,
     `openai-api` = ,
-    azureai = ,
-    grok = ,
-    groq = ,
     together = ,
+    perplexity = ,
     openrouter = ,
     ollama = "openai",
-    google = ,
-    vertex = "google-genai",
+    google = "google-genai",
     mistral = "mistralai",
-    bedrock = "boto3",
+    groq = "groq",
     character(0)
   )
 }
 
+# reticulate maps R doubles to Python floats, which fall through
+# `isinstance(x, int)` dispatch (e.g. inspect_swe's `attempts`) and fail
+# mid-eval rather than when the solver is constructed
 coerce_whole_numbers <- function(args) {
   purrr::map(args, function(x) {
     if (

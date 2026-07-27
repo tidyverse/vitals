@@ -17,10 +17,18 @@
 ---
 
     Code
-      claude_code(model = "anthropic/some-model", agent_args = list(1))
+      claude_code(model = "anthropic/some-model", "boop")
     Condition
       Error in `claude_code()`:
-      ! `agent_args` must be a named list.
+      ! All arguments in `...` must be named.
+
+---
+
+    Code
+      claude_code(model = "anthropic/some-model", sandbox = c("docker", 1, 2))
+    Condition
+      Error in `claude_code()`:
+      ! `sandbox` must be a sandbox type or a pair of sandbox type and configuration file, e.g. `c("docker", "compose.yaml")`.
 
 # codex checks inputs
 
@@ -61,14 +69,6 @@
 # agent solvers reject reserved arguments
 
     Code
-      claude_code(model = "anthropic/some-model", agent_args = list(version = "2.1.37"))
-    Condition
-      Error in `claude_code()`:
-      ! Pass `version` as its own argument rather than in `agent_args`.
-
----
-
-    Code
       claude_code(model = "anthropic/some-model", epochs = 2)
     Condition
       Error in `claude_code()`:
@@ -82,4 +82,14 @@
     Condition
       Error in `codex()`:
       ! `log_dir` is determined by the solver and can't be set.
+
+# split_agent_args routes arguments by signature
+
+    Code
+      split_agent_args(list(not_an_argument = 1), agent_params = "system_prompt",
+      eval_params = "max_samples", call = rlang::current_env())
+    Condition
+      Error:
+      ! `not_an_argument` is not an argument of the agent or of Python Inspect's `eval()`.
+      i See <https://meridianlabs-ai.github.io/inspect_swe/reference/> for the agent's arguments.
 

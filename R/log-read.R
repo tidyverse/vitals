@@ -172,6 +172,8 @@ chat_from_model_string <- function(model, call = rlang::caller_env()) {
   )
 }
 
+# `ellmer::chat()` looks up `chat_<provider>()` verbatim, so Inspect provider
+# names that don't share a spelling with ellmer's need translating
 ellmer_model_string <- function(model) {
   if (!grepl("/", model, fixed = TRUE)) {
     return(model)
@@ -180,7 +182,6 @@ ellmer_model_string <- function(model) {
   provider <- switch(
     provider,
     google = "google_gemini",
-    vertex = "google_vertex",
     bedrock = "aws_bedrock",
     provider
   )

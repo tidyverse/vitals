@@ -6,56 +6,40 @@
 \alias{codex}
 \title{Coding agents as solvers}
 \usage{
-claude_code(
-  model,
-  system_prompt = NULL,
-  disallowed_tools = NULL,
-  version = "auto",
-  sandbox = "docker",
-  agent_args = list(),
-  ...
-)
+claude_code(model, ..., version = "auto", sandbox = "docker")
 
-codex(
-  model,
-  system_prompt = NULL,
-  version = "auto",
-  sandbox = "docker",
-  agent_args = list(),
-  ...
-)
+codex(model, ..., version = "auto", sandbox = "docker")
 }
 \arguments{
 \item{model}{A string identifying the model that will power the agent,
 in Python Inspect's \code{"provider/model"} format, e.g.
 \code{"anthropic/claude-sonnet-4-5"}. The provider must be supported by both
 Inspect (which serves the model) and ellmer (which reconstructs the
-agent's transcript). Python SDKs for common providers are resolved
+agent's transcript). The agent reaches the model through Inspect rather
+than directly, so it needs no credentials of its own: set your API key on
+the host as usual and any provider Inspect can serve will work, whatever
+agent it powers. Python SDKs for common providers are resolved
 automatically; for less common ones, you may need to make the provider's
 SDK available yourself with \code{\link[reticulate:py_require]{reticulate::py_require()}}.}
 
-\item{system_prompt}{Optional. A string containing additional system
-prompt content to append to the agent's default system prompt.}
-
-\item{disallowed_tools}{Optional. A character vector of agent tool names
-to disallow (Claude Code only).}
+\item{...}{Additional named arguments, routed by name to either the
+inspect_swe agent—e.g. \code{system_prompt}, \code{disallowed_tools}, \code{cwd}, or
+\code{env}, documented in
+\href{https://meridianlabs-ai.github.io/inspect_swe/reference/}{inspect_swe's reference}—or
+to Python Inspect's \code{eval()}, e.g. \code{max_samples}, \code{max_sandboxes},
+\code{time_limit}, or \code{token_limit}. (\code{epochs} is the exception: pass it to
+\link{Task}'s \verb{$eval()} method as usual.)}
 
 \item{version}{A string specifying the agent CLI version to use.
 \code{"auto"} (the default) uses a version already installed in the sandbox,
 falling back to the current stable (Claude Code) or latest (Codex)
 release. Pass a specific version (e.g. \code{"2.1.37"}) for reproducibility.}
 
-\item{sandbox}{A string specifying the Inspect sandbox type in which the
-agent runs. Defaults to \code{"docker"}, which is required on macOS and
-Windows; on Linux hosts, \code{"local"} runs the agent directly on the host.}
-
-\item{agent_args}{Optional. A named list of additional arguments passed
-to the underlying inspect_swe agent (e.g. \code{cwd}, \code{env}).}
-
-\item{...}{Additional arguments passed to Python Inspect's \code{eval()},
-e.g. \code{max_samples}, \code{max_sandboxes}, \code{time_limit}, or \code{token_limit}.
-(\code{epochs} is the exception: pass it to \link{Task}'s \verb{$eval()} method as
-usual.)}
+\item{sandbox}{The Inspect sandbox in which the agent runs: a string
+naming the sandbox type, or a length-2 vector pairing a type with a
+configuration file, e.g. \code{c("docker", "compose.yaml")}. Defaults to
+\code{"docker"}, which is required on macOS and Windows; on Linux hosts,
+\code{"local"} runs the agent directly on the host.}
 }
 \value{
 A solver function that can be passed directly to the \code{solver} argument of
@@ -77,19 +61,43 @@ off-the-shelf agent harnesses against your own with the same scorer.
 These solvers bridge to Python Inspect's
 \href{https://meridianlabs-ai.github.io/inspect_swe/}{inspect_swe} package,
 which runs the agent's command line interface in a Docker sandbox and
-proxies its model calls: the sandbox never sees your API key, and every
-model call the agent makes is recorded in the resulting transcript. The
-agent's transcript is then read back into ellmer Chat objects so that
-scoring and logging work exactly as they do for any other solver.
+proxies its model calls. The agent's transcript is then read back into
+ellmer Chat objects so that scoring and logging work exactly as they do
+for any other solver.
 }
 \section{Requirements}{
 
 These solvers require the reticulate package and a running Docker daemon
 (\href{https://www.docker.com/products/docker-desktop/}{Docker Desktop} or
-similar); the first evaluation will pull Inspect's default sandbox image.
-Python dependencies are resolved automatically with
-\code{\link[reticulate:py_require]{reticulate::py_require()}}. Set your API key (e.g. \code{ANTHROPIC_API_KEY})
-as usual—it's read on the host by Inspect and never enters the sandbox.
+similar). Python dependencies are resolved automatically with
+\code{\link[reticulate:py_require]{reticulate::py_require()}}. The first evaluation additionally pulls the
+sandbox image and downloads the agent's command line interface into it, so
+it takes a few minutes longer than the ones that follow.
+}
+
+\section{The agent's workspace}{
+
+Each sample gets its own container, discarded when the sample completes,
+so the agent's edits never touch your machine and never leak from one
+sample to the next. The agent starts in its image's working directory,
+falling back to the sandbox user's home directory when the image sets
+none; pass \code{cwd} to place it somewhere else.
+
+By default that image is Inspect's own, which contains little more than a
+Python installation. To give the agent a repository to work in, or any
+other starting state, put a \code{Dockerfile} or \code{compose.yaml} in your working
+directory and Inspect will build the sandbox from it, or point \code{sandbox}
+at one directly:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{claude_code(
+  model = "anthropic/claude-sonnet-4-5",
+  sandbox = c("docker", "path/to/compose.yaml")
+)
+}\if{html}{\out{</div>}}
+
+See Inspect's
+\href{https://inspect.aisi.org.uk/sandboxing.html}{sandboxing documentation}
+for the configuration these files support.
 }
 
 \examples{

@@ -1,9 +1,11 @@
 claude_code_log <- function() {
-  system.file(
+  path <- system.file(
     "test/inspect/logs",
     "2026-07-25T12-57-47-00-00_claude-code_boWWx32BT72g5mJWxzeEDN.json",
     package = "vitals"
   )
+  skip_if(identical(path, ""), "Test log files not available")
+  path
 }
 
 claude_code_input <-

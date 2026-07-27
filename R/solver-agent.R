@@ -212,10 +212,11 @@ solve_with_inspect_agent <- function(
   agent_fn <- reticulate::py_get_attr(imports$inspect_swe, agent)
 
   config_names <- py_generate_config_names()
+  eval_params <- py_argument_names(inspect$eval)
   args <- split_agent_args(
     coerce_whole_numbers(args),
     agent_params = py_argument_names(agent_fn),
-    eval_params = c(py_argument_names(inspect$eval), config_names),
+    eval_params = c(eval_params, config_names),
     call = call
   )
   args <- with_chat_args(args, chat, config_names = config_names, call = call)
@@ -237,10 +238,21 @@ solve_with_inspect_agent <- function(
   dir.create(log_dir, recursive = TRUE, showWarnings = FALSE)
 
   eval_args <- args$eval
-  eval_args$display <- eval_args$display %||% "plain"
+  eval_args$display <- eval_args$display %||% "none"
   eval_args$fail_on_error <- eval_args$fail_on_error %||% FALSE
+  # nothing here attaches to a running eval, and the server's bind failures
+  # surface as warnings
+  if ("ctl_server" %in% eval_params) {
+    eval_args$ctl_server <- eval_args$ctl_server %||% FALSE
+  }
   eval_args$log_dir <- log_dir
   eval_args$log_format <- "json"
+
+  if (identical(eval_args$display, "none")) {
+    register_agent_progress()
+    agent_progress_begin(length(inputs))
+    on.exit(agent_progress_end(), add = TRUE)
+  }
 
   do.call(inspect$eval, c(list(task, model = model), eval_args))
 
@@ -382,6 +394,76 @@ nonempty <- function(x) {
   if (is.null(x) || identical(x, "")) NULL else x
 }
 
+agent_progress <- rlang::env(
+  bar = NULL,
+  registered = FALSE,
+  total = 0L,
+  samples = 0L,
+  events = 0L
+)
+
+# Inspect's own displays either print a line per sample or take over the
+# terminal, so we silence them and report progress from its hooks instead
+register_agent_progress <- function() {
+  if (agent_progress$registered) {
+    return(invisible())
+  }
+
+  shim <- reticulate::import_from_path(
+    "vitals_progress",
+    path = system.file("python", package = "vitals")
+  )
+  shim$register(function(kind) {
+    tryCatch(agent_progress_update(kind), error = function(cnd) NULL)
+  })
+
+  agent_progress$registered <- TRUE
+  invisible()
+}
+
+agent_progress_begin <- function(total, envir = rlang::caller_env()) {
+  agent_progress$total <- total
+  agent_progress$samples <- 0L
+  agent_progress$events <- 0L
+  agent_progress$bar <- cli::cli_progress_bar(
+    format = paste(
+      "{cli::pb_spin} Solving |",
+      "{agent_progress$samples}/{agent_progress$total} samples |",
+      "{agent_progress$events} agent steps"
+    ),
+    total = total,
+    .envir = envir
+  )
+  invisible()
+}
+
+# the hook fires for every Inspect eval in the session, including those that
+# report progress some other way
+agent_progress_update <- function(kind) {
+  if (is.null(agent_progress$bar)) {
+    return(invisible())
+  }
+  if (identical(kind, "sample")) {
+    agent_progress$samples <- agent_progress$samples + 1L
+  } else {
+    agent_progress$events <- agent_progress$events + 1L
+  }
+  cli::cli_progress_update(
+    id = agent_progress$bar,
+    set = agent_progress$samples
+  )
+  invisible()
+}
+
+agent_progress_end <- function() {
+  if (is.null(agent_progress$bar)) {
+    return(invisible())
+  }
+  cli::cli_progress_done(id = agent_progress$bar)
+  agent_progress$bar <- NULL
+  invisible()
+}
+
 check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
   rlang::check_installed(
     "reticulate",
@@ -438,7 +520,12 @@ agent_chat <- function(solver_chat, call = rlang::caller_env()) {
   chat$clone()
 }
 
-with_chat_args <- function(args, chat, config_names, call = rlang::caller_env()) {
+with_chat_args <- function(
+  args,
+  chat,
+  config_names,
+  call = rlang::caller_env()
+) {
   args$agent$system_prompt <- args$agent$system_prompt %||%
     chat$get_system_prompt()
 

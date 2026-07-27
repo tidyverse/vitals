@@ -12,7 +12,11 @@ test_that("agent solvers check their chat when they solve", {
   expect_snapshot(error = TRUE, solver("What's 2+2?"))
 
   chat <- mock_chat_template()
-  chat$set_tools(list(ellmer::tool(function() "boop", name = "boop", description = "Boop.")))
+  chat$set_tools(list(ellmer::tool(
+    function() "boop",
+    name = "boop",
+    description = "Boop."
+  )))
   solver <- codex(chat)
   expect_snapshot(error = TRUE, solver("What's 2+2?"))
 })
@@ -70,7 +74,11 @@ test_that("import_inspect_log errors informatively on sample count mismatch", {
   path <- example_claude_code_log()
   expect_snapshot(
     error = TRUE,
-    import_inspect_log(path, inputs = c("one", "two"), chat = mock_chat_template()),
+    import_inspect_log(
+      path,
+      inputs = c("one", "two"),
+      chat = mock_chat_template()
+    ),
     transform = function(lines) gsub(path, "<log_path>", lines, fixed = TRUE)
   )
 })
@@ -136,7 +144,30 @@ test_that("import_inspect_sample gives partial transcripts a response", {
   )
 
   expect_equal(res$result, "The agent returned no response.")
-  expect_equal(res$solver_chat$last_turn()@text, "The agent returned no response.")
+  expect_equal(
+    res$solver_chat$last_turn()@text,
+    "The agent returned no response."
+  )
+})
+
+test_that("agent progress tallies samples and events", {
+  agent_progress_begin(3)
+  withr::defer(agent_progress_end())
+
+  agent_progress_update("sample")
+  agent_progress_update("event")
+  agent_progress_update("event")
+
+  expect_equal(agent_progress$samples, 1L)
+  expect_equal(agent_progress$events, 2L)
+})
+
+test_that("agent progress updates are inert with no progress bar", {
+  agent_progress_end()
+  samples <- agent_progress$samples
+
+  expect_silent(agent_progress_update("sample"))
+  expect_equal(agent_progress$samples, samples)
 })
 
 test_that("inspect_provider_packages maps providers to python packages", {
@@ -235,7 +266,10 @@ test_that("with_chat_args forwards the chat's prompt and params", {
 
   # arguments passed to the solver directly win
   args <- with_chat_args(
-    list(agent = list(system_prompt = "Be brief."), eval = list(temperature = 1)),
+    list(
+      agent = list(system_prompt = "Be brief."),
+      eval = list(temperature = 1)
+    ),
     chat,
     config_names = c("temperature", "stop_seqs")
   )

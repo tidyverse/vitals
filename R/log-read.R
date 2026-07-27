@@ -174,18 +174,30 @@ chat_from_model_string <- function(model, call = rlang::caller_env()) {
 
 # `ellmer::chat()` looks up `chat_<provider>()` verbatim, so Inspect provider
 # names that don't share a spelling with ellmer's need translating
+inspect_ellmer_providers <- c(
+  google = "google_gemini",
+  bedrock = "aws_bedrock"
+)
+
 ellmer_model_string <- function(model) {
   if (!grepl("/", model, fixed = TRUE)) {
     return(model)
   }
   provider <- sub("/.*", "", model)
-  provider <- switch(
-    provider,
-    google = "google_gemini",
-    bedrock = "aws_bedrock",
-    provider
-  )
+  ellmer_provider <- unname(inspect_ellmer_providers[provider])
+  if (!is.na(ellmer_provider)) {
+    provider <- ellmer_provider
+  }
   paste0(provider, sub("^[^/]+", "", model))
+}
+
+inspect_model_string <- function(chat) {
+  provider <- chat_provider_prefix(chat)
+  matched <- match(provider, inspect_ellmer_providers)
+  if (!is.na(matched)) {
+    provider <- names(inspect_ellmer_providers)[matched]
+  }
+  paste0(provider, "/", chat$get_model())
 }
 
 turns_from_messages <- function(messages, tools = list(), model_events = list()) {

@@ -35,7 +35,7 @@
 #'
 #' ```r
 #' claude_code(
-#'   model = "anthropic/claude-sonnet-4-5",
+#'   chat_anthropic(model = "claude-sonnet-4-5"),
 #'   sandbox = c("docker", "path/to/compose.yaml")
 #' )
 #' ```
@@ -44,13 +44,13 @@
 #' [sandboxing documentation](https://inspect.aisi.org.uk/sandboxing.html)
 #' for the configuration these files support.
 #'
-#' @param model A string identifying the model that will power the agent,
-#' in Python Inspect's `"provider/model"` format, e.g.
-#' `"anthropic/claude-sonnet-4-5"`. The provider must be supported by both
-#' Inspect (which serves the model) and ellmer (which reconstructs the
-#' agent's transcript). The agent reaches the model through Inspect rather
-#' than directly, so it needs no credentials of its own: set your API key on
-#' the host as usual and any provider Inspect can serve will work, whatever
+#' @param solver_chat An ellmer chat object, such as from
+#' [ellmer::chat_anthropic()], or a zero-argument function that returns one.
+#' Its provider and model choose the model that powers the agent, and its
+#' system prompt and [ellmer::params()] are passed along to Inspect; the same
+#' chat is then reused to reconstruct the agent's transcript. The agent
+#' reaches the model through Inspect rather than directly, so credentials are
+#' read on the host and any provider Inspect can serve will work, whatever
 #' agent it powers. Python SDKs for common providers are resolved
 #' automatically; for less common ones, you may need to make the provider's
 #' SDK available yourself with [reticulate::py_require()].
@@ -74,8 +74,8 @@
 #' @returns
 #' A solver function that can be passed directly to the `solver` argument of
 #' [Task]'s `$new()` method. Since the agent runs in a sandbox rather than
-#' through an ellmer Chat, the solver's `solver_chat` output contains Chat
-#' objects reconstructed from the agent's transcript. Each sample's
+#' through ellmer, the solver's `solver_chat` output contains copies of
+#' `solver_chat` whose turns come from the agent's transcript. Each sample's
 #' `solver_metadata` records the path to the intermediate Inspect log,
 #' the sample's token usage by model, and the agent's error message (if any).
 #'
@@ -86,6 +86,7 @@
 #' @examples
 #' if (FALSE) {
 #'   library(tibble)
+#'   library(ellmer)
 #'
 #'   simple_addition <- tibble(
 #'     input = c("What's 2+2?", "What's 2+3?"),
@@ -94,7 +95,7 @@
 #'
 #'   tsk <- Task$new(
 #'     dataset = simple_addition,
-#'     solver = claude_code(model = "anthropic/claude-sonnet-4-5"),
+#'     solver = claude_code(chat_anthropic(model = "claude-sonnet-4-5")),
 #'     scorer = detect_includes()
 #'   )
 #'
@@ -103,11 +104,16 @@
 #'
 #' @name agent_solvers
 #' @export
-claude_code <- function(model, ..., version = "auto", sandbox = "docker") {
+claude_code <- function(
+  solver_chat = NULL,
+  ...,
+  version = "auto",
+  sandbox = "docker"
+) {
   agent_solver(
     agent = "claude_code",
     bridge_package = "anthropic",
-    model = model,
+    solver_chat = solver_chat,
     args = list2(...),
     version = version,
     sandbox = sandbox
@@ -116,11 +122,16 @@ claude_code <- function(model, ..., version = "auto", sandbox = "docker") {
 
 #' @rdname agent_solvers
 #' @export
-codex <- function(model, ..., version = "auto", sandbox = "docker") {
+codex <- function(
+  solver_chat = NULL,
+  ...,
+  version = "auto",
+  sandbox = "docker"
+) {
   agent_solver(
     agent = "codex_cli",
     bridge_package = "openai",
-    model = model,
+    solver_chat = solver_chat,
     args = list2(...),
     version = version,
     sandbox = sandbox
@@ -130,26 +141,26 @@ codex <- function(model, ..., version = "auto", sandbox = "docker") {
 agent_solver <- function(
   agent,
   bridge_package,
-  model,
+  solver_chat,
   args,
   version,
   sandbox,
   call = rlang::caller_env()
 ) {
-  check_string(model, call = call)
   check_string(version, call = call)
   check_sandbox(sandbox, call = call)
   check_agent_dots(args, call = call)
 
   args$version <- version
+  chat <- solver_chat
 
-  function(inputs, ...) {
+  function(inputs, ..., solver_chat = chat) {
     solve_with_inspect_agent(
       inputs = inputs,
       agent = agent,
       bridge_package = bridge_package,
+      chat = agent_chat(solver_chat),
       args = args,
-      model = model,
       sandbox = sandbox
     )
   }
@@ -159,13 +170,13 @@ solve_with_inspect_agent <- function(
   inputs,
   agent,
   bridge_package,
+  chat,
   args,
-  model,
   sandbox,
   call = rlang::caller_env()
 ) {
   check_inspect_agent_deps(sandbox, call = call)
-  check_agent_model(model, call = call)
+  model <- inspect_model_string(chat)
   # Inspect's bridge talks to the agent in the agent's own API dialect, so it
   # needs that SDK whatever provider ends up serving the model
   reticulate::py_require(unique(c(
@@ -200,12 +211,14 @@ solve_with_inspect_agent <- function(
   inspect_dataset <- imports$inspect_dataset
   agent_fn <- reticulate::py_get_attr(imports$inspect_swe, agent)
 
+  config_names <- py_generate_config_names()
   args <- split_agent_args(
     coerce_whole_numbers(args),
     agent_params = py_argument_names(agent_fn),
-    eval_params = c(py_argument_names(inspect$eval), py_generate_config_names()),
+    eval_params = c(py_argument_names(inspect$eval), config_names),
     call = call
   )
+  args <- with_chat_args(args, chat, config_names = config_names, call = call)
 
   inputs <- purrr::map_chr(as.list(inputs), input_string)
   samples <- purrr::imap(
@@ -239,10 +252,15 @@ solve_with_inspect_agent <- function(
     )
   }
 
-  import_inspect_log(log_path, inputs = inputs, call = call)
+  import_inspect_log(log_path, inputs = inputs, chat = chat, call = call)
 }
 
-import_inspect_log <- function(log_path, inputs, call = rlang::caller_env()) {
+import_inspect_log <- function(
+  log_path,
+  inputs,
+  chat,
+  call = rlang::caller_env()
+) {
   log <- eval_log_read(log_path)
   if (!identical(log$status, "success")) {
     cli::cli_abort(
@@ -279,6 +297,7 @@ import_inspect_log <- function(log_path, inputs, call = rlang::caller_env()) {
     inputs,
     import_inspect_sample,
     model = log$eval$model,
+    chat = chat,
     call = call
   )
 
@@ -294,7 +313,7 @@ import_inspect_log <- function(log_path, inputs, call = rlang::caller_env()) {
   )
 }
 
-import_inspect_sample <- function(sample, input, model, call) {
+import_inspect_sample <- function(sample, input, model, chat, call) {
   attachments <- list2env(
     sample$attachments %||% list(),
     envir = new.env(parent = emptyenv())
@@ -302,25 +321,26 @@ import_inspect_sample <- function(sample, input, model, call) {
   sample <- resolve_attachments(sample, attachments)
   error <- sample$error$message
 
-  chat <- if (length(sample$messages) > 0) {
+  transcript <- if (length(sample$messages) > 0) {
     chat_from_log_messages(
       sample$messages,
       model = model,
+      chat = chat,
       model_events = log_model_events(sample$events %||% list()),
       call = call
     )
   } else {
-    errored_chat(input, error %||% "The agent returned no messages.", model)
+    errored_chat(input, error %||% "The agent returned no messages.", chat)
   }
 
   result <- nonempty(sample$output$completion) %||%
     nonempty(error) %||%
-    nonempty(response_text(chat)) %||%
+    nonempty(response_text(transcript)) %||%
     "The agent returned no response."
 
   list(
     result = result,
-    solver_chat = with_response(chat, result),
+    solver_chat = with_response(transcript, result),
     metadata = purrr::compact(list(
       model_usage = sample$model_usage,
       error = error
@@ -328,13 +348,13 @@ import_inspect_sample <- function(sample, input, model, call) {
   )
 }
 
-errored_chat <- function(input, error, model) {
-  chat <- chat_from_model_string(model)
-  chat$set_turns(list(
+errored_chat <- function(input, error, chat) {
+  transcript <- chat$clone()
+  transcript$set_turns(list(
     ellmer::UserTurn(contents = list(ellmer::ContentText(input))),
     ellmer::AssistantTurn(contents = list(ellmer::ContentText(error)))
   ))
-  chat
+  transcript
 }
 
 response_text <- function(chat) {
@@ -400,23 +420,58 @@ check_inspect_agent_deps <- function(sandbox, call = rlang::caller_env()) {
   invisible()
 }
 
-check_agent_model <- function(model, call = rlang::caller_env()) {
-  tryCatch(
-    ellmer::chat(ellmer_model_string(model)),
-    error = function(cnd) {
-      cli::cli_abort(
-        c(
-          "ellmer must be able to construct a Chat for {.val {model}} so
-           that the agent's transcript can be read back after solving.",
-          i = "Choose a model from a provider that both Inspect and ellmer
-               support."
-        ),
-        parent = cnd,
-        call = call
-      )
-    }
-  )
-  invisible()
+agent_chat <- function(solver_chat, call = rlang::caller_env()) {
+  chat <- if (is.function(solver_chat)) solver_chat() else solver_chat
+  check_inherits(chat, "Chat", x_arg = "solver_chat", call = call)
+
+  if (length(chat$get_tools()) > 0) {
+    cli::cli_abort(
+      c(
+        "{.arg solver_chat} can't have tools registered.",
+        i = "The agent runs in a sandbox with its own tools; tools registered
+             with ellmer aren't available to it."
+      ),
+      call = call
+    )
+  }
+
+  chat$clone()
+}
+
+with_chat_args <- function(args, chat, config_names, call = rlang::caller_env()) {
+  args$agent$system_prompt <- args$agent$system_prompt %||%
+    chat$get_system_prompt()
+
+  config <- inspect_generate_config(chat, config_names, call = call)
+  args$eval <- c(config[setdiff(names(config), names(args$eval))], args$eval)
+  args
+}
+
+# ellmer and Inspect spell most generation parameters the same way
+inspect_generate_config <- function(
+  chat,
+  config_names,
+  call = rlang::caller_env()
+) {
+  params <- chat$get_provider()@params
+  extra_args <- names(params$extra_args)
+  params$extra_args <- NULL
+  names(params)[names(params) == "log_probs"] <- "logprobs"
+  names(params)[names(params) == "stop_sequences"] <- "stop_seqs"
+
+  unknown <- c(setdiff(names(params), config_names), extra_args)
+  if (length(unknown) > 0) {
+    cli::cli_abort(
+      c(
+        "{.arg solver_chat} sets {.arg {unknown}}, which Inspect can't pass
+         along to the model serving the agent.",
+        i = "Drop {cli::qty(unknown)}{?it/them} from {.fun ellmer::params}."
+      ),
+      call = call
+    )
+  }
+
+  params
 }
 
 check_sandbox <- function(sandbox, call = rlang::caller_env()) {

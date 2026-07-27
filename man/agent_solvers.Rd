@@ -6,18 +6,18 @@
 \alias{codex}
 \title{Coding agents as solvers}
 \usage{
-claude_code(model, ..., version = "auto", sandbox = "docker")
+claude_code(solver_chat = NULL, ..., version = "auto", sandbox = "docker")
 
-codex(model, ..., version = "auto", sandbox = "docker")
+codex(solver_chat = NULL, ..., version = "auto", sandbox = "docker")
 }
 \arguments{
-\item{model}{A string identifying the model that will power the agent,
-in Python Inspect's \code{"provider/model"} format, e.g.
-\code{"anthropic/claude-sonnet-4-5"}. The provider must be supported by both
-Inspect (which serves the model) and ellmer (which reconstructs the
-agent's transcript). The agent reaches the model through Inspect rather
-than directly, so it needs no credentials of its own: set your API key on
-the host as usual and any provider Inspect can serve will work, whatever
+\item{solver_chat}{An ellmer chat object, such as from
+\code{\link[ellmer:chat_anthropic]{ellmer::chat_anthropic()}}, or a zero-argument function that returns one.
+Its provider and model choose the model that powers the agent, and its
+system prompt and \code{\link[ellmer:params]{ellmer::params()}} are passed along to Inspect; the same
+chat is then reused to reconstruct the agent's transcript. The agent
+reaches the model through Inspect rather than directly, so credentials are
+read on the host and any provider Inspect can serve will work, whatever
 agent it powers. Python SDKs for common providers are resolved
 automatically; for less common ones, you may need to make the provider's
 SDK available yourself with \code{\link[reticulate:py_require]{reticulate::py_require()}}.}
@@ -44,8 +44,8 @@ configuration file, e.g. \code{c("docker", "compose.yaml")}. Defaults to
 \value{
 A solver function that can be passed directly to the \code{solver} argument of
 \link{Task}'s \verb{$new()} method. Since the agent runs in a sandbox rather than
-through an ellmer Chat, the solver's \code{solver_chat} output contains Chat
-objects reconstructed from the agent's transcript. Each sample's
+through ellmer, the solver's \code{solver_chat} output contains copies of
+\code{solver_chat} whose turns come from the agent's transcript. Each sample's
 \code{solver_metadata} records the path to the intermediate Inspect log,
 the sample's token usage by model, and the agent's error message (if any).
 
@@ -90,7 +90,7 @@ directory and Inspect will build the sandbox from it, or point \code{sandbox}
 at one directly:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{claude_code(
-  model = "anthropic/claude-sonnet-4-5",
+  chat_anthropic(model = "claude-sonnet-4-5"),
   sandbox = c("docker", "path/to/compose.yaml")
 )
 }\if{html}{\out{</div>}}
@@ -103,6 +103,7 @@ for the configuration these files support.
 \examples{
 if (FALSE) {
   library(tibble)
+  library(ellmer)
 
   simple_addition <- tibble(
     input = c("What's 2+2?", "What's 2+3?"),
@@ -111,7 +112,7 @@ if (FALSE) {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = claude_code(model = "anthropic/claude-sonnet-4-5"),
+    solver = claude_code(chat_anthropic(model = "claude-sonnet-4-5")),
     scorer = detect_includes()
   )
 

@@ -317,7 +317,7 @@ The solvers above are harnesses you assemble yourself with ellmer. To see how an
 #| eval: false
 are_claude_code <- Task$new(
   dataset = are,
-  solver = claude_code(model = "anthropic/claude-sonnet-4-5"),
+  solver = claude_code(chat_claude(model = "claude-sonnet-4-5")),
   scorer = model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()),
   name = "An R Eval"
 )

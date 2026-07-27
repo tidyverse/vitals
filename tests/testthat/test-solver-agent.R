@@ -1,16 +1,3 @@
-claude_code_log <- function() {
-  path <- system.file(
-    "test/inspect/logs",
-    "2026-07-25T12-57-47-00-00_claude-code_boWWx32BT72g5mJWxzeEDN.json",
-    package = "vitals"
-  )
-  skip_if(identical(path, ""), "Test log files not available")
-  path
-}
-
-claude_code_input <-
-  "What is the capital of France? Reply with just the city name."
-
 test_that("claude_code checks inputs", {
   expect_snapshot(error = TRUE, claude_code(mock_chat_template(), "boop"))
   expect_snapshot(
@@ -38,8 +25,8 @@ test_that("claude_code returns a solver function", {
 
 test_that("import_inspect_log reconstructs solved samples", {
   res <- import_inspect_log(
-    claude_code_log(),
-    inputs = claude_code_input,
+    example_claude_code_log(),
+    inputs = "What is the capital of France? Reply with just the city name.",
     chat = mock_chat_template()
   )
 
@@ -56,13 +43,13 @@ test_that("import_inspect_log reconstructs solved samples", {
   expect_gt(sum(tokens$input, tokens$output), 0)
 
   metadata <- res$solver_metadata[[1]]
-  expect_equal(metadata$inspect_log, claude_code_log())
+  expect_equal(metadata$inspect_log, example_claude_code_log())
   expect_named(metadata$model_usage, "anthropic/claude-haiku-4-5-20251001")
   expect_null(metadata$error)
 })
 
 test_that("import_inspect_log errors informatively on failed evals", {
-  log <- jsonlite::read_json(claude_code_log())
+  log <- jsonlite::read_json(example_claude_code_log())
   log$status <- "error"
   log$error <- list(message = "sandbox exploded")
   path <- withr::local_tempfile(fileext = ".json")
@@ -70,13 +57,17 @@ test_that("import_inspect_log errors informatively on failed evals", {
 
   expect_snapshot(
     error = TRUE,
-    import_inspect_log(path, inputs = claude_code_input, chat = mock_chat_template()),
+    import_inspect_log(
+      path,
+      inputs = "What is the capital of France? Reply with just the city name.",
+      chat = mock_chat_template()
+    ),
     transform = function(lines) gsub(path, "<log_path>", lines, fixed = TRUE)
   )
 })
 
 test_that("import_inspect_log errors informatively on sample count mismatch", {
-  path <- claude_code_log()
+  path <- example_claude_code_log()
   expect_snapshot(
     error = TRUE,
     import_inspect_log(path, inputs = c("one", "two"), chat = mock_chat_template()),
@@ -173,7 +164,7 @@ test_that("claude_code end to end", {
 
   tsk <- Task$new(
     dataset = tibble::tibble(
-      input = claude_code_input,
+      input = "What is the capital of France? Reply with just the city name.",
       target = "Paris"
     ),
     solver = claude_code(

@@ -42,7 +42,8 @@
 # import_inspect_log errors informatively on failed evals
 
     Code
-      import_inspect_log(path, inputs = claude_code_input, chat = mock_chat_template())
+      import_inspect_log(path, inputs = "What is the capital of France? Reply with just the city name.",
+        chat = mock_chat_template())
     Condition
       Error:
       ! The Inspect eval powering this solver did not complete successfully (status "error").

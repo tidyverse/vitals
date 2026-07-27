@@ -327,7 +327,7 @@ are_claude_code$eval()
 
 These solvers run the agent's command line interface in a Docker sandbox via Python Inspect (resolved automatically with reticulate—you'll need the reticulate package installed and a running Docker daemon). The agent's transcript is read back into ellmer Chat objects and logged as usual.
 
-Each sample gets its own throwaway container, built from Inspect's default image unless you supply a `Dockerfile` or `compose.yaml`. For a dataset like `are`, whose questions are self-contained, that empty workspace is all the agent needs; to evaluate an agent on a repository, build it into the image and point the agent at it with `cwd`.
+Each sample gets its own throwaway container, built from Inspect's default image unless you supply a `Dockerfile` or `compose.yaml`. For a dataset like `are`, whose questions are self-contained, that empty workspace is all the agent needs; to evaluate an agent on a repository, build it into the image and point the agent at it with `claude_code(cwd = "/path/to/repo")`.
 
 Since these are ordinary solvers, the same R scorer grades both your harness and the agent, and results compare directly:
 

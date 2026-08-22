@@ -79,13 +79,11 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   vitals_view()
 }
 #> ℹ Solving
-#> ✔ Solving [1.6s]
+#> ✔ Solving [1.5s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [2.3s]
+#> ✔ Scoring [2.5s]
 #> 
-#> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
-#> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 #> ✔ Inspect Viewer running at: <http://127.0.0.1:7943>

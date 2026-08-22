@@ -60,18 +60,18 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   combined <- vitals_bind(model_graded = tsk1, string_detection = tsk2)
 }
 #> ℹ Solving
-#> ✔ Solving [2.3s]
-#> 
-#> ℹ Scoring
 #> [working] (0 + 0) -> 1 -> 1 | ■■■■■■■■■■■■■■■■                  50%
 #> [working] (0 + 0) -> 0 -> 2 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
+#> ℹ Solving
+#> ✔ Solving [1.4s]
+#> 
 #> ℹ Scoring
-#> ✔ Scoring [2.2s]
+#> ✔ Scoring [2.4s]
 #> 
 #> ℹ Solving
-#> ✔ Solving [1.6s]
+#> ✔ Solving [1.3s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [45ms]
+#> ✔ Scoring [41ms]
 #> 
 ```

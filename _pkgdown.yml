@@ -19,6 +19,7 @@ reference:
   contents:
   - generate
   - generate_structured
+  - agent_solvers
 
 - title: "Scorers"
   contents:

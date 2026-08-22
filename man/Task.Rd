@@ -131,7 +131,7 @@ calling this method and then \verb{$eval()} on the resulting object.
   scorer,
   metrics = NULL,
   epochs = NULL,
-  name = deparse(substitute(dataset)),
+  name = NULL,
   dir = vitals_log_dir()
 )}
     \if{html}{\out{</div>}}

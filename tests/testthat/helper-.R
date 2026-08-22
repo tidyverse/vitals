@@ -106,6 +106,18 @@ example_inspect_log <- function() {
   eval_log_read(log_path)
 }
 
+example_claude_code_log <- function() {
+  log_path <- system.file(
+    "test/inspect/logs",
+    "2026-07-25T12-57-47-00-00_claude-code_boWWx32BT72g5mJWxzeEDN.json",
+    package = "vitals"
+  )
+  if (identical(log_path, "")) {
+    testthat::skip("Test log files not available")
+  }
+  log_path
+}
+
 example_task <- function(solved = TRUE, scored = TRUE) {
   # loads a cached `tsk` with example output.
   # regenerate with `inst/regenerate-example-objects.R`

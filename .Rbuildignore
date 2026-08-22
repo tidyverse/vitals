@@ -27,6 +27,7 @@ inst/log_dump
 
 inst/test/inspect/logs/.*arithmetic-with-tool
 inst/test/inspect/logs/.*system-prompt
+inst/test/inspect/logs/.*claude-code
 .claude/
 inst/inspect_ai
 inst/ellmer

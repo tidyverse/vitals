@@ -157,7 +157,7 @@ chat_from_log_messages <- function(
 
 chat_from_model_string <- function(model, call = rlang::caller_env()) {
   tryCatch(
-    ellmer::chat(model),
+    ellmer::chat(ellmer_model_string(model)),
     error = function(cnd) {
       cli::cli_abort(
         c(
@@ -172,27 +172,41 @@ chat_from_model_string <- function(model, call = rlang::caller_env()) {
   )
 }
 
+# `ellmer::chat()` looks up `chat_<provider>()` verbatim, so Inspect provider
+# names that don't share a spelling with ellmer's need translating
+inspect_ellmer_providers <- c(
+  google = "google_gemini",
+  bedrock = "aws_bedrock"
+)
+
+ellmer_model_string <- function(model) {
+  if (!grepl("/", model, fixed = TRUE)) {
+    return(model)
+  }
+  provider <- sub("/.*", "", model)
+  ellmer_provider <- unname(inspect_ellmer_providers[provider])
+  if (!is.na(ellmer_provider)) {
+    provider <- ellmer_provider
+  }
+  paste0(provider, sub("^[^/]+", "", model))
+}
+
 turns_from_messages <- function(messages, tools = list(), model_events = list()) {
   events_by_message_id <- model_events_by_message_id(model_events)
   turns <- list()
   requests <- list()
-  pending_results <- list()
+  pending_user <- list()
   assistant_i <- 0L
 
   for (message in messages) {
     role <- message$role
 
     if (identical(role, "tool")) {
-      pending_results <- c(
-        pending_results,
+      pending_user <- c(
+        pending_user,
         list(tool_result_from_message(message, requests))
       )
       next
-    }
-
-    if (length(pending_results) > 0) {
-      turns <- c(turns, list(ellmer::UserTurn(contents = pending_results)))
-      pending_results <- list()
     }
 
     if (identical(role, "system")) {
@@ -200,11 +214,13 @@ turns_from_messages <- function(messages, tools = list(), model_events = list())
     }
 
     if (identical(role, "user")) {
-      turns <- c(
-        turns,
-        list(ellmer::UserTurn(contents = log_content_list(message$content)))
-      )
+      pending_user <- c(pending_user, log_content_list(message$content))
       next
+    }
+
+    if (length(pending_user) > 0) {
+      turns <- c(turns, list(ellmer::UserTurn(contents = pending_user)))
+      pending_user <- list()
     }
 
     contents <- log_content_list(message$content)
@@ -233,8 +249,8 @@ turns_from_messages <- function(messages, tools = list(), model_events = list())
     )
   }
 
-  if (length(pending_results) > 0) {
-    turns <- c(turns, list(ellmer::UserTurn(contents = pending_results)))
+  if (length(pending_user) > 0) {
+    turns <- c(turns, list(ellmer::UserTurn(contents = pending_user)))
   }
 
   turns

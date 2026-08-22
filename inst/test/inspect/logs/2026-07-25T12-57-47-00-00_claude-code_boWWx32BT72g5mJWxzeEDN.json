@@ -1,0 +1,285 @@
+{
+  "version": 2,
+  "status": "success",
+  "eval": {
+    "eval_id": "nAzYDwz3NjwkJLW5G9dngV",
+    "run_id": "CRyKTw7LhxnFcHCY3aoqCX",
+    "created": "2026-07-25T12:57:47+00:00",
+    "task": "vitals_smoke",
+    "task_id": "boWWx32BT72g5mJWxzeEDN",
+    "task_version": 0,
+    "task_display_name": "vitals_smoke",
+    "task_attribs": {},
+    "task_args": {},
+    "task_args_passed": {},
+    "dataset": {
+      "samples": 1,
+      "sample_ids": [
+        "s1"
+      ],
+      "shuffled": false
+    },
+    "sandbox": {
+      "type": "docker"
+    },
+    "model": "anthropic/claude-haiku-4-5-20251001",
+    "model_generate_config": {},
+    "model_args": {},
+    "config": {
+      "epochs": 1,
+      "fail_on_error": true,
+      "continue_on_fail": false,
+      "score_on_error": false,
+      "time_limit": 600,
+      "sandbox_cleanup": true,
+      "log_samples": true,
+      "log_realtime": true,
+      "log_images": true,
+      "score_display": true
+    },
+    "packages": {
+      "inspect_ai": "0.3.249"
+    }
+  },
+  "plan": {
+    "name": "plan",
+    "steps": [
+      {
+        "solver": "inspect_swe/claude_code",
+        "params": {
+          "name": "Claude Code",
+          "description": "\nAutonomous coding agent capable of writing, testing, debugging,\nand iterating on code across multiple languages.\n",
+          "system_prompt": null,
+          "skills": null,
+          "mcp_servers": null,
+          "bridged_tools": null,
+          "disallowed_tools": null,
+          "centaur": false,
+          "attempts": 1,
+          "model": null,
+          "model_config": null,
+          "model_aliases": null,
+          "opus_model": null,
+          "sonnet_model": null,
+          "haiku_model": null,
+          "subagent_model": null,
+          "filter": null,
+          "auto_mode": false,
+          "retry_refusals": 3,
+          "retry_uncaught_errors": 3,
+          "cwd": null,
+          "env": null,
+          "user": null,
+          "sandbox": null,
+          "version": "auto",
+          "debug": null
+        },
+        "params_passed": {}
+      }
+    ],
+    "config": {}
+  },
+  "results": {
+    "total_samples": 1,
+    "completed_samples": 1,
+    "scores": []
+  },
+  "stats": {
+    "started_at": "2026-07-25T12:57:47+00:00",
+    "completed_at": "2026-07-25T12:58:35+00:00",
+    "model_usage": {
+      "anthropic/claude-haiku-4-5-20251001": {
+        "input_tokens": 3,
+        "output_tokens": 4,
+        "total_tokens": 24807,
+        "input_tokens_cache_write": 24800,
+        "input_tokens_cache_read": 0
+      }
+    },
+    "role_usage": {},
+    "connection_limit_history": []
+  },
+  "invalidated": false,
+  "tags": [],
+  "metadata": {},
+  "samples": [
+    {
+      "id": 1,
+      "epoch": 1,
+      "input": "What is the capital of France? Reply with just the city name.",
+      "target": "Paris",
+      "messages": [
+        {
+          "id": "UwPWC8K4NLqojwVT7aoEXt",
+          "content": "x-anthropic-billing-header: cc_version=2.1.212.4bd; cc_entrypoint=sdk-cli;\n\nYou are a Claude agent, built on Anthropic's Claude Agent SDK.\n\n\nYou are an interactive agent that helps users with software",
+          "role": "system"
+        },
+        {
+          "id": "g6JVsuugeW4oaM9iQRrh6y",
+          "content": [
+            {
+              "type": "text",
+              "text": "<system-reminder>\nAvailable agent types for the Agent tool:\n- claude: Catch-all for any task that doesn't fit a more specific agent. FleetView's default when no agent name is typed. (Tools: *)\n- Explo"
+            },
+            {
+              "type": "text",
+              "text": "<system-reminder>\nThe following skills are available for use with the Skill tool:\n\n- deep-research: Deep research harness \u2014 fan-out web searches, fetch sources, adversarially verify claims, synthesize"
+            },
+            {
+              "type": "text",
+              "text": "<system-reminder>\nAs you answer the user's questions, you can use the following context:\n# currentDate\nToday's date is 2026-07-25.\n\n      IMPORTANT: this context may or may not be relevant to your tas"
+            },
+            {
+              "type": "text",
+              "text": "What is the capital of France? Reply with just the city name."
+            }
+          ],
+          "role": "user"
+        },
+        {
+          "id": "VyHUacpBpu6M8oad7v2vS5",
+          "content": [
+            {
+              "type": "text",
+              "text": "Paris"
+            }
+          ],
+          "source": "generate",
+          "role": "assistant",
+          "model": "claude-haiku-4-5-20251001"
+        }
+      ],
+      "output": {
+        "model": "claude-haiku-4-5-20251001",
+        "choices": [
+          {
+            "message": {
+              "id": "VyHUacpBpu6M8oad7v2vS5",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Paris"
+                }
+              ],
+              "source": "generate",
+              "role": "assistant",
+              "model": "claude-haiku-4-5-20251001"
+            },
+            "stop_reason": "stop"
+          }
+        ],
+        "completion": "Paris",
+        "usage": {
+          "input_tokens": 3,
+          "output_tokens": 4,
+          "total_tokens": 24807,
+          "input_tokens_cache_write": 24800,
+          "input_tokens_cache_read": 0
+        },
+        "time": 0.953669832990272
+      },
+      "scores": {},
+      "metadata": {},
+      "store": {
+        "claude_code_model_port": 3001
+      },
+      "events": [
+        {
+          "uuid": "74DnPpqoX5wcARqkaYgmWb",
+          "span_id": "ibzyj4idm6akCss22JtyPH",
+          "timestamp": "2026-07-25T12:57:47.499001+00:00",
+          "working_start": 222691.31260675,
+          "event": "sample_init",
+          "sample": {
+            "input": "What is the capital of France? Reply with just the city name.",
+            "target": "Paris",
+            "id": 1
+          },
+          "state": {
+            "messages": [
+              {
+                "id": "RbBwZj5B8YiZpBxM9a8ijz",
+                "content": "What is the capital of France? Reply with just the city name.",
+                "source": "input",
+                "role": "user"
+              }
+            ],
+            "tools": [],
+            "tool_choice": null,
+            "store": {},
+            "output": {
+              "model": "anthropic/claude-haiku-4-5-20251001",
+              "choices": [],
+              "completion": ""
+            },
+            "completed": false,
+            "metadata": {}
+          }
+        },
+        {
+          "uuid": "L6cjdHjrQXvsYmw6USoEUR",
+          "span_id": "bhTn8nmcNXnnbHwUXQivwh",
+          "timestamp": "2026-07-25T12:58:29.847713+00:00",
+          "working_start": 40.41072396194795,
+          "event": "model",
+          "model": "anthropic/claude-haiku-4-5-20251001",
+          "input": [],
+          "tools": [],
+          "tool_choice": "auto",
+          "config": {
+            "max_tokens": 32000
+          },
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "choices": [
+              {
+                "message": {
+                  "id": "VyHUacpBpu6M8oad7v2vS5",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Paris"
+                    }
+                  ],
+                  "source": "generate",
+                  "role": "assistant",
+                  "model": "claude-haiku-4-5-20251001"
+                },
+                "stop_reason": "stop"
+              }
+            ],
+            "completion": "Paris",
+            "usage": {
+              "input_tokens": 3,
+              "output_tokens": 4,
+              "total_tokens": 24807,
+              "input_tokens_cache_write": 24800,
+              "input_tokens_cache_read": 0
+            },
+            "time": 0.953669832990272
+          },
+          "completed": "2026-07-25T12:58:30.856560+00:00",
+          "working_time": 0.953669832990272
+        }
+      ],
+      "model_usage": {
+        "anthropic/claude-haiku-4-5-20251001": {
+          "input_tokens": 3,
+          "output_tokens": 4,
+          "total_tokens": 24807,
+          "input_tokens_cache_write": 24800,
+          "input_tokens_cache_read": 0
+        }
+      },
+      "role_usage": {},
+      "started_at": "2026-07-25T12:57:49.425825+00:00",
+      "completed_at": "2026-07-25T12:58:35.916447+00:00",
+      "total_time": 46.491,
+      "working_time": 46.425,
+      "uuid": "6UcXCo8QJNUvUUSh9tsm9v",
+      "error_retries": [],
+      "attachments": {},
+      "turn_count": 1
+    }
+  ]
+}

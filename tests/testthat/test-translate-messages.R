@@ -68,7 +68,7 @@ test_that("translate_to_messages handles remote image URLs", {
 
   dataset <- tibble::tibble(
     input = "What does this image show?",
-    target = "The R logo."
+    target = "The vitals logo."
   )
 
   image_url_solver <- function(
@@ -78,7 +78,9 @@ test_that("translate_to_messages handles remote image URLs", {
     ch <- solver_chat$clone()
     ch$chat(
       inputs[1],
-      content_image_url("https://www.r-project.org/Rlogo.png"),
+      content_image_url(
+        "https://raw.githubusercontent.com/tidyverse/vitals/main/man/figures/logo.png"
+      ),
       echo = FALSE
     )
     list(result = ch$last_turn()@text, solver_chat = list(ch))
@@ -95,7 +97,7 @@ test_that("translate_to_messages handles remote image URLs", {
   expect_valid_log(log_path)
 
   log_content <- readLines(log_path)
-  expect_true(any(grepl("https://www.r-project.org", log_content, fixed = TRUE)))
+  expect_true(any(grepl("raw.githubusercontent.com", log_content, fixed = TRUE)))
 })
 
 

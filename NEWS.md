@@ -1,31 +1,15 @@
 # vitals (development version)
 
+vitals 0.4.0 includes a number of new features and performance improvements, in addition to tightening integration with Inspect's log viewer.
+
+## Features
+
 * New `claude_code()` and `codex()` solvers evaluate the Claude Code and
   Codex coding agents on a task's dataset, so the same dataset and R scorer
   can grade both your own agent harness and an off-the-shelf coding agent.
   The agents run in a Docker sandbox via Python Inspect's inspect_swe
   package (resolved automatically with reticulate); their transcripts are
   read back into ellmer Chat objects for scoring and logging.
-
-* `vitals_bundle()` now tolerates logs whose results contain no scores.
-
-* When reconstructing chats, `vitals_log_read()` now merges consecutive
-  user-role messages into a single turn, so logs from harnesses that send
-  several user messages per generation (e.g. Codex's environment context)
-  read back into chats that ellmer can compute token usage for.
-
-* `vitals_view()` now reads only the leading bytes of each log file when
-  generating the homepage; listing a directory of large logs is roughly 250x 
-  faster.
-
-* `$log()` now records its fallback temporary directory on the task and reports
-  the path it wrote to when no `VITALS_LOG_DIR` is set, so the automatic
-  `$view()` succeeds.
-
-* `detect_pattern()` now supports `case_sensitive = TRUE` on R 4.5 and later.
-
-* `Task$new()` now assigns a valid task name when given an inline (unnamed)
-  `dataset`, so `$log()` succeeds.
 
 * New `vitals_log_read()` reads an eval log file back into a tibble of
   samples, reconstructing solver (and, for model-graded scorers, scorer)
@@ -35,23 +19,40 @@
   content, standardized stop reasons, per-turn cached token counts, tool
   parameter schemas, and structured tool errors are now written to the log
   rather than dropped or approximated, and model strings follow Inspect's
-  `provider/model` convention. Remote image URLs are logged as-is instead of
-  being downloaded and inlined as data URIs.
+  `provider/model` convention.
+
+## Performance improvements
+
+* The log viewer serves log files as-is rather than parsing and re-serializing
+  them, making opening a log effectively instant (previously several seconds
+  for logs tens of MBs in size).
+
+  * `vitals_view()` now reads only the leading bytes of each log file when
+  generating the homepage; listing a directory of large logs is roughly 250x 
+  faster.
 
 * Eval log files are dramatically smaller (roughly 4x for multi-turn,
   tool-heavy evals). Repeated content in a sample's events and base64 images
   in its messages are now de-duplicated into the sample's `attachments`
   pool, mirroring Python Inspect's behavior.
 
+# Bug fixes and minor improvements
+
+* `$log()` now records its fallback temporary directory on the task and reports
+  the path it wrote to when no `VITALS_LOG_DIR` is set, so the automatic
+  `$view()` succeeds.
+
+* `Task$new()` now assigns a valid task name when given an inline (unnamed)
+  `dataset`, so `$log()` succeeds.
+
+* `vitals_bundle()` now tolerates logs whose results contain no scores.
+
+* `vitals_view()` will now show correct metadata for each log. Previously, 
+  the log viewer could display one log's metadata (task name, model, score) in place of another's, both in the log listing and when clicking into a log (#208).
+
+* `detect_pattern()` now supports `case_sensitive = TRUE` on R 4.5 and later.
+
 * The log viewer will now appropriately display tool calls called in parallel.
-
-* The log viewer serves log files as-is rather than parsing and re-serializing
-  them, making opening a log effectively instant (previously several seconds
-  for logs tens of MBs in size).
-
-* Fixed an issue where the log viewer could display one log's metadata (task
-  name, model, score) in place of another's, both in the log listing and when
-  clicking into a log (#208).
 
 # vitals 0.3.0
 

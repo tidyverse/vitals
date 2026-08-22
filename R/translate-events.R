@@ -434,7 +434,7 @@ create_model_event <- function(turn, chat, timestamp) {
     tools = tools_list,
     tool_choice = if (length(tools_list) > 0) "auto" else "none",
     config = drop_nulls(list(
-      max_tokens = chat$get_provider()@params$max_tokens
+      max_tokens = chat_model_params(chat)$max_tokens
     )),
     output = list(
       model = chat$get_model(),
@@ -457,7 +457,7 @@ create_model_event <- function(turn, chat, timestamp) {
           "none"
         },
         model = chat$get_model(),
-        max_tokens = chat$get_provider()@params$max_tokens
+        max_tokens = chat_model_params(chat)$max_tokens
       )),
       response = list(
         id = paste0("msg_", generate_id()),

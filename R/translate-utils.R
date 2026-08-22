@@ -15,6 +15,16 @@ chat_provider_model <- function(chat) {
   paste0(chat_provider_prefix(chat), "/", chat$get_model())
 }
 
+chat_model_params <- function(chat) {
+  tryCatch({
+    # ellmer moved params from Provider to Model after 0.4.2.
+    model <- chat$get_model_object()
+    model@params
+  }, error = function(...) {
+    chat$get_provider()@params
+  })
+}
+
 # model usage ------------------------------------------------------------------
 translate_to_model_usage <- function(chat) {
   tokens <- as.data.frame(chat$get_tokens())

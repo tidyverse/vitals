@@ -578,7 +578,7 @@ inspect_generate_config <- function(
   config_names,
   call = rlang::caller_env()
 ) {
-  params <- chat$get_provider()@params
+  params <- chat_model_params(chat)
   extra_args <- names(params$extra_args)
   params$extra_args <- NULL
   names(params)[names(params) == "log_probs"] <- "logprobs"

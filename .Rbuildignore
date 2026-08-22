@@ -26,6 +26,7 @@ inst/log_dump
 ^vignettes/articles/*_files$
 
 inst/test/inspect/logs/.*arithmetic-with-tool
+inst/test/inspect/logs/.*simple-arithmetic
 inst/test/inspect/logs/.*system-prompt
 inst/test/inspect/logs/.*claude-code
 .claude/

@@ -169,8 +169,8 @@ function.</p>
 <span><span class="co">#&gt;     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), </span></span>
 <span><span class="co">#&gt;         solver_chat = res)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55b2afbcaab0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x55b2afbc9578&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55881b0ed050&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55881b0eff98&gt;</span></span></code></pre></div>
 <p>While, in documentation, I’ve mostly written “<code><a href="../reference/generate.html">generate()</a></code>
 just calls <code>$chat()</code>,” there are a couple extra tricks up
 <code><a href="../reference/generate.html">generate()</a></code>’s sleeves:</p>
@@ -404,7 +404,7 @@ question.</p>
 <span><span class="co">#&gt; data:    are_eval_data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  link  threshold nobs logLik AIC    niter max.grad cond.H </span></span>
-<span><span class="co">#&gt;  logit flexible  58   -54.60 115.20 5(0)  5.49e-13 1.5e+01</span></span>
+<span><span class="co">#&gt;  logit flexible  58   -54.60 115.20 5(0)  5.48e-13 1.5e+01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt; solverbtw </span></span>
@@ -430,6 +430,42 @@ ID could become a “nuisance parameter” in a mixed model, e.g. with the
 model structure
 <code>ordinal::clmm(score ~ model + (1|id), ...)</code>.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="evaluating-coding-agents">Evaluating coding agents<a class="anchor" aria-label="anchor" href="#evaluating-coding-agents"></a>
+</h2>
+<p>The solvers above are harnesses you assemble yourself with ellmer. To
+see how an off-the-shelf coding agent stacks up on the same problems,
+vitals provides the solvers <code><a href="../reference/agent_solvers.html">claude_code()</a></code> and
+<code><a href="../reference/agent_solvers.html">codex()</a></code>, which evaluate the Claude Code and Codex agents on
+a task’s dataset:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">are_claude_code</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Task.html">Task</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  dataset <span class="op">=</span> <span class="va">are</span>,</span>
+<span>  solver <span class="op">=</span> <span class="fu"><a href="../reference/agent_solvers.html">claude_code</a></span><span class="op">(</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/chat_anthropic.html" class="external-link">chat_claude</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"claude-sonnet-4-5"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  scorer <span class="op">=</span> <span class="fu"><a href="../reference/scorer_model.html">model_graded_qa</a></span><span class="op">(</span>partial_credit <span class="op">=</span> <span class="cn">TRUE</span>, scorer_chat <span class="op">=</span> <span class="va">sonnet_3_7</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"An R Eval"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">are_claude_code</span><span class="op">$</span><span class="fu">eval</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>These solvers run the agent’s command line interface in a Docker
+sandbox via Python Inspect (resolved automatically with
+reticulate—you’ll need the reticulate package installed and a running
+Docker daemon). The agent’s transcript is read back into ellmer Chat
+objects and logged as usual.</p>
+<p>Each sample gets its own throwaway container, built from Inspect’s
+default image unless you supply a <code>Dockerfile</code> or
+<code>compose.yaml</code>. For a dataset like <code>are</code>, whose
+questions are self-contained, that empty workspace is all the agent
+needs; to evaluate an agent on a repository, build the repository into
+the image. The agent starts in the image’s working directory, so it’s
+already in the repository if the image sets <code>WORKDIR</code> there;
+otherwise, point it at the repository with
+<code>claude_code(cwd = "/path/to/repo")</code>.</p>
+<p>Since these are ordinary solvers, the same R scorer grades both your
+harness and the agent, and results compare directly:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vitals_bind.html">vitals_bind</a></span><span class="op">(</span>btw <span class="op">=</span> <span class="va">are_btw</span>, claude_code <span class="op">=</span> <span class="va">are_claude_code</span><span class="op">)</span></span></code></pre></div>
 <p>This article demonstrated using a custom solver by modifying the
 built-in <code><a href="../reference/generate.html">generate()</a></code> to allow models to make tool calls that
 peruse package documentation. With vitals, tool calling “just works”;

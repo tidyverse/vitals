@@ -2,6 +2,27 @@
 
 ## vitals (development version)
 
+- New
+  [`claude_code()`](https://vitals.tidyverse.org/dev/reference/agent_solvers.md)
+  and
+  [`codex()`](https://vitals.tidyverse.org/dev/reference/agent_solvers.md)
+  solvers evaluate the Claude Code and Codex coding agents on a task’s
+  dataset, so the same dataset and R scorer can grade both your own
+  agent harness and an off-the-shelf coding agent. The agents run in a
+  Docker sandbox via Python Inspect’s inspect_swe package (resolved
+  automatically with reticulate); their transcripts are read back into
+  ellmer Chat objects for scoring and logging.
+
+- [`vitals_bundle()`](https://vitals.tidyverse.org/dev/reference/vitals_bundle.md)
+  now tolerates logs whose results contain no scores.
+
+- When reconstructing chats,
+  [`vitals_log_read()`](https://vitals.tidyverse.org/dev/reference/vitals_log_read.md)
+  now merges consecutive user-role messages into a single turn, so logs
+  from harnesses that send several user messages per generation
+  (e.g. Codex’s environment context) read back into chats that ellmer
+  can compute token usage for.
+
 - [`vitals_view()`](https://vitals.tidyverse.org/dev/reference/vitals_view.md)
   now reads only the leading bytes of each log file when generating the
   homepage; listing a directory of large logs is roughly 250x faster.

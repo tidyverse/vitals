@@ -11,6 +11,9 @@
   : Convert a chat to a solver function
 - [`generate_structured()`](https://vitals.tidyverse.org/dev/reference/generate_structured.md)
   : Convert a chat to a solver function with structured output
+- [`claude_code()`](https://vitals.tidyverse.org/dev/reference/agent_solvers.md)
+  [`codex()`](https://vitals.tidyverse.org/dev/reference/agent_solvers.md)
+  : Coding agents as solvers
 
 ## Scorers
 

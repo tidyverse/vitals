@@ -97,7 +97,7 @@ example_ellmer_solver <- function() {
 # a log actually written by Python Inspect
 example_inspect_log <- function() {
   log_path <- system.file(
-    "test/inspect/logs/2025-03-24T10-39-36-05-00_simple-arithmetic_fQ9mYnqZFhtEuUenPpJgKL.json",
+    "test/inspect/logs/simple-arithmetic.json",
     package = "vitals"
   )
   if (identical(log_path, "")) {

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vitals</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,20 +40,35 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vitals-development-version">vitals (development version)<a class="anchor" aria-label="anchor" href="#vitals-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="vitals-040">vitals 0.4.0<a class="anchor" aria-label="anchor" href="#vitals-040"></a></h2>
+<p>vitals 0.4.0 includes a number of new features and performance improvements, in addition to tightening integration with Inspect’s log viewer.</p>
+<div class="section level3">
+<h3 id="features-0-4-0">Features<a class="anchor" aria-label="anchor" href="#features-0-4-0"></a></h3>
 <ul><li><p>New <code><a href="../reference/agent_solvers.html">claude_code()</a></code> and <code><a href="../reference/agent_solvers.html">codex()</a></code> solvers evaluate the Claude Code and Codex coding agents on a task’s dataset, so the same dataset and R scorer can grade both your own agent harness and an off-the-shelf coding agent. The agents run in a Docker sandbox via Python Inspect’s inspect_swe package (resolved automatically with reticulate); their transcripts are read back into ellmer Chat objects for scoring and logging.</p></li>
-<li><p><code><a href="../reference/vitals_bundle.html">vitals_bundle()</a></code> now tolerates logs whose results contain no scores.</p></li>
-<li><p>When reconstructing chats, <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> now merges consecutive user-role messages into a single turn, so logs from harnesses that send several user messages per generation (e.g. Codex’s environment context) read back into chats that ellmer can compute token usage for.</p></li>
-<li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> now reads only the leading bytes of each log file when generating the homepage; listing a directory of large logs is roughly 250x faster.</p></li>
-<li><p><code>$log()</code> now records its fallback temporary directory on the task and reports the path it wrote to when no <code>VITALS_LOG_DIR</code> is set, so the automatic <code>$view()</code> succeeds.</p></li>
-<li><p><code><a href="../reference/scorer_detect.html">detect_pattern()</a></code> now supports <code>case_sensitive = TRUE</code> on R 4.5 and later.</p></li>
-<li><p><code>Task$new()</code> now assigns a valid task name when given an inline (unnamed) <code>dataset</code>, so <code>$log()</code> succeeds.</p></li>
 <li><p>New <code><a href="../reference/vitals_log_read.html">vitals_log_read()</a></code> reads an eval log file back into a tibble of samples, reconstructing solver (and, for model-graded scorers, scorer) chats as ellmer Chat objects.</p></li>
-<li><p>Eval logs are substantially more faithful to their source chats. Reasoning content, standardized stop reasons, per-turn cached token counts, tool parameter schemas, and structured tool errors are now written to the log rather than dropped or approximated, and model strings follow Inspect’s <code>provider/model</code> convention. Remote image URLs are logged as-is instead of being downloaded and inlined as data URIs.</p></li>
-<li><p>Eval log files are dramatically smaller (roughly 4x for multi-turn, tool-heavy evals). Repeated content in a sample’s events and base64 images in its messages are now de-duplicated into the sample’s <code>attachments</code> pool, mirroring Python Inspect’s behavior.</p></li>
-<li><p>The log viewer will now appropriately display tool calls called in parallel.</p></li>
-<li><p>The log viewer serves log files as-is rather than parsing and re-serializing them, making opening a log effectively instant (previously several seconds for logs tens of MBs in size).</p></li>
-<li><p>Fixed an issue where the log viewer could display one log’s metadata (task name, model, score) in place of another’s, both in the log listing and when clicking into a log (<a href="https://github.com/tidyverse/vitals/issues/208" class="external-link">#208</a>).</p></li>
+<li><p>Eval logs are substantially more faithful to their source chats. Reasoning content, standardized stop reasons, per-turn cached token counts, tool parameter schemas, and structured tool errors are now written to the log rather than dropped or approximated, and model strings follow Inspect’s <code>provider/model</code> convention.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="performance-improvements-0-4-0">Performance improvements<a class="anchor" aria-label="anchor" href="#performance-improvements-0-4-0"></a></h3>
+<ul><li>
+<p>The log viewer serves log files as-is rather than parsing and re-serializing them, making opening a log effectively instant (previously several seconds for logs tens of MBs in size).</p>
+<ul><li>
+<code><a href="../reference/vitals_view.html">vitals_view()</a></code> now reads only the leading bytes of each log file when generating the homepage; listing a directory of large logs is roughly 250x faster.</li>
+</ul></li>
+<li><p>Eval log files are dramatically smaller (roughly 4x for multi-turn, tool-heavy evals). Repeated content in a sample’s events and base64 images in its messages are now de-duplicated into the sample’s <code>attachments</code> pool, mirroring Python Inspect’s behavior.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-minor-improvements-0-4-0">Bug fixes and minor improvements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-minor-improvements-0-4-0"></a></h3>
+<ul><li><p><code>$log()</code> now records its fallback temporary directory on the task and reports the path it wrote to when no <code>VITALS_LOG_DIR</code> is set, so the automatic <code>$view()</code> succeeds.</p></li>
+<li><p><code>Task$new()</code> now assigns a valid task name when given an inline (unnamed) <code>dataset</code>, so <code>$log()</code> succeeds.</p></li>
+<li><p><code><a href="../reference/vitals_bundle.html">vitals_bundle()</a></code> now tolerates logs whose results contain no scores.</p></li>
+<li><p><code><a href="../reference/vitals_view.html">vitals_view()</a></code> will now show correct metadata for each log. Previously, the log viewer could display one log’s metadata (task name, model, score) in place of another’s, both in the log listing and when clicking into a log (<a href="https://github.com/tidyverse/vitals/issues/208" class="external-link">#208</a>).</p></li>
+<li><p><code><a href="../reference/scorer_detect.html">detect_pattern()</a></code> now supports <code>case_sensitive = TRUE</code> on R 4.5 and later.</p></li>
+<li><p>The log viewer will now appropriately display tool calls called in parallel.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="vitals-030">vitals 0.3.0<a class="anchor" aria-label="anchor" href="#vitals-030"></a></h2><p class="text-muted">CRAN release: 2026-05-15</p>
 <div class="section level3">

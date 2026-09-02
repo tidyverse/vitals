@@ -36,7 +36,7 @@ vitals 0.4.0 includes a number of new features and performance improvements, in 
   in its messages are now de-duplicated into the sample's `attachments`
   pool, mirroring Python Inspect's behavior.
 
-# Bug fixes and minor improvements
+## Bug fixes and minor improvements
 
 * `$log()` now records its fallback temporary directory on the task and reports
   the path it wrote to when no `VITALS_LOG_DIR` is set, so the automatic

@@ -23,12 +23,12 @@ Source:
 [`DESCRIPTION`](https://github.com/tidyverse/vitals/blob/main/DESCRIPTION)
 
 Couch S (2026). *vitals: Large Language Model Evaluation*. R package
-version 0.3.0, <https://github.com/tidyverse/vitals>.
+version 0.4.0, <https://github.com/tidyverse/vitals>.
 
     @Manual{,
       title = {vitals: Large Language Model Evaluation},
       author = {Simon Couch},
       year = {2026},
-      note = {R package version 0.3.0},
+      note = {R package version 0.4.0},
       url = {https://github.com/tidyverse/vitals},
     }

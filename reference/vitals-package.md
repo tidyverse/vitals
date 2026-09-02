@@ -21,6 +21,11 @@ Useful links:
 **Maintainer**: Simon Couch <simon.couch@posit.co>
 ([ORCID](https://orcid.org/0000-0001-5676-5107))
 
+Authors:
+
+- Simon Couch <simon.couch@posit.co>
+  ([ORCID](https://orcid.org/0000-0001-5676-5107))
+
 Other contributors:
 
 - Max Kuhn <max@posit.co> \[contributor\]

@@ -98,8 +98,8 @@ generate(solver_chat = sonnet_3_7$clone())
 #>     list(result = purrr::map_chr(res, function(c) c$last_turn()@text), 
 #>         solver_chat = res)
 #> }
-#> <bytecode: 0x55809b909be0>
-#> <environment: 0x55809b90fb08>
+#> <bytecode: 0x55846c3f9f80>
+#> <environment: 0x55846c3f8a48>
 ```
 
 While, in documentation, I’ve mostly written
@@ -399,6 +399,51 @@ confint(are_mod)
 If we had evaluated this model across multiple epochs, the question ID
 could become a “nuisance parameter” in a mixed model, e.g. with the
 model structure `ordinal::clmm(score ~ model + (1|id), ...)`.
+
+## Evaluating coding agents
+
+The solvers above are harnesses you assemble yourself with ellmer. To
+see how an off-the-shelf coding agent stacks up on the same problems,
+vitals provides the solvers
+[`claude_code()`](https://vitals.tidyverse.org/reference/agent_solvers.md)
+and
+[`codex()`](https://vitals.tidyverse.org/reference/agent_solvers.md),
+which evaluate the Claude Code and Codex agents on a task’s dataset:
+
+``` r
+
+are_claude_code <- Task$new(
+  dataset = are,
+  solver = claude_code(chat_claude(model = "claude-sonnet-4-5")),
+  scorer = model_graded_qa(partial_credit = TRUE, scorer_chat = sonnet_3_7$clone()),
+  name = "An R Eval"
+)
+
+are_claude_code$eval()
+```
+
+These solvers run the agent’s command line interface in a Docker sandbox
+via Python Inspect (resolved automatically with reticulate—you’ll need
+the reticulate package installed and a running Docker daemon). The
+agent’s transcript is read back into ellmer Chat objects and logged as
+usual.
+
+Each sample gets its own throwaway container, built from Inspect’s
+default image unless you supply a `Dockerfile` or `compose.yaml`. For a
+dataset like `are`, whose questions are self-contained, that empty
+workspace is all the agent needs; to evaluate an agent on a repository,
+build the repository into the image. The agent starts in the image’s
+working directory, so it’s already in the repository if the image sets
+`WORKDIR` there; otherwise, point it at the repository with
+`claude_code(cwd = "/path/to/repo")`.
+
+Since these are ordinary solvers, the same R scorer grades both your
+harness and the agent, and results compare directly:
+
+``` r
+
+vitals_bind(btw = are_btw, claude_code = are_claude_code)
+```
 
 This article demonstrated using a custom solver by modifying the
 built-in

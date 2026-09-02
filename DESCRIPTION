@@ -1,6 +1,6 @@
 Package: vitals
 Title: Large Language Model Evaluation
-Version: 0.3.0.9001
+Version: 0.4.0
 Authors@R: c(
     person("Simon", "Couch", , "simon.couch@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5676-5107")),

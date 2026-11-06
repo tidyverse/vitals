@@ -3,58 +3,65 @@ http_interactions:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"What''s
-        2+2?"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What''s
+        2+2?"}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a19783a2f30e157-ORD
-      content-encoding: gzip
+      cf-ray: a563c4861e63b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:31 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '861'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:43 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '939'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=FEhdumVyrSCohYdf8yanpOZlORWNI.b3_eoI24w6wPY-1763657671-1.0.1.1-LcUBuyLEAfLubHv4OD7SSYfTA6MO4psnECOzh5yLyWvQZuvF3.bd6Ayxoi26iJzsjagwViOnCpPDGCIdblD8mR340A.T7HmL3NeUF02HAmc;
-        path=/; expires=Thu, 20-Nov-25 17:24:31 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=7S_5WgbeeD60AO5sm_7ipnswfgoWUhE8NI9CeYYLPPE-1763657671674-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=LyUqyu.jqLy3z697RXSnjynyNA_Mb9StQ6T_PKfDgxA-1793964642.2522492-1.0.1.1-slDYJAW3zKERBbyq7PMHD_DweoGkOx8atHGdTN4echLzWIOVQuU.5UfEyomo3Ak97CaDCKsVDhcrUf7YBRnxJ05PeE05xq.YdTRU3GKqcY_m93H1KtKYlP_24.X1p3nE;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:43 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '864'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999967'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_87a68f95d2014960864319b389b12ca1
+      x-request-id: req_f0928e43bdbf487ba58a5aac510e5f4e
     body:
       string: |-
         {
-          "id": "resp_03c562b6c5693c7901691f47c6cd2481908c670143a600ccf9",
+          "id": "resp_0641655663b09909016aedba624cac87d296fac08aad2f2efc",
           "object": "response",
-          "created_at": 1763657670,
+          "created_at": 1793964642,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964643,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_03c562b6c5693c7901691f47c78084819082b6cb3f926d2474",
+              "id": "msg_0641655663b09909016aedba62f88087d2973e54d86acd27ce",
               "type": "message",
               "status": "completed",
               "content": [
@@ -62,18 +69,22 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "2 + 2 equals 4."
+                  "text": "2 + 2 = **4**."
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -87,81 +98,107 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 13,
+            "input_tokens": 12,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 9,
+            "output_tokens": 13,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 22
+            "total_tokens": 25
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:31
+  recorded_at: 2026-11-06 11:30:43
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"What''s
-        2+3?"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"What''s
+        2+3?"}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a197840ee4ce157-ORD
-      content-encoding: gzip
+      cf-ray: a563c48ccdf4b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:32 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '517'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:43 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '578'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=5gBI.aRu4Bc52AZ5xXCwqd0NNgczu8xN0NbE0vJ7SMY-1763657672-1.0.1.1-ZsMeROQTtMBW9kI0rKbxMbx5evuB2vfpBikv3KkLnEL2Lhz8lD9HVgIXlTEGczlDxdkmHKHDIl7kvp7sLSj9VOztMxX1Gm0Sg.l2P9DYzew;
-        path=/; expires=Thu, 20-Nov-25 17:24:32 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=ed0oIc5TQY1QZmgz.EuQqFGSwPNcsZG_LWXAOlWEKN8-1763657672430-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=VXQNrTfFH9sgNkllo9TfcLdZceroe9jrAscKMzSYvqo-1793964643.3275228-1.0.1.1-XaDic9.sKJ584WNyK.d.jmDIPrOv1.rMPKK2EBuZD_4.4qUfoUAHPjboScM8b1boWqxuKz9iefusXD560biquBnXEVcoxUQKb5w61GSaOZBimz.v0hmh4CysCbLZZsdu;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:43 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '520'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999967'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_853895cbf9da47b286fa497574d9ac35
+      x-request-id: req_c87a0c91c2804945b7d0cf3ff3c2d43b
     body:
       string: |-
         {
-          "id": "resp_0ed58111bc12a6d701691f47c7e0e48196b285b89f2717baad",
+          "id": "resp_033333894aa356c7016aedba6360e487d285fa949c672c8582",
           "object": "response",
-          "created_at": 1763657671,
+          "created_at": 1793964643,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964643,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_0ed58111bc12a6d701691f47c83c108196b67025ee42ea426b",
+              "id": "msg_033333894aa356c7016aedba63bd1887d2ad0692f5e70c9f9c",
               "type": "message",
               "status": "completed",
               "content": [
@@ -169,18 +206,22 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "2 + 3 equals 5."
+                  "text": "2 + 3 = **5**."
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -194,88 +235,114 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 13,
+            "input_tokens": 12,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 9,
+            "output_tokens": 13,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 22
+            "total_tokens": 25
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:32
+  recorded_at: 2026-11-06 11:30:43
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"You
         are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: 2 + 2 equals 4.\n***\n[Criterion]:
+        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: 2 + 2 = **4**.\n***\n[Criterion]:
         4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a197845fb98e157-ORD
-      content-encoding: gzip
+      cf-ray: a563c491bbe4b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:35 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '2155'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:44 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '506'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=k660vhT2jCXg60cew__0hkTkfFNsHNlCd7QlZart7zk-1763657675-1.0.1.1-A5wNBTT.Dzw.49CjOADpLLZYpsaYFCu_SQN0PCca1b6gd4GCPcT.4yykds4kxFk28ezc.bnpJY7c2meh5cy0tvxniNaqxp.rBgu.JE0yW4s;
-        path=/; expires=Thu, 20-Nov-25 17:24:35 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=8zdjGPxZl_zG.LjAlg65MFagoYeNSVRN4PpF.MR5CRw-1763657675199-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=P.rMxZwI3xqZvGIr9omWI5BhDXvBVFfciV2Bi_PD5w4-1793964644.1191728-1.0.1.1-s3NSQC3pjBYk3FFZpPPlGsIl2b.d9ft3MNKfah7sZmZCgTTffEt7DT3Rd4QYKxQ2pFxUKU22gkVNv7yS1yzZc.4GEs1ulp7FgMzjUi.sZ1FXxzA7aTzfm35O_M4lSp_m;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:44 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '2158'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999835'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_afb79c9e82e14ca796e28e8b9c84301f
+      x-request-id: req_51351fdcffe749809a06266b964b1667
     body:
       string: |-
         {
-          "id": "resp_0381cf26c0062e0701691f47c9077c8195a9b093ef94d80321",
+          "id": "resp_01550a258c51229c016aedba642ab487d2b28786c776c2049d",
           "object": "response",
-          "created_at": 1763657673,
+          "created_at": 1793964644,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964644,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_0381cf26c0062e0701691f47ca6d088195ad922c600876ccb6",
+              "id": "msg_01550a258c51229c016aedba6475f887d2a897fb30949577fb",
               "type": "message",
               "status": "completed",
               "content": [
@@ -283,18 +350,22 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The submitted answer states that 2 + 2 equals 4, which is the correct solution to the problem \"What's 2+2?\" The criterion also specifies \"4,\" which matches the correct answer given. Therefore, the submission meets the criterion perfectly as it correctly and explicitly states the answer. \n\nGRADE: C"
+                  "text": "The submission correctly computes 2 + 2 as 4, matching the criterion.  \nGRADE: C"
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -308,88 +379,114 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 147,
+            "input_tokens": 151,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 65,
+            "output_tokens": 25,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 212
+            "total_tokens": 176
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:35
+  recorded_at: 2026-11-06 11:30:44
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"You
         are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: 2 + 3 equals 5.\n***\n[Criterion]:
+        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: 2 + 3 = **5**.\n***\n[Criterion]:
         5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a1978563ba8e157-ORD
-      content-encoding: gzip
+      cf-ray: a563c49568b4b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:35 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '679'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:45 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '1061'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=U0qgExNipLU_zdN0zMuQTY5035E4STYmLalezgWXuUY-1763657675-1.0.1.1-MPWM9eJcHqn5ZYdtl2Ns2cnRbP7SDUj88KBWOEpPuv8f4X9Uqky9LmFPNB6gXulVqF2VEdZIbYCVybXmggJkU1IuEf4D1O2hnHYR3dldp2I;
-        path=/; expires=Thu, 20-Nov-25 17:24:35 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=nnHVSdQ127Ylh5R.0S7HhNt.UQOnCe8FxgNia_.p2mg-1763657675990-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=2KFyxdBr2xK9na9aoPYGHvYotuxHYqDq2O7cgdSgai8-1793964644.7055376-1.0.1.1-PKxgDAwIZjrzopkrJflbZqUvpyxTf2QZiP2hXfE_vM29Xa5Lq.N_VPoiO9gG_MzvrU8SRiZcEYg1A81damHHqfOUhjK26TOBI2oszHsspCCwGEYnldj8ZRTEiLLX3Bgo;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:45 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '682'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999835'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_bdd1158034314de39b86c0929de75393
+      x-request-id: req_2d296a9a859e4c48b0bdaf614bb3359a
     body:
       string: |-
         {
-          "id": "resp_003c0bc196062f7701691f47cb4b488193b817925d6bb48d7b",
+          "id": "resp_04251e78e433e3b2016aedba64c3f087d2b5dea844262e6e24",
           "object": "response",
-          "created_at": 1763657675,
+          "created_at": 1793964644,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964645,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_003c0bc196062f7701691f47cb7b48819386e7bffacb52b926",
+              "id": "msg_04251e78e433e3b2016aedba6541e087d28da452b0c8910673",
               "type": "message",
               "status": "completed",
               "content": [
@@ -397,18 +494,22 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The submitted answer states that 2 + 3 equals 5, which is factually correct. The criterion is also \"5,\" which matches the answer provided. Since the answer aligns with the criterion and is correct, it meets the criteria for correctness.\n\nGRADE: C"
+                  "text": "The submission correctly calculates 2 + 3 = 5, which matches the criterion.  \nGRADE: C"
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -422,23 +523,42 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 147,
+            "input_tokens": 151,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 55,
+            "output_tokens": 26,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 202
+            "total_tokens": 177
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:35
-recorded_with: VCR-vcr/2.0.0
+  recorded_at: 2026-11-06 11:30:45
+recorded_with: VCR-vcr/2.1.0

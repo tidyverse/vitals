@@ -120,7 +120,7 @@ test_that("logs including system prompts are compatible with inspect", {
     dataset = simple_addition,
     solver = generate(chat_openai(
       system_prompt = "Be terse.",
-      model = "gpt-4.1-nano"
+      model = "gpt-5.4-nano"
     )),
     scorer = model_graded_qa()
   )

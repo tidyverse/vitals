@@ -358,7 +358,7 @@ test_that("vitals writes valid eval logs (basic, claude)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(ellmer::chat_openai(model = "gpt-5.4-nano")),
     scorer = detect_includes()
   )
   tsk$eval()

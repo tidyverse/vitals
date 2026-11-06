@@ -3,278 +3,161 @@ http_interactions:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"The
-        dog ran quickly"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"The
+        dog ran quickly"}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a197883bd8de157-ORD
-      content-encoding: gzip
+      cf-ray: a563c4d27871b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:44 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '1745'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:55 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '1215'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=5Uciua7jUlzY1TShEKzR8LtNxGW1PKELnFWpqQuA4A8-1763657684-1.0.1.1-MTCfieQilzU_MKA0k4thz0KrAmS4ExK68T0trlnY_NGRybxR2j7M868tcVU9mLrGOfqOliUgU5MztUR81Fit9XUC9_NOUJcTD3vDZj.JIsg;
-        path=/; expires=Thu, 20-Nov-25 17:24:44 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=fjRnOUM2ko1RBf6TifJMGrX0.PosYlBJx2oYKdRwrlA-1763657684324-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=Lip7NxXA5wxwudB_aRJyhUGc1jsMfd8YcT4Gjfq3xMQ-1793964654.4807382-1.0.1.1-t5S_CSHChd9rZ8TIChjQVKVlCAV4UCvbDChrdn6x6WhDm_1OeQwhialHWqx9VVpxk5laBsCyRZxwUL_Ez8ir2N3GxmPUfxUChRkEY.wn4iY6opwCrx5YFObf_8tI5z8O;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:55 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '1748'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999970'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_ff6b37dc19ac42d39dc39f632d96afd1
+      x-request-id: req_b732a5b29ac14e0aa2802b1ee9a108c5
     body:
-      string: |-
-        {
-          "id": "resp_0301991ab120c0b901691f47d2901081968fc62c53bc872200",
-          "object": "response",
-          "created_at": 1763657682,
-          "status": "completed",
-          "background": false,
-          "billing": {
-            "payer": "developer"
-          },
-          "error": null,
-          "incomplete_details": null,
-          "instructions": null,
-          "max_output_tokens": null,
-          "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
-          "output": [
-            {
-              "id": "msg_0301991ab120c0b901691f47d34d008196a72692a304570dfd",
-              "type": "message",
-              "status": "completed",
-              "content": [
-                {
-                  "type": "output_text",
-                  "annotations": [],
-                  "logprobs": [],
-                  "text": "The sentence \"The dog ran quickly\" describes an action where the dog ran at a fast pace. Would you like me to analyze the sentence further or help with something else related to it?"
-                }
-              ],
-              "role": "assistant"
-            }
-          ],
-          "parallel_tool_calls": true,
-          "previous_response_id": null,
-          "prompt_cache_key": null,
-          "prompt_cache_retention": null,
-          "reasoning": {
-            "effort": null,
-            "summary": null
-          },
-          "safety_identifier": null,
-          "service_tier": "default",
-          "store": false,
-          "temperature": 1.0,
-          "text": {
-            "format": {
-              "type": "text"
-            },
-            "verbosity": "medium"
-          },
-          "tool_choice": "auto",
-          "tools": [],
-          "top_logprobs": 0,
-          "top_p": 1.0,
-          "truncation": "disabled",
-          "usage": {
-            "input_tokens": 11,
-            "input_tokens_details": {
-              "cached_tokens": 0
-            },
-            "output_tokens": 39,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 50
-          },
-          "user": null,
-          "metadata": {}
-        }
-  recorded_at: 2025-11-20 16:54:44
+      string: '{"id":"resp_0cf1bcca13b648bb016aedba6e8f9c87d2838311e88e272a8b","object":"response","created_at":1793964654,"completed_at":1793964655,"status":"completed","background":false,"billing":{"payer":"developer"},"frequency_penalty":0.0,"presence_penalty":0.0,"moderation":null,"model":"gpt-5.4-nano-2026-03-17","access_programs":null,"previous_response_id":null,"instructions":null,"output":[{"type":"message","id":"msg_0cf1bcca13b648bb016aedba6f0a1887d2a54903ce39447237","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Your
+        sentence is grammatically correct. Here are a couple of improved options depending
+        on what you mean:\n\n- **Neutral:** *The dog ran quickly.*  \n- **More specific:**
+        *The dog ran quickly down the street.*  \n- **More descriptive:** *The dog
+        ran quickly toward the ball.*\n\nIf you tell me what kind of sentence you’re
+        trying to write (simple past, present, etc.) or what comes next, I can help
+        tailor it.","annotations":[],"logprobs":[]}],"phase":"final_answer"}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"prompt_cache_key":null,"prompt_cache_retention":"24h","text":{"format":{"type":"text"},"verbosity":"medium"},"top_p":0.98,"top_logprobs":0,"temperature":1.0,"reasoning":{"context":"current_turn","effort":"none","summary":null,"mode":"standard"},"user":null,"usage":{"input_tokens":10,"input_tokens_details":{"cached_tokens":0,"cache_write_tokens":0},"output_tokens":96,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":106},"tool_usage":{"image_gen":{"input_tokens":0,"output_tokens":0,"total_tokens":0,"input_tokens_details":{"text_tokens":0,"image_tokens":0},"output_tokens_details":{"image_tokens":0,"text_tokens":0}},"web_search":{"num_requests":0}},"safety_identifier":null,"store":false,"metadata":{},"max_output_tokens":null,"max_tool_calls":null,"service_tier":"default","truncation":"disabled","image":{"context_compression":"disabled"}}'
+  recorded_at: 2026-11-06 11:30:55
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"The
-        cat meowed loudly"}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"The
+        cat meowed loudly"}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a19788f29c7e157-ORD
-      content-encoding: gzip
+      cf-ray: a563c4dadae4b3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:45 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '576'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:57 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '1216'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=m9.W7RhCK1sCgrLV42teb_ulZotloKkc71iFM3BE6kM-1763657685-1.0.1.1-7nvAzU95a3iA_s2ku.S8xW9UmpuztoGnuT2z39C6Oaa5HzpA0OZSZpQY63U5v96ntmNy2QdMLebu_rfhR.eg.don3bjwi9VTXuTJl_nr1Cg;
-        path=/; expires=Thu, 20-Nov-25 17:24:45 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=ubiWuwQW0G9ElMXEcNcef_2vPglI8aD9hBs7Gy0Fq4s-1763657685054-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=2NyRa3yRD.FLunacJ0Z4RU0iajzxXL_PhAZQWJHLcjg-1793964655.8180661-1.0.1.1-SWBrU1vns8.E2LxoVGvbuTbWus9JEeaNwBQoLNwFKmlaB3wbbVAGD1n_0W_iK_FndiyprkbiN31r1jfuRRA_xCJ.H8Kb4z0Yd3vIbNmp9B_1SspE05BI4H36dDj0EbY6;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:57 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '580'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999970'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_052c2f9ff5d74448a87d7d64986f2950
+      x-request-id: req_56b1d6cb0afe4ea7a84154a518e12ca7
     body:
-      string: |-
-        {
-          "id": "resp_027f2732b803aab201691f47d4733881959545b99f023df49e",
-          "object": "response",
-          "created_at": 1763657684,
-          "status": "completed",
-          "background": false,
-          "billing": {
-            "payer": "developer"
-          },
-          "error": null,
-          "incomplete_details": null,
-          "instructions": null,
-          "max_output_tokens": null,
-          "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
-          "output": [
-            {
-              "id": "msg_027f2732b803aab201691f47d4c08881958942084b1e693ecc",
-              "type": "message",
-              "status": "completed",
-              "content": [
-                {
-                  "type": "output_text",
-                  "annotations": [],
-                  "logprobs": [],
-                  "text": "It sounds like the cat is trying to get your attention. Do you know what might have caused it to meow loudly?"
-                }
-              ],
-              "role": "assistant"
-            }
-          ],
-          "parallel_tool_calls": true,
-          "previous_response_id": null,
-          "prompt_cache_key": null,
-          "prompt_cache_retention": null,
-          "reasoning": {
-            "effort": null,
-            "summary": null
-          },
-          "safety_identifier": null,
-          "service_tier": "default",
-          "store": false,
-          "temperature": 1.0,
-          "text": {
-            "format": {
-              "type": "text"
-            },
-            "verbosity": "medium"
-          },
-          "tool_choice": "auto",
-          "tools": [],
-          "top_logprobs": 0,
-          "top_p": 1.0,
-          "truncation": "disabled",
-          "usage": {
-            "input_tokens": 12,
-            "input_tokens_details": {
-              "cached_tokens": 0
-            },
-            "output_tokens": 26,
-            "output_tokens_details": {
-              "reasoning_tokens": 0
-            },
-            "total_tokens": 38
-          },
-          "user": null,
-          "metadata": {}
-        }
-  recorded_at: 2025-11-20 16:54:45
+      string: '{"id":"resp_09687c2461f1e325016aedba6fe4c887d2babceedc6c4d6945","object":"response","created_at":1793964656,"completed_at":1793964656,"status":"completed","background":false,"billing":{"payer":"developer"},"frequency_penalty":0.0,"presence_penalty":0.0,"moderation":null,"model":"gpt-5.4-nano-2026-03-17","access_programs":null,"previous_response_id":null,"instructions":null,"output":[{"type":"message","id":"msg_09687c2461f1e325016aedba703b5087d28c861c471eb464d3","role":"assistant","status":"completed","content":[{"type":"output_text","text":"That
+        sentence is grammatically correct.  \n\nIf you want a few alternative options:\n-
+        **The cat meowed loudly.** (same meaning)\n- **The cat let out a loud meow.**\n-
+        **The cat meowed in a loud voice.**","annotations":[],"logprobs":[]}],"phase":"final_answer"}],"error":null,"incomplete_details":null,"tools":[],"tool_choice":"auto","parallel_tool_calls":true,"prompt_cache_key":null,"prompt_cache_retention":"24h","text":{"format":{"type":"text"},"verbosity":"medium"},"top_p":0.98,"top_logprobs":0,"temperature":1.0,"reasoning":{"context":"current_turn","effort":"none","summary":null,"mode":"standard"},"user":null,"usage":{"input_tokens":11,"input_tokens_details":{"cached_tokens":0,"cache_write_tokens":0},"output_tokens":57,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":68},"tool_usage":{"image_gen":{"input_tokens":0,"output_tokens":0,"total_tokens":0,"input_tokens_details":{"text_tokens":0,"image_tokens":0},"output_tokens_details":{"image_tokens":0,"text_tokens":0}},"web_search":{"num_requests":0}},"safety_identifier":null,"store":false,"metadata":{},"max_output_tokens":null,"max_tool_calls":null,"service_tier":"default","truncation":"disabled","image":{"context_compression":"disabled"}}'
+  recorded_at: 2026-11-06 11:30:57
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"You
         are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: The dog ran quickly\n***\n[Submission]: The sentence \"The
-        dog ran quickly\" describes an action where the dog ran at a fast pace. Would
-        you like me to analyze the sentence further or help with something else related
-        to it?\n***\n[Criterion]: A\n***\n[END DATA]\nDoes the submission meet the
-        criterion?\nClassify the sentence. Reply with ''GRADE: $LETTER'' where LETTER
-        is either A for sentences about dogs or B for sentences about cats."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+        DATA]\n***\n[Task]: The dog ran quickly\n***\n[Submission]: Your sentence
+        is grammatically correct. Here are a couple of improved options depending
+        on what you mean:\n\n- **Neutral:** *The dog ran quickly.*  \n- **More specific:**
+        *The dog ran quickly down the street.*  \n- **More descriptive:** *The dog
+        ran quickly toward the ball.*\n\nIf you tell me what kind of sentence you’re
+        trying to write (simple past, present, etc.) or what comes next, I can help
+        tailor it.\n***\n[Criterion]: A\n***\n[END DATA]\nDoes the submission meet
+        the criterion?\nClassify the sentence. Reply with ''GRADE: $LETTER'' where
+        LETTER is either A for sentences about dogs or B for sentences about cats."}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a1978942ec7e157-ORD
-      content-encoding: gzip
+      cf-ray: a563c4e3ddbab3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:46 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '849'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:58 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '856'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=fr9kaD8oD.D4oGAtCaqZDb22.WyJzP4wmdwZ30iejfU-1763657686-1.0.1.1-PHd8nytNqVqvyEPQXz7.Dx_Eay4JKAgC7S3Hg01EtnWquRV99Pahv2bpJXzoXCB1Y7nHhGEhCYCKHrX88OhJ7IDMPH5TxEFadf8200bcHpQ;
-        path=/; expires=Thu, 20-Nov-25 17:24:46 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=gcGtvaNOvOnSlA7zk31veMAbkD0rOnrPS48KAbzRby0-1763657686086-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=jsGPM798TOUS5rQxkRytyG6IayrezHw2mmub4Iu_AFs-1793964657.253316-1.0.1.1-9FDRN1LYFuu7P.zW7nz5gK7RwndMOEEZTisBy9aaL.C_aEp1XkvM6NlxlEAmfJt9FMTaJKcAxJ7aLsbcj7KwL.xvNy2do4D.feHljMFhVP79JuP4lhXu6ge6tcrdj0Pg;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:58 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '852'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999857'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_0cc1b72ef29e4b92b0212c7c676adc38
+      x-request-id: req_247308c711c34e068dfc46dbec7235c7
     body:
       string: |-
         {
-          "id": "resp_00ab64b44a4de39001691f47d537a08196b7253718c893a12f",
+          "id": "resp_0f56692a8181f768016aedba714c5c87d28146554d0206e6ae",
           "object": "response",
-          "created_at": 1763657685,
+          "created_at": 1793964657,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964658,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_00ab64b44a4de39001691f47d5a620819689ccae0978927edb",
+              "id": "msg_0f56692a8181f768016aedba71b4f487d2b517ebadd1a42d13",
               "type": "message",
               "status": "completed",
               "content": [
@@ -282,18 +165,22 @@ http_interactions:
                   "type": "output_text",
                   "annotations": [],
                   "logprobs": [],
-                  "text": "The submission discusses the action of a dog running quickly, which aligns with a sentence about a dog. \n\nGRADE: A"
+                  "text": "GRADE: A"
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -307,87 +194,114 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 124,
+            "input_tokens": 177,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 25,
+            "output_tokens": 7,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 149
+            "total_tokens": 184
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:46
+  recorded_at: 2026-11-06 11:30:58
 - request:
     method: POST
     uri: https://api.openai.com/v1/responses
     body:
-      string: '{"input":[{"role":"user","content":[{"type":"input_text","text":"You
+      string: '{"input":[{"type":"message","role":"user","content":[{"type":"input_text","text":"You
         are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
-        DATA]\n***\n[Task]: The cat meowed loudly\n***\n[Submission]: It sounds like
-        the cat is trying to get your attention. Do you know what might have caused
-        it to meow loudly?\n***\n[Criterion]: B\n***\n[END DATA]\nDoes the submission
-        meet the criterion?\nClassify the sentence. Reply with ''GRADE: $LETTER''
-        where LETTER is either A for sentences about dogs or B for sentences about
-        cats."}]}],"model":"gpt-4.1-nano","stream":false,"store":false,"service_tier":"auto"}'
+        DATA]\n***\n[Task]: The cat meowed loudly\n***\n[Submission]: That sentence
+        is grammatically correct.  \n\nIf you want a few alternative options:\n- **The
+        cat meowed loudly.** (same meaning)\n- **The cat let out a loud meow.**\n-
+        **The cat meowed in a loud voice.**\n***\n[Criterion]: B\n***\n[END DATA]\nDoes
+        the submission meet the criterion?\nClassify the sentence. Reply with ''GRADE:
+        $LETTER'' where LETTER is either A for sentences about dogs or B for sentences
+        about cats."}]}],"include":["reasoning.encrypted_content"],"model":"gpt-5.4-nano","stream":false,"store":false,"service_tier":"auto"}'
   response:
     status: 200
     headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total
+      - CF-Ray
+      - CF-Ray
       alt-svc: h3=":443"; ma=86400
       cf-cache-status: DYNAMIC
-      cf-ray: 9a19789a7d3ce157-ORD
-      content-encoding: gzip
+      cf-ray: a563c4e9ac9ab3c9-MAN
+      content-encoding: br
       content-type: application/json
-      date: Thu, 20 Nov 2025 16:54:46 GMT
-      openai-organization: posit-esfrkf
-      openai-processing-ms: '371'
-      openai-project: proj_KTxPJ5EAugIeuZGL0lAI1H9t
+      date: Fri, 06 Nov 2026 11:30:58 GMT
+      openai-organization: user-k8m6yzpx9oqbrzisf5xeeeap
+      openai-processing-ms: '633'
+      openai-project: proj_1zyW3RxIpA38KxiYN69dBj4g
       openai-version: '2020-10-01'
       server: cloudflare
-      set-cookie:
-      - __cf_bm=0z8AlHFb_HG_rDI8vINs6wIshPIrJtfGLa0h.RgR2_A-1763657686-1.0.1.1-8TwGLJ.xS6E55bs1jscqOWok_NzLyIQu.VcTIykmwrM2sSKSJ7e4QANkBM1beAgwEyyQnXI7trKLBxh3AejDtxMhyT4oFXFYTINIjWQtyqA;
-        path=/; expires=Thu, 20-Nov-25 17:24:46 GMT; domain=.api.openai.com; HttpOnly;
-        Secure; SameSite=None
-      - _cfuvid=Hbbl0PSb5uQilBpiXETgkcb8Hmfsb95L_bRvVhXR21w-1763657686649-0.0.1.1-604800000;
-        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      set-cookie: __cf_bm=ylxr2F_58pv8dJfq6hxJxyBTThisQaJXbLoOWr4YZGU-1793964658.1865952-1.0.1.1-x0nBHOgJiDxT9wQNNoCesD0Yde7AkHs5DpfPJnEpkTOsXBcBM8_YeulMPqQJYQkXFPEn3R1g12FK5puHbEEoq0.yICFz4A1Usq3IYdUj0JdLMOJqy9NLYzfF4HSweo6D;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.openai.com; Expires=Fri,
+        06 Nov 2026 12:00:58 GMT
       strict-transport-security: max-age=31536000; includeSubDomains; preload
       x-content-type-options: nosniff
-      x-envoy-upstream-service-time: '374'
-      x-ratelimit-limit-requests: '30000'
-      x-ratelimit-limit-tokens: '150000000'
-      x-ratelimit-remaining-requests: '29999'
-      x-ratelimit-remaining-tokens: '149999870'
-      x-ratelimit-reset-requests: 2ms
+      x-ratelimit-limit-requests: '5000'
+      x-ratelimit-limit-tokens: '2000000'
+      x-ratelimit-remaining-requests: '4999'
+      x-ratelimit-remaining-tokens: '2000000'
+      x-ratelimit-reset-requests: 12ms
       x-ratelimit-reset-tokens: 0s
-      x-request-id: req_60240792e0bc4dd8bf429fe4c4597f8d
+      x-request-id: req_e38a60c531684f228e37c71b7efb5f4f
     body:
       string: |-
         {
-          "id": "resp_0ad030a10d767d1001691f47d635c481978459c0ed24747c06",
+          "id": "resp_0e5ed2a145ab4c8f016aedba7240dc87d2a17936dc1c58f271",
           "object": "response",
-          "created_at": 1763657686,
+          "created_at": 1793964658,
           "status": "completed",
+          "access_programs": null,
           "background": false,
           "billing": {
             "payer": "developer"
           },
+          "completed_at": 1793964658,
           "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
           "incomplete_details": null,
           "instructions": null,
           "max_output_tokens": null,
           "max_tool_calls": null,
-          "model": "gpt-4.1-nano-2025-04-14",
+          "model": "gpt-5.4-nano-2026-03-17",
+          "moderation": null,
           "output": [
             {
-              "id": "msg_0ad030a10d767d1001691f47d685288197b521f8ec1685c614",
+              "id": "msg_0e5ed2a145ab4c8f016aedba72aa9c87d29fab29ca0b2f3b1e",
               "type": "message",
               "status": "completed",
               "content": [
@@ -398,15 +312,19 @@ http_interactions:
                   "text": "GRADE: B"
                 }
               ],
+              "phase": "final_answer",
               "role": "assistant"
             }
           ],
           "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
           "previous_response_id": null,
           "prompt_cache_key": null,
-          "prompt_cache_retention": null,
+          "prompt_cache_retention": "24h",
           "reasoning": {
-            "effort": null,
+            "context": "current_turn",
+            "effort": "none",
+            "mode": "standard",
             "summary": null
           },
           "safety_identifier": null,
@@ -420,23 +338,42 @@ http_interactions:
             "verbosity": "medium"
           },
           "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 0
+            }
+          },
           "tools": [],
           "top_logprobs": 0,
-          "top_p": 1.0,
+          "top_p": 0.98,
           "truncation": "disabled",
           "usage": {
-            "input_tokens": 112,
+            "input_tokens": 139,
             "input_tokens_details": {
+              "cache_write_tokens": 0,
               "cached_tokens": 0
             },
-            "output_tokens": 4,
+            "output_tokens": 7,
             "output_tokens_details": {
               "reasoning_tokens": 0
             },
-            "total_tokens": 116
+            "total_tokens": 146
           },
           "user": null,
           "metadata": {}
         }
-  recorded_at: 2025-11-20 16:54:46
-recorded_with: VCR-vcr/2.0.0
+  recorded_at: 2026-11-06 11:30:59
+recorded_with: VCR-vcr/2.1.0

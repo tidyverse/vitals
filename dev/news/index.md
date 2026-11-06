@@ -4,6 +4,8 @@
 
 ## vitals 0.4.0
 
+CRAN release: 2026-09-02
+
 vitals 0.4.0 includes a number of new features and performance
 improvements, in addition to tightening integration with Inspect’s log
 viewer.

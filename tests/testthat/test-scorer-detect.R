@@ -341,11 +341,10 @@ test_that("detect scorers generate explanations", {
 })
 
 # In general, we test these scorers completely offline and thus don't `log()`
-# as that would require solver chats. Do a "live" test once to ensure that we
-# don't assume scorer chats are available while logging. (#77)
+# as that would require solver chats. Do a test with `generate()` once to ensure
+# that we don't assume scorer chats are available while logging. (#77)
 test_that("vitals writes valid eval logs (basic, claude)", {
-  vcr::local_cassette("scorer-detect-valid-log")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -358,7 +357,7 @@ test_that("vitals writes valid eval logs (basic, claude)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = detect_includes()
   )
   tsk$eval()

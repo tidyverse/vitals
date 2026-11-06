@@ -1,6 +1,5 @@
 test_that("Task R6 class works", {
-  vcr::local_cassette("task-basic")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -14,7 +13,7 @@ test_that("Task R6 class works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 
@@ -26,7 +25,6 @@ test_that("Task R6 class works", {
   expect_named(tsk$get_samples(), c("input", "target", "id"))
 
   tsk$eval()
-  expect_valid_log(tsk$log())
   expect_snapshot(tsk)
 
   expect_named(
@@ -46,11 +44,11 @@ test_that("Task R6 class works", {
   )
 
   expect_equal(tsk, .last_task)
+  expect_valid_log(tsk$log())
 })
 
 test_that("Task with epochs works", {
-  vcr::local_cassette("task-epochs")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -65,7 +63,7 @@ test_that("Task with epochs works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 
@@ -92,8 +90,7 @@ test_that("Task with epochs works", {
 })
 
 test_that("Task respects `$new(epochs)`", {
-  vcr::local_cassette("task-new-epochs")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -108,7 +105,7 @@ test_that("Task respects `$new(epochs)`", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa(),
     epochs = 2
   )
@@ -120,8 +117,7 @@ test_that("Task respects `$new(epochs)`", {
 })
 
 test_that("`$eval(epochs)` takes precedence over `$new(epochs)`", {
-  vcr::local_cassette("task-eval-epochs-precedence")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -136,7 +132,7 @@ test_that("`$eval(epochs)` takes precedence over `$new(epochs)`", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa(),
     epochs = 2
   )
@@ -245,7 +241,6 @@ test_that("Task errors informatively with duplicate ids", {
 
 # solver ------------------------------------------------------------------
 test_that("set_solver works", {
-  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -267,8 +262,8 @@ test_that("set_solver works", {
     list(
       result = c("4", "5"),
       solver_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       )
     )
   }
@@ -283,8 +278,8 @@ test_that("set_solver works", {
     list(
       result = c("4", "5"),
       solver_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       ),
       solver_metadata = c("boop!", "bop!")
     )
@@ -299,7 +294,6 @@ test_that("set_solver works", {
 })
 
 test_that("set_solver works", {
-  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -321,8 +315,8 @@ test_that("set_solver works", {
     list(
       result = c("4", "5"),
       solver_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       )
     )
   }
@@ -337,8 +331,8 @@ test_that("set_solver works", {
     list(
       result = c("4", "5"),
       solver_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       ),
       solver_metadata = c("boop!", "bop!")
     )
@@ -354,7 +348,6 @@ test_that("set_solver works", {
 
 # scorer ------------------------------------------------------------------
 test_that("set_scorer works", {
-  key_get("OPENAI_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -370,8 +363,8 @@ test_that("set_scorer works", {
     list(
       result = c("4", "5"),
       solver_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       )
     )
   }
@@ -401,8 +394,8 @@ test_that("set_scorer works", {
     list(
       score = c(1, 1),
       scorer_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       )
     )
   }
@@ -416,8 +409,8 @@ test_that("set_scorer works", {
     list(
       score = c(1, 1),
       scorer_chat = list(
-        ellmer::chat_openai(model = "gpt-4.1-nano"),
-        ellmer::chat_openai(model = "gpt-4.1-nano")
+        mock_chat_template(),
+        mock_chat_template()
       ),
       scorer_metadata = c("beep", "bop")
     )
@@ -435,8 +428,7 @@ test_that("set_scorer works", {
 
 # metrics ------------------------------------------------------------------
 test_that("default metrics are applied effectively", {
-  vcr::local_cassette("task-default-metrics")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -450,7 +442,7 @@ test_that("default metrics are applied effectively", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(...) {
       list(
         score = factor(c("C", "C"), levels = c("I", "P", "C"))
@@ -465,8 +457,7 @@ test_that("default metrics are applied effectively", {
 })
 
 test_that("naive accuracy normalizes by number of factor levels, not observed max", {
-  vcr::local_cassette("task-default-metrics")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -480,7 +471,7 @@ test_that("naive accuracy normalizes by number of factor levels, not observed ma
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(...) {
       list(
         score = factor(c("P", "I"), levels = c("I", "P", "C"))
@@ -494,8 +485,7 @@ test_that("naive accuracy normalizes by number of factor levels, not observed ma
 })
 
 test_that("task applies non-default metrics", {
-  vcr::local_cassette("task-non-default-metrics")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -510,7 +500,7 @@ test_that("task applies non-default metrics", {
   # via Task$new()...
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(...) {
       list(
         score = factor(c("C", "C"), levels = c("I", "P", "C"))
@@ -536,8 +526,7 @@ test_that("task applies non-default metrics", {
 })
 
 test_that("task errors informatively with bad metrics", {
-  vcr::local_cassette("task-bad-metrics")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -553,7 +542,7 @@ test_that("task errors informatively with bad metrics", {
   expect_snapshot(
     tsk <- Task$new(
       dataset = simple_addition,
-      solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+      solver = generate(mock_chat_template()),
       scorer = function(...) {
         list(
           score = factor(c("C", "C"), levels = c("I", "P", "C"))
@@ -568,7 +557,7 @@ test_that("task errors informatively with bad metrics", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(...) {
       list(
         score = factor(c("C", "C"), levels = c("I", "P", "C"))
@@ -599,8 +588,6 @@ test_that("task errors informatively with bad metrics", {
 
 # misc ------------------------------------------------------------------
 test_that("task ids are NULL before logging, computed after", {
-  key_get("OPENAI_API_KEY")
-
   tsk <-
     Task$new(
       dataset = are,
@@ -612,8 +599,7 @@ test_that("task ids are NULL before logging, computed after", {
 })
 
 test_that("task ids have correct format after logging", {
-  vcr::local_cassette("task-id-format")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -626,7 +612,7 @@ test_that("task ids have correct format after logging", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template(model = "test-model")),
     scorer = detect_exact()
   )
 
@@ -634,12 +620,11 @@ test_that("task ids have correct format after logging", {
 
   task_id <- tsk$.__enclos_env__$private$task_id
   expect_true(grepl("/", task_id, fixed = TRUE))
-  expect_true(grepl("gpt-4.1-nano", task_id, fixed = TRUE))
+  expect_true(grepl("test-model", task_id, fixed = TRUE))
 })
 
 test_that("Task completeness is tracked and preserved", {
-  vcr::local_cassette("task-completeness")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -660,7 +645,7 @@ test_that("Task completeness is tracked and preserved", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = mock_scorer
   )
 
@@ -673,7 +658,7 @@ test_that("Task completeness is tracked and preserved", {
   tsk$score()
   expect_true(tsk$.__enclos_env__$private$scored)
 
-  tsk$set_solver(generate(chat_openai(model = "gpt-4.1-nano")))
+  tsk$set_solver(generate(mock_chat_template()))
   expect_false(tsk$.__enclos_env__$private$solved)
 
   tsk$solve()
@@ -699,7 +684,7 @@ test_that("Task completeness is tracked and preserved", {
   # test re-evaluation with epochs
   tsk_epochs <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = mock_scorer
   )
 
@@ -767,8 +752,7 @@ test_that("Task detects non-Chat objects in solver_chat", {
 })
 
 test_that("Task errors informatively with bad scorer output", {
-  vcr::local_cassette("task-bad-scorer-output")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -781,7 +765,7 @@ test_that("Task errors informatively with bad scorer output", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(samples) {
       list(wrong_name = c("4", "5"))
     }
@@ -791,8 +775,7 @@ test_that("Task errors informatively with bad scorer output", {
 })
 
 test_that("Task detects non-Chat objects in scorer_chat", {
-  vcr::local_cassette("task-non-chat-scorer")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -805,7 +788,7 @@ test_that("Task detects non-Chat objects in scorer_chat", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = function(samples) {
       list(
         score = c("4", "5"),
@@ -818,8 +801,7 @@ test_that("Task detects non-Chat objects in scorer_chat", {
 })
 
 test_that("token usage is logged correctly", {
-  vcr::local_cassette("task-token-usage")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -831,19 +813,19 @@ test_that("token usage is logged correctly", {
   )
 
   # use a couple tokens to ensure non-NULL
-  chat_openai(model = "gpt-4.1-nano")$chat("hey!", echo = "none")
+  ellmer::parallel_chat(mock_chat_template(), list("hey!"))
   usage_before <- ellmer::token_usage()
-  usage_before <- dplyr::filter(usage_before, model == "gpt-4.1-nano")
+  usage_before <- dplyr::filter(usage_before, model == "placeholder")
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 
   tsk$solve()
   usage_after_solve <- ellmer::token_usage()
-  usage_after_solve <- dplyr::filter(usage_after_solve, model == "gpt-4.1-nano")
+  usage_after_solve <- dplyr::filter(usage_after_solve, model == "placeholder")
   cost_after_solve <- tsk$get_cost()
   expect_equal(
     cost_after_solve$input,
@@ -856,7 +838,7 @@ test_that("token usage is logged correctly", {
 
   tsk$score()
   usage_after_score <- ellmer::token_usage()
-  usage_after_score <- dplyr::filter(usage_after_score, model == "gpt-4.1-nano")
+  usage_after_score <- dplyr::filter(usage_after_score, model == "placeholder")
   cost_after_score <- tsk$get_cost()
   expect_equal(
     cost_after_score$input,
@@ -876,9 +858,7 @@ test_that("token usage is logged correctly", {
 
 
 test_that("token usage is logged correctly (with unrelated token usage)", {
-  vcr::local_cassette("task-token-usage-unrelated")
-  key_get("OPENAI_API_KEY")
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -890,23 +870,20 @@ test_that("token usage is logged correctly (with unrelated token usage)", {
   )
 
   # use a couple tokens to ensure non-NULL
-  chat_openai(model = "gpt-4.1-nano")$chat("hey!", echo = "none")
-  chat_claude(model = "claude-sonnet-4-5-20250929")$chat(
-    "hey!",
-    echo = "none"
-  )
+  ellmer::parallel_chat(mock_chat_template(), list("hey!"))
+  ellmer::parallel_chat(mock_claude_chat(), list("hey!"))
   usage_before <- ellmer::token_usage()
-  usage_before <- dplyr::filter(usage_before, model == "gpt-4.1-nano")
+  usage_before <- dplyr::filter(usage_before, model == "placeholder")
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 
   tsk$solve()
   usage_after_solve <- ellmer::token_usage()
-  usage_after_solve <- dplyr::filter(usage_after_solve, model == "gpt-4.1-nano")
+  usage_after_solve <- dplyr::filter(usage_after_solve, model == "placeholder")
   cost_after_solve <- tsk$get_cost()
   expect_equal(nrow(cost_after_solve), 1)
   expect_equal(
@@ -921,8 +898,7 @@ test_that("token usage is logged correctly (with unrelated token usage)", {
 
 # argument routing --------------------------------------------------------
 test_that("eval routes arguments correctly to solver and scorer", {
-  vcr::local_cassette("task-eval-routes-args")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -936,8 +912,7 @@ test_that("eval routes arguments correctly to solver and scorer", {
   solver_arg_tracker <- NULL
   scorer_arg_tracker <- NULL
 
-  ch <- chat_openai(model = "gpt-4.1-nano")
-  ch$chat("Hey!", echo = FALSE)
+  ch <- mock_chat_turns(list(user = "Hey!", assistant = "Hello!"))
 
   custom_solver <- function(inputs, solver_param = "default_solver") {
     solver_arg_tracker <<- solver_param
@@ -965,8 +940,7 @@ test_that("eval routes arguments correctly to solver and scorer", {
 })
 
 test_that("eval routes arguments to functions with ellipses", {
-  vcr::local_cassette("task-eval-routes-ellipses")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -980,8 +954,7 @@ test_that("eval routes arguments to functions with ellipses", {
   solver_dots_tracker <- NULL
   scorer_dots_tracker <- NULL
 
-  ch <- chat_openai(model = "gpt-4.1-nano")
-  ch$chat("Hey!", echo = FALSE)
+  ch <- mock_chat_turns(list(user = "Hey!", assistant = "Hello!"))
 
   solver_with_dots <- function(inputs, ...) {
     dots <- list(...)
@@ -1011,8 +984,7 @@ test_that("eval routes arguments to functions with ellipses", {
 })
 
 test_that("eval routes unmatched arguments to solver with ellipses only", {
-  vcr::local_cassette("task-eval-routes-unmatched")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -1025,8 +997,7 @@ test_that("eval routes unmatched arguments to solver with ellipses only", {
 
   solver_dots_tracker <- NULL
 
-  ch <- chat_openai(model = "gpt-4.1-nano")
-  ch$chat("Hey!", echo = FALSE)
+  ch <- mock_chat_turns(list(user = "Hey!", assistant = "Hello!"))
 
   solver_with_dots <- function(inputs, ...) {
     dots <- list(...)
@@ -1076,8 +1047,7 @@ test_that("eval errors with unnamed arguments", {
 })
 
 test_that("eval errors when argument matches neither function and neither has ellipses", {
-  vcr::local_cassette("task-eval-errors-bad-arg")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   withr::local_envvar(list(VITALS_LOG_DIR = withr::local_tempdir()))
   withr::local_options(cli.default_handler = function(...) {})
   local_mocked_bindings(interactive = function(...) FALSE)
@@ -1088,8 +1058,7 @@ test_that("eval errors when argument matches neither function and neither has el
     target = c("4", "5")
   )
 
-  ch <- chat_openai(model = "gpt-4.1-nano")
-  ch$chat("Hey!", echo = FALSE)
+  ch <- mock_chat_turns(list(user = "Hey!", assistant = "Hello!"))
 
   solver_no_dots <- function(inputs, solver_param = "default") {
     list(
@@ -1112,8 +1081,7 @@ test_that("eval errors when argument matches neither function and neither has el
 })
 
 test_that("$log() respects dir argument", {
-  vcr::local_cassette("task-log-dir-argument")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir_env <- withr::local_tempdir()
   tmp_dir_arg <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir_env))
@@ -1128,7 +1096,7 @@ test_that("$log() respects dir argument", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 

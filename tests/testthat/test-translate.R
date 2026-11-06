@@ -16,8 +16,7 @@ test_that("expect_valid_log fails when log file is nonsense", {
 })
 
 test_that("vitals writes valid eval logs (basic, openai)", {
-  vcr::local_cassette("translate-openai-basic")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -30,7 +29,7 @@ test_that("vitals writes valid eval logs (basic, openai)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
   tsk$eval()
@@ -38,8 +37,7 @@ test_that("vitals writes valid eval logs (basic, openai)", {
 })
 
 test_that("vitals writes valid eval logs (basic, claude)", {
-  vcr::local_cassette("translate-anthropic-basic")
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -52,41 +50,47 @@ test_that("vitals writes valid eval logs (basic, claude)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_claude(
-      model = "claude-sonnet-4-5-20250929"
+    solver = generate(mock_claude_chat()),
+    scorer = model_graded_qa()
+  )
+  tsk$eval()
+  log_path <- tsk$log()
+
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  expect_equal(log$eval$model, "anthropic/claude-sonnet-4-5")
+  expect_valid_log(log_path)
+})
+
+test_that("vitals writes valid eval logs (basic, gemini)", {
+  local_mocked_ellmer()
+  tmp_dir <- withr::local_tempdir()
+  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
+  withr::local_options(cli.default_handler = function(...) {})
+  local_mocked_bindings(interactive = function(...) FALSE)
+
+  simple_addition <- tibble::tibble(
+    input = c("What's 2+2?", "What's 2+3?"),
+    target = c("4", "5")
+  )
+
+  tsk <- Task$new(
+    dataset = simple_addition,
+    solver = generate(ellmer::chat_google_gemini(
+      model = "gemini-2.5-flash",
+      credentials = function() "fake-key"
     )),
     scorer = model_graded_qa()
   )
   tsk$eval()
-  expect_valid_log(tsk$log())
-})
+  log_path <- tsk$log()
 
-test_that("vitals writes valid eval logs (basic, gemini)", {
-  vcr::local_cassette("translate-google-basic")
-  key_get("GOOGLE_API_KEY")
-  tmp_dir <- withr::local_tempdir()
-  withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
-  withr::local_options(cli.default_handler = function(...) {})
-  local_mocked_bindings(interactive = function(...) FALSE)
-
-  simple_addition <- tibble::tibble(
-    input = c("What's 2+2?", "What's 2+3?"),
-    target = c("4", "5")
-  )
-
-  tsk <- Task$new(
-    dataset = simple_addition,
-    solver = generate(ellmer::chat_google_gemini(model = "gemini-2.0-flash")),
-    scorer = model_graded_qa()
-  )
-  tsk$eval()
-  expect_valid_log(tsk$log())
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  expect_equal(log$eval$model, "google_gemini/gemini-2.5-flash")
+  expect_valid_log(log_path)
 })
 
 
 test_that("vitals writes valid eval logs (solver tool calls, claude)", {
-  vcr::local_cassette("translate-anthropic-tool-calls")
-  key_get("ANTHROPIC_API_KEY")
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -98,12 +102,33 @@ test_that("vitals writes valid eval logs (solver tool calls, claude)", {
     target = c("2024-01-01")
   )
 
-  ch <- chat_claude(model = "claude-sonnet-4-5-20250929")
-  ch$register_tool(tool(
+  get_current_date <- tool(
     function() "2024-01-01",
     name = "get_current_date",
     description = "Return the current date"
-  ))
+  )
+  request <- ContentToolRequest(
+    id = "call_1",
+    name = "get_current_date",
+    # as parsed from a provider's `{}`; an unnamed `list()` would log as `[]`
+    arguments = structure(list(), names = character(0)),
+    tool = get_current_date
+  )
+  local_mocked_ellmer(respond = function(prompt, chat) {
+    list(
+      assistant_turn(contents = list(request), finish_reason = "tool_use"),
+      UserTurn(contents = list(
+        ContentToolResult(value = "2024-01-01", request = request)
+      )),
+      assistant_turn(
+        contents = list(ContentText("It's 2024-01-01.")),
+        finish_reason = "success"
+      )
+    )
+  })
+
+  ch <- mock_claude_chat()
+  ch$register_tool(get_current_date)
 
   tsk <- Task$new(
     dataset = current_date,
@@ -113,7 +138,12 @@ test_that("vitals writes valid eval logs (solver tool calls, claude)", {
     }
   )
   tsk$eval()
-  expect_valid_log(tsk$log())
+  log_path <- tsk$log()
+
+  log <- jsonlite::fromJSON(log_path, simplifyVector = FALSE)
+  roles <- purrr::map_chr(log$samples[[1]]$messages, "role")
+  expect_equal(roles, c("user", "assistant", "tool", "assistant"))
+  expect_valid_log(log_path)
 })
 
 test_that("vitals writes valid eval logs (solver errors on tool call, claude)", {
@@ -337,8 +367,7 @@ test_that("tool errors are logged in the message error field", {
 })
 
 test_that("vitals writes valid logs with numeric solver results (#145)", {
-  vcr::local_cassette("translate-numeric-results")
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -349,8 +378,7 @@ test_that("vitals writes valid logs with numeric solver results (#145)", {
     target = c("4", "5")
   )
 
-  chat <- ellmer::chat_claude(model = "claude-sonnet-4-5-20250929")
-  chat$chat("Hey!", echo = FALSE)
+  chat <- mock_chat_turns(list(user = "Hey!", assistant = "Hello!"))
 
   simple_solver <- function(inputs) {
     list(

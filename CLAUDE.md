@@ -25,7 +25,7 @@ Importantly:
 
 ## Testing
 
-The package uses `vcr` in its testing suite to reduce costs and runtime of unit tests. Snaps and vcr outputs are generated (and read from) automatically when the test suite is ran. When writing unit testing code, do so as usual and then run the tests to generate logs.
+Tests don't make HTTP requests. To test code that calls a model, call `local_mocked_ellmer()` (in `tests/testthat/helper-mock-ellmer.R`), which mocks `ellmer::parallel_chat()`, `ellmer::parallel_chat_structured()`, and `ellmer::token_usage()`; pass `respond` to control replies. To test log translation of specific turns, build chats with `$set_turns()` and ellmer's exported `Turn`/`Content` constructors. Avoid depending on ellmer internals, like the requests ellmer sends to providers.
 
 ## Conventions
 

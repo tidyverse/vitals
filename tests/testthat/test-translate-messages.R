@@ -24,7 +24,7 @@ test_that("assistant messages include model field", {
 })
 
 test_that("translate_to_messages handles image inputs", {
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -38,11 +38,20 @@ test_that("translate_to_messages handles image inputs", {
 
   image_solver <- function(
     inputs,
-    solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")
+    solver_chat = mock_chat_template()
   ) {
     image_file <- system.file("test/x.png", package = "vitals")
     ch <- solver_chat$clone()
-    ch$chat(inputs[1], content_image_file(image_file), echo = FALSE)
+    ch$set_turns(list(
+      UserTurn(contents = list(
+        ContentText(inputs[1]),
+        content_image_file(image_file)
+      )),
+      assistant_turn(
+        contents = list(ContentText("The image shows a bike.")),
+        finish_reason = "success"
+      )
+    ))
     list(result = ch$last_turn()@text, solver_chat = list(ch))
   }
 
@@ -58,8 +67,7 @@ test_that("translate_to_messages handles image inputs", {
 })
 
 test_that("translate_to_messages handles remote image URLs", {
-  skip_on_cran()
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -73,16 +81,21 @@ test_that("translate_to_messages handles remote image URLs", {
 
   image_url_solver <- function(
     inputs,
-    solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")
+    solver_chat = mock_chat_template()
   ) {
     ch <- solver_chat$clone()
-    ch$chat(
-      inputs[1],
-      content_image_url(
-        "https://raw.githubusercontent.com/tidyverse/vitals/main/man/figures/logo.png"
-      ),
-      echo = FALSE
-    )
+    ch$set_turns(list(
+      UserTurn(contents = list(
+        ContentText(inputs[1]),
+        content_image_url(
+          "https://raw.githubusercontent.com/tidyverse/vitals/main/man/figures/logo.png"
+        )
+      )),
+      assistant_turn(
+        contents = list(ContentText("The vitals logo.")),
+        finish_reason = "success"
+      )
+    ))
     list(result = ch$last_turn()@text, solver_chat = list(ch))
   }
 
@@ -102,8 +115,7 @@ test_that("translate_to_messages handles remote image URLs", {
 
 
 test_that("logs including system prompts are compatible with inspect", {
-  vcr::local_cassette("translate-messages-system-prompts")
-  key_get("OPENAI_API_KEY")
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -118,10 +130,7 @@ test_that("logs including system prompts are compatible with inspect", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(
-      system_prompt = "Be terse.",
-      model = "gpt-4.1-nano"
-    )),
+    solver = generate(mock_chat_template(system_prompt = "Be terse.")),
     scorer = model_graded_qa()
   )
 

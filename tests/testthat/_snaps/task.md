@@ -51,8 +51,8 @@
 # task errors informatively with bad metrics
 
     Code
-      tsk <- Task$new(dataset = simple_addition, solver = generate(ellmer::chat_openai(
-        model = "gpt-4.1-nano")), scorer = function(...) {
+      tsk <- Task$new(dataset = simple_addition, solver = generate(mock_chat_template()),
+      scorer = function(...) {
         list(score = factor(c("C", "C"), levels = c("I", "P", "C")))
       }, metrics = function(scores) {
         mean(scores == "C") * 100

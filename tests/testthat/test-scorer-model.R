@@ -1,7 +1,5 @@
 test_that("model_graded_qa works", {
-  vcr::local_cassette("scorer-model-graded-qa")
-  key_get("OPENAI_API_KEY")
-  skip_on_cran()
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -16,17 +14,17 @@ test_that("model_graded_qa works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa()
   )
 
   tsk$eval()
-  expect_valid_log(tsk$log())
 
   # returns scores and a complete scorer chat
   expect_s3_class(tsk$get_samples()$score, "factor")
   expect_true(all(levels(tsk$get_samples()$score) %in% c("I", "C")))
   expect_true(is.ordered(tsk$get_samples()$score))
+  expect_equal(as.character(tsk$get_samples()$score), c("C", "C"))
   expect_s3_class(tsk$get_samples()$solver_chat[[1]], "Chat")
   expect_length(tsk$get_samples()$solver_chat[[1]]$get_turns(), 2)
   expect_s3_class(tsk$get_samples()$scorer_chat[[1]], "Chat")
@@ -37,12 +35,11 @@ test_that("model_graded_qa works", {
     tsk$get_samples()$solver_chat[[1]]$get_model(),
     tsk$get_samples()$scorer_chat[[1]]$get_model()
   )
+  expect_valid_log(tsk$log())
 })
 
 test_that("model_graded_fact works", {
-  vcr::local_cassette("scorer-model-graded-fact")
-  key_get("OPENAI_API_KEY")
-  skip_on_cran()
+  local_mocked_ellmer()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -60,17 +57,17 @@ test_that("model_graded_fact works", {
 
   tsk <- Task$new(
     dataset = r_history,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_fact()
   )
 
   tsk$eval()
-  expect_valid_log(tsk$log())
 
   # returns scores and a complete scorer chat
   expect_s3_class(tsk$get_samples()$score, "factor")
   expect_true(all(levels(tsk$get_samples()$score) %in% c("I", "C")))
   expect_true(is.ordered(tsk$get_samples()$score))
+  expect_equal(as.character(tsk$get_samples()$score), c("C", "C"))
   expect_s3_class(tsk$get_samples()$solver_chat[[1]], "Chat")
   expect_length(tsk$get_samples()$solver_chat[[1]]$get_turns(), 2)
   expect_s3_class(tsk$get_samples()$scorer_chat[[1]], "Chat")
@@ -81,12 +78,16 @@ test_that("model_graded_fact works", {
     tsk$get_samples()$solver_chat[[1]]$get_model(),
     tsk$get_samples()$scorer_chat[[1]]$get_model()
   )
+  expect_valid_log(tsk$log())
 })
 
 test_that("model_graded_qa respects non-default grading schemes", {
-  vcr::local_cassette("scorer-model-graded-qa-custom-ab")
-  key_get("OPENAI_API_KEY")
-  skip_on_cran()
+  local_mocked_ellmer(respond = function(prompt, chat) {
+    if (!grepl("GRADE", prompt, fixed = TRUE)) {
+      return("A sentence about an animal.")
+    }
+    if (grepl("The dog ran", prompt, fixed = TRUE)) "GRADE: A" else "GRADE: B"
+  })
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -104,7 +105,7 @@ test_that("model_graded_qa respects non-default grading schemes", {
 
   tsk <- Task$new(
     dataset = classification_data,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa(
       instructions = custom_instructions,
       grade_pattern = custom_pattern
@@ -112,10 +113,10 @@ test_that("model_graded_qa respects non-default grading schemes", {
   )
 
   tsk$eval()
-  expect_valid_log(tsk$log())
 
   scores <- tsk$get_samples()$score
   expect_type(scores, "character")
-  expect_true(all(scores %in% c("A", "B")))
+  expect_equal(scores, c("A", "B"))
   expect_false(is.factor(scores))
+  expect_valid_log(tsk$log())
 })

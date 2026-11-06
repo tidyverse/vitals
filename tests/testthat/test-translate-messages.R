@@ -24,7 +24,7 @@ test_that("assistant messages include model field", {
 })
 
 test_that("translate_to_messages handles image inputs", {
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_llm()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -38,7 +38,7 @@ test_that("translate_to_messages handles image inputs", {
 
   image_solver <- function(
     inputs,
-    solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")
+    solver_chat = mock_chat_template()
   ) {
     image_file <- system.file("test/x.png", package = "vitals")
     ch <- solver_chat$clone()
@@ -58,8 +58,7 @@ test_that("translate_to_messages handles image inputs", {
 })
 
 test_that("translate_to_messages handles remote image URLs", {
-  skip_on_cran()
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_llm()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -73,7 +72,7 @@ test_that("translate_to_messages handles remote image URLs", {
 
   image_url_solver <- function(
     inputs,
-    solver_chat = chat_claude(model = "claude-sonnet-4-5-20250929")
+    solver_chat = mock_chat_template()
   ) {
     ch <- solver_chat$clone()
     ch$chat(
@@ -102,8 +101,7 @@ test_that("translate_to_messages handles remote image URLs", {
 
 
 test_that("logs including system prompts are compatible with inspect", {
-  vcr::local_cassette("translate-messages-system-prompts")
-  key_get("OPENAI_API_KEY")
+  local_mocked_llm()
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -118,10 +116,7 @@ test_that("logs including system prompts are compatible with inspect", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(
-      system_prompt = "Be terse.",
-      model = "gpt-5.4-nano"
-    )),
+    solver = generate(mock_chat_template(system_prompt = "Be terse.")),
     scorer = model_graded_qa()
   )
 

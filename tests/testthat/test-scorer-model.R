@@ -16,7 +16,7 @@ test_that("model_graded_qa works", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(chat_openai(model = "gpt-5.4-nano")),
     scorer = model_graded_qa()
   )
 
@@ -60,7 +60,7 @@ test_that("model_graded_fact works", {
 
   tsk <- Task$new(
     dataset = r_history,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(chat_openai(model = "gpt-5.4-nano")),
     scorer = model_graded_fact()
   )
 
@@ -104,7 +104,7 @@ test_that("model_graded_qa respects non-default grading schemes", {
 
   tsk <- Task$new(
     dataset = classification_data,
-    solver = generate(chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(chat_openai(model = "gpt-5.4-nano")),
     scorer = model_graded_qa(
       instructions = custom_instructions,
       grade_pattern = custom_pattern

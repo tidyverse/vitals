@@ -30,7 +30,7 @@ test_that("vitals writes valid eval logs (basic, openai)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_openai(model = "gpt-4.1-nano")),
+    solver = generate(ellmer::chat_openai(model = "gpt-5.4-nano")),
     scorer = model_graded_qa()
   )
   tsk$eval()
@@ -76,7 +76,7 @@ test_that("vitals writes valid eval logs (basic, gemini)", {
 
   tsk <- Task$new(
     dataset = simple_addition,
-    solver = generate(ellmer::chat_google_gemini(model = "gemini-2.0-flash")),
+    solver = generate(ellmer::chat_google_gemini(model = "gemini-3.8-flash")),
     scorer = model_graded_qa()
   )
   tsk$eval()

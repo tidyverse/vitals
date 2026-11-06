@@ -1,19 +1,19 @@
 http_interactions:
 - request:
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    uri: https://generativelanguage.googleapis.com/v1beta/interactions
     body:
-      string: '{"contents":[{"role":"user","parts":[{"text":"What''s 2+2?"}]}],"systemInstruction":{"parts":{"text":""}}}'
+      string: '{"model":"gemini-3.8-flash","store":false,"stream":false,"input":[{"type":"user_input","content":[{"type":"text","text":"What''s
+        2+2?"}]}]}'
   response:
     status: 200
     headers:
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-encoding: gzip
-      content-length: '318'
-      content-type: application/json; charset=UTF-8
-      date: Thu, 18 Dec 2025 21:53:48 GMT
+      content-type: application/json
+      date: Fri, 06 Nov 2026 11:30:12 GMT
       server: scaffolding on HTTPServer2
-      server-timing: gfet4t7; dur=392
+      server-timing: gfet4t7; dur=32335
       vary:
       - Origin
       - X-Origin
@@ -22,58 +22,24 @@ http_interactions:
       x-frame-options: SAMEORIGIN
       x-xss-protection: '0'
     body:
-      string: |
-        {
-          "candidates": [
-            {
-              "content": {
-                "parts": [
-                  {
-                    "text": "2 + 2 = 4\n"
-                  }
-                ],
-                "role": "model"
-              },
-              "finishReason": "STOP",
-              "avgLogprobs": -9.6876232419162989e-05
-            }
-          ],
-          "usageMetadata": {
-            "promptTokenCount": 8,
-            "candidatesTokenCount": 8,
-            "totalTokenCount": 16,
-            "promptTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 8
-              }
-            ],
-            "candidatesTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 8
-              }
-            ]
-          },
-          "modelVersion": "gemini-2.0-flash",
-          "responseId": "7HdEaauNFda1jrEPuaPImA4"
-        }
-  recorded_at: 2025-12-18 21:53:48
+      string: '{"status":"completed","usage":{"total_tokens":81,"total_input_tokens":9,"input_tokens_by_modality":[{"modality":"text","tokens":9}],"total_cached_tokens":0,"total_output_tokens":8,"total_tool_use_tokens":0,"total_thought_tokens":64,"initial_input_tokens":8},"created":"2026-11-06T11:30:12Z","updated":"2026-11-06T11:30:12Z","service_tier":"standard","steps":[{"signature":"EsECCr4CAWkUfRPPnP0mnIZrripdNakLosCXa5OPEuK6/gtfgWNihArzU9uawMs0hCip6fUt0KfA5nDNYLln5/grPds9E6c5tcH8z+1qRKC8baJksqMO9A11dLNTCa2chzdUll++mLJ1ttAWiw2eSfX6SZgYXVcbEVJPg4dlmK0lfhHoMtxmlAQSCF4TUIYgegzKqpKiIvp4ozpvfoNgZqPZ5hWsyUK7wZoKCF47yUuSSj9mf42bxTcpuuTN7YerViZhMhnuveZGn48LQwI/FOrMh2Z6I0dNluY0y51Pp/Kf+fK2Hsyxxl8Vh1Z5sKMCPS4VE1e8sGcxYQ6PUDx5JzouXMoJKOtROgmJRyY4vKUP8mU1dGNlCpAJUXEWrT8TE+o52KtkCtzHJSha11l5nvS2sTSYpz30DHoFRCcLA3+Oh72d","type":"thought"},{"content":[{"text":"2
+        + 2 = 4.","type":"text"}],"type":"model_output"}],"object":"interaction","model":"gemini-3.8-flash"}'
+  recorded_at: 2026-11-06 11:30:12
 - request:
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    uri: https://generativelanguage.googleapis.com/v1beta/interactions
     body:
-      string: '{"contents":[{"role":"user","parts":[{"text":"What''s 2+3?"}]}],"systemInstruction":{"parts":{"text":""}}}'
+      string: '{"model":"gemini-3.8-flash","store":false,"stream":false,"input":[{"type":"user_input","content":[{"type":"text","text":"What''s
+        2+3?"}]}]}'
   response:
     status: 200
     headers:
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-encoding: gzip
-      content-length: '318'
-      content-type: application/json; charset=UTF-8
-      date: Thu, 18 Dec 2025 21:53:49 GMT
+      content-type: application/json
+      date: Fri, 06 Nov 2026 11:30:13 GMT
       server: scaffolding on HTTPServer2
-      server-timing: gfet4t7; dur=422
+      server-timing: gfet4t7; dur=1660
       vary:
       - Origin
       - X-Origin
@@ -82,66 +48,31 @@ http_interactions:
       x-frame-options: SAMEORIGIN
       x-xss-protection: '0'
     body:
-      string: |
-        {
-          "candidates": [
-            {
-              "content": {
-                "parts": [
-                  {
-                    "text": "2 + 3 = 5\n"
-                  }
-                ],
-                "role": "model"
-              },
-              "finishReason": "STOP",
-              "avgLogprobs": -0.00011882811668328941
-            }
-          ],
-          "usageMetadata": {
-            "promptTokenCount": 8,
-            "candidatesTokenCount": 8,
-            "totalTokenCount": 16,
-            "promptTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 8
-              }
-            ],
-            "candidatesTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 8
-              }
-            ]
-          },
-          "modelVersion": "gemini-2.0-flash",
-          "responseId": "7HdEaf2kL8m1-8YPuvCSmQw"
-        }
-  recorded_at: 2025-12-18 21:53:49
+      string: '{"status":"completed","usage":{"total_tokens":92,"total_input_tokens":9,"input_tokens_by_modality":[{"modality":"text","tokens":9}],"total_cached_tokens":0,"total_output_tokens":7,"total_tool_use_tokens":0,"total_thought_tokens":76,"initial_input_tokens":8},"created":"2026-11-06T11:30:13Z","updated":"2026-11-06T11:30:13Z","service_tier":"standard","steps":[{"signature":"Es4CCssCAWkUfROXozK/5Dk5F4Cxoytij2TB7VlGN7DgdDE1QGdD/0fMj3CZCObZrhD9+gkDEy4om1muZW04IGO2PC0l8t9I8savwzR5ODxE6jGBZDfMF8n28PDmeTnZP8bRTRtPe7yNFZttdaRSBOE1JnzEt+uI04TJFgyctTWT/M/PQJBXKE97km1GpaclEp2Yd+LkdY/d6MZYvC9Y6OemZcDqK56SbcuNikyAO2uBG2gPHvhn6VNFP+97JfOt+Ss4bfdzLn++zq3CVZUUszYOUYYQUQkHq0cRb1MYyxkOk1vyIS2T8ki0YyMYhTww15m/nPkD3jXle87swJpVZUsCXbOKDf5OZMsxFYJFb8BdtxLxlSEVTnr5uzLuQNQeUnxe9Iea8kHI+6j1bCTQoSBjOhu8f6d6GtCK953L7fHxXBHto4FnrdtW+YLiC5cMzA==","type":"thought"},{"content":[{"text":"2
+        + 3 = 5","type":"text"}],"type":"model_output"}],"object":"interaction","model":"gemini-3.8-flash"}'
+  recorded_at: 2026-11-06 11:30:13
 - request:
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    uri: https://generativelanguage.googleapis.com/v1beta/interactions
     body:
-      string: '{"contents":[{"role":"user","parts":[{"text":"You are assessing a submitted
-        answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What''s
-        2+2?\n***\n[Submission]: 2 + 2 = 4\n\n***\n[Criterion]: 4\n***\n[END DATA]\nDoes
-        the submission meet the criterion?\nAfter assessing the submitted answer,
-        reply with ''GRADE: $LETTER'' where\nLETTER is one of C or I.\nPlease choose
-        ONE option: either ''C'' for correct answers, \nor ''I'' for incorrect answers.\nFirst
-        **briefly** explain your reasoning, then end with GRADE: $LETTER.\nDo not
-        format the grading string and do not include any punctuation or\nexposition
-        after it."}]}],"systemInstruction":{"parts":{"text":""}}}'
+      string: '{"model":"gemini-3.8-flash","store":false,"stream":false,"input":[{"type":"user_input","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+2?\n***\n[Submission]: 2 + 2 = 4.\n***\n[Criterion]:
+        4\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]}]}'
   response:
     status: 200
     headers:
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-encoding: gzip
-      content-length: '386'
-      content-type: application/json; charset=UTF-8
-      date: Thu, 18 Dec 2025 21:53:49 GMT
+      content-type: application/json
+      date: Fri, 06 Nov 2026 11:30:15 GMT
       server: scaffolding on HTTPServer2
-      server-timing: gfet4t7; dur=509
+      server-timing: gfet4t7; dur=2066
       vary:
       - Origin
       - X-Origin
@@ -150,66 +81,32 @@ http_interactions:
       x-frame-options: SAMEORIGIN
       x-xss-protection: '0'
     body:
-      string: |
-        {
-          "candidates": [
-            {
-              "content": {
-                "parts": [
-                  {
-                    "text": "The submission correctly calculates 2+2 and provides the answer 4, which matches the criterion.\nGRADE: C"
-                  }
-                ],
-                "role": "model"
-              },
-              "finishReason": "STOP",
-              "avgLogprobs": -0.18261732657750449
-            }
-          ],
-          "usageMetadata": {
-            "promptTokenCount": 157,
-            "candidatesTokenCount": 24,
-            "totalTokenCount": 181,
-            "promptTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 157
-              }
-            ],
-            "candidatesTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 24
-              }
-            ]
-          },
-          "modelVersion": "gemini-2.0-flash",
-          "responseId": "7XdEacmEGNCnjrEPkMeogAw"
-        }
-  recorded_at: 2025-12-18 21:53:49
+      string: '{"status":"completed","usage":{"total_tokens":244,"total_input_tokens":159,"input_tokens_by_modality":[{"modality":"text","tokens":159}],"total_cached_tokens":0,"total_output_tokens":19,"total_tool_use_tokens":0,"total_thought_tokens":66,"initial_input_tokens":158},"created":"2026-11-06T11:30:15Z","updated":"2026-11-06T11:30:15Z","service_tier":"standard","steps":[{"signature":"Eq4CCqsCAWkUfRNoBa44pVbNgq/BpZQaBnG0cgMjrxbOR7GNxT2T/5Pt4oSapsokbLvvNr4GaHYzr8P1cdmkXHTUDNHH+br38M7J7ZyxwdrGJ5nCxn2PlRu9JccaIHD0kneiAGQ/F8UzTYV05JEQgggaPbeyPU26tGUFzLjRKGRMTIAQ/m9ZB7ByfSysIESwT3c9QK5znO9yNVngELC0b2eW1PWOIsgwHT0JYrDtxw3pRuMWReIQ2aHCjbpxQzDBiZmcGNDGA8SDhkCWMyF+N/dUuQi3b5ZVeiW3APDlVbWCHinpum7aC2shG8vhwMaWLbkcxig80QF7c12M77GH7xoZmW+/xe89gz6tB5O9g+FelwmlQQEX3RLsdsQU9ueZGoI6m0zolKKpkNpUNrTMEBU=","type":"thought"},{"content":[{"text":"The
+        submission clearly provides the correct answer of 4, meeting the criterion.\n\nGRADE:
+        C","type":"text"}],"type":"model_output"}],"object":"interaction","model":"gemini-3.8-flash"}'
+  recorded_at: 2026-11-06 11:30:15
 - request:
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    uri: https://generativelanguage.googleapis.com/v1beta/interactions
     body:
-      string: '{"contents":[{"role":"user","parts":[{"text":"You are assessing a submitted
-        answer on a given task based on a criterion.\n[BEGIN DATA]\n***\n[Task]: What''s
-        2+3?\n***\n[Submission]: 2 + 3 = 5\n\n***\n[Criterion]: 5\n***\n[END DATA]\nDoes
-        the submission meet the criterion?\nAfter assessing the submitted answer,
-        reply with ''GRADE: $LETTER'' where\nLETTER is one of C or I.\nPlease choose
-        ONE option: either ''C'' for correct answers, \nor ''I'' for incorrect answers.\nFirst
-        **briefly** explain your reasoning, then end with GRADE: $LETTER.\nDo not
-        format the grading string and do not include any punctuation or\nexposition
-        after it."}]}],"systemInstruction":{"parts":{"text":""}}}'
+      string: '{"model":"gemini-3.8-flash","store":false,"stream":false,"input":[{"type":"user_input","content":[{"type":"text","text":"You
+        are assessing a submitted answer on a given task based on a criterion.\n[BEGIN
+        DATA]\n***\n[Task]: What''s 2+3?\n***\n[Submission]: 2 + 3 = 5\n***\n[Criterion]:
+        5\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
+        the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
+        C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]}]}'
   response:
     status: 200
     headers:
       alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       content-encoding: gzip
-      content-length: '354'
-      content-type: application/json; charset=UTF-8
-      date: Thu, 18 Dec 2025 21:53:50 GMT
+      content-type: application/json
+      date: Fri, 06 Nov 2026 11:30:17 GMT
       server: scaffolding on HTTPServer2
-      server-timing: gfet4t7; dur=511
+      server-timing: gfet4t7; dur=1727
       vary:
       - Origin
       - X-Origin
@@ -218,41 +115,8 @@ http_interactions:
       x-frame-options: SAMEORIGIN
       x-xss-protection: '0'
     body:
-      string: |
-        {
-          "candidates": [
-            {
-              "content": {
-                "parts": [
-                  {
-                    "text": "The submission is correct because 2+3=5.\nGRADE: C"
-                  }
-                ],
-                "role": "model"
-              },
-              "finishReason": "STOP",
-              "avgLogprobs": -0.64789021015167236
-            }
-          ],
-          "usageMetadata": {
-            "promptTokenCount": 157,
-            "candidatesTokenCount": 16,
-            "totalTokenCount": 173,
-            "promptTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 157
-              }
-            ],
-            "candidatesTokensDetails": [
-              {
-                "modality": "TEXT",
-                "tokenCount": 16
-              }
-            ]
-          },
-          "modelVersion": "gemini-2.0-flash",
-          "responseId": "7XdEacDAOZKljrEPw-v1gAs"
-        }
-  recorded_at: 2025-12-18 21:53:50
-recorded_with: VCR-vcr/2.0.0
+      string: '{"status":"completed","usage":{"total_tokens":236,"total_input_tokens":158,"input_tokens_by_modality":[{"modality":"text","tokens":158}],"total_cached_tokens":0,"total_output_tokens":20,"total_tool_use_tokens":0,"total_thought_tokens":58,"initial_input_tokens":157},"created":"2026-11-06T11:30:17Z","updated":"2026-11-06T11:30:17Z","service_tier":"standard","steps":[{"signature":"EpECCo4CAWkUfRP3K4OGE+UxVRNUqvJtS9uICl+7btH39XhRhOHKJFGQGj7avTQl98ZMiv4Mwcu8LCW0MlrTRMGG/iMWC8DN3rnMFuZPAD0VoHYNAkC7vzK0RCcLqOHROeCAC/sI8s66svO3gfkbtGDi8MJlfKQHt1KudYws5lFkz7OeXVtxC2uTGcX8Xq+weMm14sSVt0fmURY+nKoZGXuduj4DYhGPcDPVI3+Ozi0QKbyCFc20Rs1itWkGY5uHmVPyZ7EWSDCfUK2606RAoFjs8xKmeK6CXysr89rQpI8jDUALVIcu924ZLJenQLRKA4cA0XEynwlJKAwNIjqA/Kn+8kI5VQe8cye3IIdSuys3INhb","type":"thought"},{"content":[{"text":"The
+        submission clearly states that the answer is 5, which matches the criterion.\n\nGRADE:
+        C","type":"text"}],"type":"model_output"}],"object":"interaction","model":"gemini-3.8-flash"}'
+  recorded_at: 2026-11-06 11:30:17
+recorded_with: VCR-vcr/2.1.0

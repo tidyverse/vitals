@@ -52,7 +52,7 @@
 
     Code
       tsk <- Task$new(dataset = simple_addition, solver = generate(ellmer::chat_openai(
-        model = "gpt-4.1-nano")), scorer = function(...) {
+        model = "gpt-5.4-nano")), scorer = function(...) {
         list(score = factor(c("C", "C"), levels = c("I", "P", "C")))
       }, metrics = function(scores) {
         mean(scores == "C") * 100

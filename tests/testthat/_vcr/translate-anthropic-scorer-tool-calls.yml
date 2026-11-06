@@ -4,103 +4,121 @@ http_interactions:
     uri: https://api.anthropic.com/v1/messages
     body:
       string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"What
-        is 125 + 267?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
+        is 125 + 267?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:02 GMT
+      date: Fri, 06 Nov 2026 11:30:58 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:01Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:02Z'
-      retry-after: '59'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:01Z'
-      request-id: req_011CVMYpcjExo52BauUV4muH
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:30:58Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:30:58Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:30:57Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:30:58Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '2871'
+      request-id: req_011Cgmbh831YQCPt9237N9si
+      traceresponse: 00-521a6ae9b185c6006fb216653d18444d-060b2489449daafb-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=686
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226d680dd0f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c4e6bdadb34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01VWn7nupuToAevBGTgDTYHx","type":"message","role":"assistant","content":[{"type":"text","text":"125
-        + 267 = 392"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":13,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:02
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011Cgmbh8FPyVfpCdSW2G9sN","type":"message","role":"assistant","content":[{"type":"text","text":"125
+        + 267 = 392"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":13,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:30:58
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
     body:
       string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"What
-        is 543 + 789?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
+        is 543 + 789?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:06 GMT
+      date: Fri, 06 Nov 2026 11:30:59 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:05Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:06Z'
-      retry-after: '57'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:05Z'
-      request-id: req_011CVMYpqTxeeUYy7r2twr6D
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:30:59Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:30:59Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:30:58Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:30:59Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3743'
+      request-id: req_011CgmbhBT9CKTmo7Ey3jphP
+      traceresponse: 00-f459a60d50ca164da172f0239bb8227b-d7a52124dd26f9dd-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=939
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226d7a8ad6f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c4ebcb61b34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01EWs3auQ3cETy6RVCtG3RZn","type":"message","role":"assistant","content":[{"type":"text","text":"543
-        + 789 = 1332"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":14,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:06
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhBeY1WU5cXqNZGej6","type":"message","role":"assistant","content":[{"type":"text","text":"543
+        + 789 = 1332"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":14,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:30:59
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
     body:
       string: '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":[{"type":"text","text":"What
-        is 91 + 38?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":4096}'
+        is 91 + 38?","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:09 GMT
+      date: Fri, 06 Nov 2026 11:31:00 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:08Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:09Z'
-      retry-after: '55'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:08Z'
-      request-id: req_011CVMYq7mjUqkLXCmnxTRhX
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:00Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:00Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:30:59Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:00Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '2852'
+      request-id: req_011CgmbhG2UUpqg38tHskMBF
+      traceresponse: 00-4ad1ff526c2960865db9a0bc153ad2dc-77e2cd4262fb6c0b-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=676
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226d928ca5f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c4f27abdb34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01TouA5Bt7keoGV79hCjXrPn","type":"message","role":"assistant","content":[{"type":"text","text":"91
-        + 38 = 129"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":13,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:09
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhGDdKT5epmFv2JBYK","type":"message","role":"assistant","content":[{"type":"text","text":"91
+        + 38 = 129"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":16,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":13,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:00
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -114,39 +132,45 @@ http_interactions:
         392\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:12 GMT
+      date: Fri, 06 Nov 2026 11:31:02 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:11Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:12Z'
-      retry-after: '53'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:11Z'
-      request-id: req_011CVMYqLd9gxbkQyEUkrenV
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:01Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:02Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:00Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:01Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3025'
+      request-id: req_011CgmbhL5JL235XNxPbVJ5G
+      traceresponse: 00-64049ff976ab302c8ef4e71ea3fde2ee-cb0e1591f5162645-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1624
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226da54d26f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c4f868c5b34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01YFKzhEmKzkjoWeCBDqhCJF","type":"message","role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 125 + 267 = 392 by using the sum_tool."},{"type":"tool_use","id":"toolu_01CKQX5HakZXgFp1syafXuzU","name":"sum_tool","input":{"a":125,"b":267}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":816,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":94,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:12
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhLJgwvSVijJauZbSF","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 125 + 267 = 392 by using the sum_tool."},{"type":"tool_use","id":"toolu_01BhhbEXbQxUiUnckm9rJckk","name":"sum_tool","input":{"a":125,"b":267},"caller":{"type":"direct"}}],"container":null,"stop_reason":"tool_use","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":819,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":94,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:02
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -160,39 +184,45 @@ http_interactions:
         1332\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:16 GMT
+      date: Fri, 06 Nov 2026 11:31:04 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:14Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:16Z'
-      retry-after: '49'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:14Z'
-      request-id: req_011CVMYqZwqmMYUfjeQ6U8Nv
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:02Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:03Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:02Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:02Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3799'
+      request-id: req_011CgmbhTbFDC7aaY7wBGsqU
+      traceresponse: 00-ea5a513f4f77c529967f457c97e2719e-4203cd6a3d1bd1cf-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1594
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226db8cf84f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c5035d8db34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01SuyPm86ZRhsm9RSuXqjpsD","type":"message","role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 543 + 789 = 1332 is correct by using the sum_tool."},{"type":"tool_use","id":"toolu_019ngctCs4m7z57g1QCvERdw","name":"sum_tool","input":{"a":543,"b":789}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":818,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":97,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:16
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhToe9oi2PXYcxrsHB","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 543 + 789 = 1332 by using the sum_tool."},{"type":"tool_use","id":"toolu_011qPcfA6Bu4M79th4NLKVJd","name":"sum_tool","input":{"a":543,"b":789},"caller":{"type":"direct"}}],"container":null,"stop_reason":"tool_use","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":821,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":95,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:04
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -206,39 +236,45 @@ http_interactions:
         129\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it.","cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:19 GMT
+      date: Fri, 06 Nov 2026 11:31:05 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:18Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:19Z'
-      retry-after: '43'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:18Z'
-      request-id: req_011CVMYqrdBw2ciLXhdM5QFG
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '10000000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:04Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:05Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:04Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '12000000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:04Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3181'
+      request-id: req_011Cgmbhb2y5hUkjaxahDici
+      traceresponse: 00-2ef0e449d45704997c72aa624294aaaa-4ebc106fe0111e0c-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1519
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226dd11c13f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c50e28c7b34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01ES9Ng5XDgX3TRVAGzbnXZ5","type":"message","role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 91 + 38 = 129 by using the sum_tool."},{"type":"tool_use","id":"toolu_01TTqAzKHmCJcbx7B6un7HCP","name":"sum_tool","input":{"a":91,"b":38}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":816,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":94,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:19
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhbE8LLmvNKxkbTG8A","type":"message","role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 91 + 38 = 129 by using the sum_tool."},{"type":"tool_use","id":"toolu_01L46Bo2BKjiVgXkQhgCVAz8","name":"sum_tool","input":{"a":91,"b":38},"caller":{"type":"direct"}}],"container":null,"stop_reason":"tool_use","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":819,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":94,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:05
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -252,43 +288,48 @@ http_interactions:
         392\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 125 + 267 = 392 by using the sum_tool."},{"type":"tool_use","id":"toolu_01CKQX5HakZXgFp1syafXuzU","name":"sum_tool","input":{"a":125,"b":267}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01CKQX5HakZXgFp1syafXuzU","content":"{\"sum\":392}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 125 + 267 = 392 by using the sum_tool."},{"type":"tool_use","id":"toolu_01BhhbEXbQxUiUnckm9rJckk","name":"sum_tool","input":{"a":125,"b":267}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01BhhbEXbQxUiUnckm9rJckk","content":"{\"sum\":392}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:23 GMT
+      date: Fri, 06 Nov 2026 11:31:07 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:21Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:23Z'
-      retry-after: '41'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:21Z'
-      request-id: req_011CVMYr737PPCiiZ5QG2uzf
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '9999000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:06Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:07Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:06Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '11999000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:06Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3845'
+      request-id: req_011CgmbhiyxCcb8n57zxNA7C
+      traceresponse: 00-af65b0e263474c2aa28d57116aa05ed3-1c9f8d048baf7201-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1549
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226de62a9ef7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c519ede7b34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_01HnzDNa4K7s6d9MRsxDeCiM","type":"message","role":"assistant","content":[{"type":"text","text":"The
-        sum_tool confirms that 125 + 267 = 392.\n\nThe task asks \"What is 125 + 267?\"
-        and the submission states \"125 + 267 = 392\". The criterion to meet is \"392\".\n\nSince
-        the submitted answer of 392 matches the correct sum (verified by the sum_tool)
-        and matches the criterion of 392, the submission is correct.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":926,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":96,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:23
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhjAsMzx5tU42jB1A6","type":"message","role":"assistant","content":[{"type":"text","text":"The
+        sum_tool confirms that 125 + 267 = 392. The submission states \"125 + 267
+        = 392\", which matches the correct answer. The criterion is 392, and the submitted
+        answer is 392.\n\nGRADE: C"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":929,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":59,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:07
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -302,44 +343,48 @@ http_interactions:
         1332\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 543 + 789 = 1332 is correct by using the sum_tool."},{"type":"tool_use","id":"toolu_019ngctCs4m7z57g1QCvERdw","name":"sum_tool","input":{"a":543,"b":789}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_019ngctCs4m7z57g1QCvERdw","content":"{\"sum\":1332}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 543 + 789 = 1332 by using the sum_tool."},{"type":"tool_use","id":"toolu_011qPcfA6Bu4M79th4NLKVJd","name":"sum_tool","input":{"a":543,"b":789}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_011qPcfA6Bu4M79th4NLKVJd","content":"{\"sum\":1332}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:27 GMT
+      date: Fri, 06 Nov 2026 11:31:09 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:25Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:27Z'
-      retry-after: '38'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:25Z'
-      request-id: req_011CVMYrPpfTQARwi9YXm66o
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '9999000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:08Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:09Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:07Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '11999000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:08Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3809'
+      request-id: req_011CgmbhrHk8kzcjRenvyVHv
+      traceresponse: 00-33720755a24ea3d6fe3a13a2bd1c2476-a10e33b7f5966043-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1703
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226dfeb913f7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c52488b5b34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_019mgyXXPPpfgDjcjc4cQQKE","type":"message","role":"assistant","content":[{"type":"text","text":"The
-        sum_tool confirms that 543 + 789 = 1332.\n\nThe submitted answer states \"543
-        + 789 = 1332\", which matches the correct result. The criterion is \"1332\",
-        which is exactly what the submission provides as the answer.\n\nSince the
-        submission correctly calculates 543 + 789 as 1332, which meets the criterion
-        of 1332, the answer is correct.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":932,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":100,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:27
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhrXNhBrPoefFy3peS","type":"message","role":"assistant","content":[{"type":"text","text":"The
+        sum_tool confirms that 543 + 789 = 1332. The submitted answer states \"543
+        + 789 = 1332\", which matches the correct result. The criterion is also 1332,
+        which the submission meets.\n\nGRADE: C"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":933,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":61,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:09
 - request:
     method: POST
     uri: https://api.anthropic.com/v1/messages
@@ -353,41 +398,46 @@ http_interactions:
         129\n***\n[END DATA]\nDoes the submission meet the criterion?\nAfter assessing
         the submitted answer, reply with ''GRADE: $LETTER'' where\nLETTER is one of
         C or I.\nPlease choose ONE option: either ''C'' for correct answers, \nor
-        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then end with
-        GRADE: $LETTER.\nDo not format the grading string and do not include any punctuation
-        or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
-        need to verify whether 91 + 38 = 129 by using the sum_tool."},{"type":"tool_use","id":"toolu_01TTqAzKHmCJcbx7B6un7HCP","name":"sum_tool","input":{"a":91,"b":38}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01TTqAzKHmCJcbx7B6un7HCP","content":"{\"sum\":129}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
+        ''I'' for incorrect answers.\nFirst **briefly** explain your reasoning, then
+        end with GRADE: $LETTER.\nDo not format the grading string and do not include
+        any punctuation or\nexposition after it."}]},{"role":"assistant","content":[{"type":"text","text":"I
+        need to verify whether 91 + 38 = 129 by using the sum_tool."},{"type":"tool_use","id":"toolu_01L46Bo2BKjiVgXkQhgCVAz8","name":"sum_tool","input":{"a":91,"b":38}}]},{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_01L46Bo2BKjiVgXkQhgCVAz8","content":"{\"sum\":129}","is_error":false,"cache_control":{"type":"ephemeral","ttl":"5m"}}]}],"stream":false,"tools":[{"name":"sum_tool","description":"Add
         two numbers together to verify arithmetic. Always use this tool.","input_schema":{"type":"object","description":"","properties":{"a":{"type":"number","description":"First
-        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":4096}'
+        number"},"b":{"type":"number","description":"Second number"}},"required":["a","b"],"additionalProperties":false}}],"max_tokens":32000}'
   response:
     status: 200
     headers:
-      date: Fri, 21 Nov 2025 19:00:30 GMT
+      date: Fri, 06 Nov 2026 11:31:11 GMT
       content-type: application/json
-      content-encoding: gzip
-      anthropic-ratelimit-input-tokens-limit: '2000000'
-      anthropic-ratelimit-input-tokens-remaining: '2000000'
-      anthropic-ratelimit-input-tokens-reset: '2025-11-21T19:00:29Z'
-      anthropic-ratelimit-output-tokens-limit: '400000'
-      anthropic-ratelimit-output-tokens-remaining: '400000'
-      anthropic-ratelimit-output-tokens-reset: '2025-11-21T19:00:30Z'
-      retry-after: '32'
-      anthropic-ratelimit-tokens-limit: '2400000'
-      anthropic-ratelimit-tokens-remaining: '2400000'
-      anthropic-ratelimit-tokens-reset: '2025-11-21T19:00:29Z'
-      request-id: req_011CVMYrgWWZ55fotANhFBJC
+      anthropic-ratelimit-input-tokens-limit: '10000000'
+      anthropic-ratelimit-input-tokens-remaining: '9999000'
+      anthropic-ratelimit-input-tokens-reset: '2026-11-06T11:31:10Z'
+      anthropic-ratelimit-output-tokens-limit: '2000000'
+      anthropic-ratelimit-output-tokens-remaining: '2000000'
+      anthropic-ratelimit-output-tokens-reset: '2026-11-06T11:31:11Z'
+      anthropic-ratelimit-requests-limit: '10000'
+      anthropic-ratelimit-requests-remaining: '9999'
+      anthropic-ratelimit-requests-reset: '2026-11-06T11:31:09Z'
+      anthropic-ratelimit-tokens-limit: '12000000'
+      anthropic-ratelimit-tokens-remaining: '11999000'
+      anthropic-ratelimit-tokens-reset: '2026-11-06T11:31:10Z'
       strict-transport-security: max-age=31536000; includeSubDomains; preload
-      anthropic-organization-id: 5367cc48-7960-496e-992a-dba1e4d05b42
-      x-envoy-upstream-service-time: '3524'
+      request-id: req_011CgmbhzNRALppD2mEpHSsa
+      traceresponse: 00-e484b5002396f4f57f92c8671745db0f-a3f0ee925ecc9e2c-01
+      anthropic-organization-id: 67bb8feb-7bca-4369-9e04-339d73646b40
+      anthropic-workspace-id: wrkspc_01HCeyEoRM38KjSttghsJ3cP
+      vary: Accept-Encoding
+      content-encoding: br
+      server: cloudflare
+      server-timing: x-originResponse;dur=1550
       cf-cache-status: DYNAMIC
       x-robots-tag: none
-      server: cloudflare
-      cf-ray: 9a226e1718dcf7d2-ORD
+      content-security-policy: default-src 'none'; frame-ancestors 'none'
+      cf-ray: a563c5305d6ab34c-MAN
     body:
-      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_017TZPKQrww2u8iHTDq9JT8N","type":"message","role":"assistant","content":[{"type":"text","text":"The
-        sum_tool confirms that 91 + 38 = 129.\n\nThe task asks \"What is 91 + 38?\"\nThe
-        submission states \"91 + 38 = 129\"\nThe criterion is \"129\"\n\nThe submitted
-        answer of 129 is correct, as verified by the sum_tool. The submission meets
-        the criterion.\n\nGRADE: C"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":926,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":86,"service_tier":"standard"}}'
-  recorded_at: 2025-11-21 19:00:30
-recorded_with: VCR-vcr/2.0.0
+      string: '{"model":"claude-sonnet-4-5-20250929","id":"msg_011CgmbhzaZtwNvp1MaDXbbn","type":"message","role":"assistant","content":[{"type":"text","text":"The
+        sum_tool confirms that 91 + 38 = 129. The submission states \"91 + 38 = 129\"
+        and the criterion is \"129\". Both the submitted answer and the criterion
+        match the correct result.\n\nGRADE: C"}],"container":null,"stop_reason":"end_turn","stop_sequence":null,"stop_details":null,"usage":{"input_tokens":929,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":58,"service_tier":"standard","inference_geo":"not_available","speed":"standard"},"diagnostics":null}'
+  recorded_at: 2026-11-06 11:31:11
+recorded_with: VCR-vcr/2.1.0

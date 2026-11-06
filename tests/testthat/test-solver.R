@@ -3,7 +3,7 @@ test_that("generate works", {
   key_get("OPENAI_API_KEY")
   library(ellmer)
 
-  res <- generate(chat_openai(model = "gpt-4.1-nano"))
+  res <- generate(chat_openai(model = "gpt-5.4-nano"))
   expect_contains(class(res), "function")
 
   chat_res <- res(list("hey", "hi", "hello"))
@@ -31,7 +31,7 @@ test_that("generate_structured works", {
   )
 
   res <- generate_structured(
-    solver_chat = chat_anthropic(model = "claude-sonnet-4-20250514"),
+    solver_chat = chat_anthropic(model = "claude-sonnet-5-5"),
     type = type_answer
   )
 
@@ -75,7 +75,7 @@ test_that("generate_structured produces valid logs", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = generate_structured(
-      solver_chat = chat_anthropic(model = "claude-sonnet-4-20250514"),
+      solver_chat = chat_anthropic(model = "claude-sonnet-5-5"),
       type = type_answer
     ),
     scorer = model_graded_qa()

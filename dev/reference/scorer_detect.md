@@ -105,9 +105,9 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
   tsk$eval()
 }
 #> ℹ Solving
-#> ✔ Solving [1.1s]
+#> ✔ Solving [1.3s]
 #> 
 #> ℹ Scoring
-#> ✔ Scoring [41ms]
+#> ✔ Scoring [50ms]
 #> 
 ```

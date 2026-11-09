@@ -1,5 +1,7 @@
 # vitals (development version)
 
+* Addresses test failures with the newly released ellmer 0.5.1.
+
 # vitals 0.4.0
 
 vitals 0.4.0 includes a number of new features and performance improvements, in addition to tightening integration with Inspect's log viewer.

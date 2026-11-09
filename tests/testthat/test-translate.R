@@ -411,7 +411,10 @@ test_that("as_metadata can make lists into a named vector (#69)", {
   res <- as_metadata(tibble(x = list(list(a = 1, b = 2)), y = 3))
   expect_type(res, "list")
   expect_named(res, c("x", "y"))
-  expect_snapshot(res)
+  # str()'s exact formatting varies across R versions
+  expect_equal(res$x[[1]], "List of 1")
+  expect_match(res$x, "..$ a: num 1", fixed = TRUE, all = FALSE)
+  expect_equal(res$y, 3)
 
   res <- as_metadata(list(1:3, b = 2))
   expect_type(res, "list")

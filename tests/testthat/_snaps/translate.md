@@ -15,18 +15,6 @@
     Code
       res
     Output
-      $x
-      [1] "List of 1"      " $ :List of 2"  "  ..$ a: num 1" "  ..$ b: num 2"
-      
-      $y
-      [1] 3
-      
-
----
-
-    Code
-      res
-    Output
       $`1`
       [1] 1 2 3
       

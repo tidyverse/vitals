@@ -1,5 +1,4 @@
 test_that("vitals_bind works", {
-  skip_on_cran()
   task_1 <- example_task()
   task_2 <- example_task()
 

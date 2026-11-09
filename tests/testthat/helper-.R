@@ -42,9 +42,11 @@ example_tool_fixture <- function() {
       duration = 1.5,
       finish_reason = "tool_use"
     ),
-    ellmer::UserTurn(contents = list(
-      ellmer::ContentToolResult(value = 3, request = request)
-    )),
+    ellmer::UserTurn(
+      contents = list(
+        ellmer::ContentToolResult(value = 3, request = request)
+      )
+    ),
     assistant_turn(
       contents = list(ellmer::ContentText("The answer is 3.")),
       tokens = c(20, 6, 10),
@@ -119,14 +121,8 @@ example_claude_code_log <- function() {
 }
 
 example_task <- function(solved = TRUE, scored = TRUE) {
-  # loads a cached `tsk` with example output.
-  # regenerate with `inst/regenerate-example-objects.R`
-  load(
-    system.file(
-      "test/example-task.rda",
-      package = "vitals"
-    )
-  )
+  local_mocked_llm(respond = mock_respond_equation)
+  withr::local_options(cli.default_handler = function(...) {})
 
   simple_addition <- tibble(
     input = c("What's 2+2?", "What's 2+3?"),
@@ -135,26 +131,31 @@ example_task <- function(solved = TRUE, scored = TRUE) {
 
   res <- Task$new(
     dataset = simple_addition,
-    solver = function(...) {},
-    scorer = function(...) {}
+    solver = generate(mock_chat_template(
+      model = "test-model",
+      system_prompt = "Respond in the format 'a+b=c'."
+    )),
+    scorer = model_graded_qa()
   )
 
   if (!solved) {
     return(res)
   }
-
-  res$.__enclos_env__$private$samples$result <- tsk$get_samples()$result
-  res$.__enclos_env__$private$samples$solver_chat <- tsk$get_samples()$solver_chat
-  res$.__enclos_env__$private$solved <- TRUE
+  res$solve()
 
   if (!scored) {
     return(res)
   }
-
-  res$.__enclos_env__$private$samples$score <- tsk$get_samples()$score
-  res$.__enclos_env__$private$samples$scorer_chat <- tsk$get_samples()$scorer_chat
-  res$.__enclos_env__$private$samples$scorer <- tsk$get_samples()$scorer
-  res$.__enclos_env__$private$scored <- TRUE
+  res$score()
 
   res
+}
+
+# Like `mock_respond()`, but answers addition questions as "a+b=c".
+mock_respond_equation <- function(prompt, body) {
+  if (grepl("GRADE: $LETTER", prompt, fixed = TRUE)) {
+    return(mock_respond(prompt, body))
+  }
+  numbers <- regmatches(prompt, gregexpr("[0-9]+", prompt))[[1]]
+  paste0(paste(numbers, collapse = "+"), "=", sum(as.numeric(numbers)))
 }

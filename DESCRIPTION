@@ -40,13 +40,13 @@ Suggests:
     ggplot2,
     here,
     htmltools,
+    httr2 (>= 1.2.0),
     knitr,
     magick,
     ordinal,
     reticulate (>= 1.41),
     rmarkdown,
-    testthat (>= 3.0.0),
-    vcr (>= 2.0.0)
+    testthat (>= 3.0.0)
 Config/Needs/website: tidyverse/tidytemplate, rmarkdown, btw,
     tidyverse, gt, brms, RcppEigen, broom, gt
 Config/testthat/edition: 3

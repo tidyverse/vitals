@@ -1,12 +1,12 @@
 test_that("generate works", {
-  vcr::local_cassette("solver-generate")
-  key_get("OPENAI_API_KEY")
+  local_mocked_llm()
   library(ellmer)
 
-  res <- generate(chat_openai(model = "gpt-5.4-nano"))
+  res <- generate(mock_chat_template())
   expect_contains(class(res), "function")
 
   chat_res <- res(list("hey", "hi", "hello"))
+  expect_equal(chat_res[["result"]], c("Hello!", "Hello!", "Hello!"))
 
   expect_length(chat_res, 2)
   expect_length(chat_res[["result"]], 3)
@@ -22,8 +22,7 @@ test_that("generate() allows NULL default model", {
 })
 
 test_that("generate_structured works", {
-  vcr::local_cassette("solver-generate-structured")
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_llm(respond = mock_respond_structured)
   library(ellmer)
 
   type_answer <- type_object(
@@ -31,13 +30,17 @@ test_that("generate_structured works", {
   )
 
   res <- generate_structured(
-    solver_chat = chat_anthropic(model = "claude-sonnet-5-5"),
+    solver_chat = mock_chat_template(),
     type = type_answer
   )
 
   expect_contains(class(res), "function")
 
   chat_res <- res(list("What is 2+2?", "What is 3+3?"))
+  expect_equal(
+    chat_res[["result"]],
+    c("[{\"answer\":\"4\"}]", "[{\"answer\":\"6\"}]")
+  )
 
   expect_length(chat_res, 3)
   expect_length(chat_res[["result"]], 2)
@@ -55,8 +58,7 @@ test_that("generate_structured() allows NULL default model", {
 })
 
 test_that("generate_structured produces valid logs", {
-  vcr::local_cassette("solver-generate-structured-task")
-  key_get("ANTHROPIC_API_KEY")
+  local_mocked_llm(respond = mock_respond_structured)
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -75,7 +77,7 @@ test_that("generate_structured produces valid logs", {
   tsk <- Task$new(
     dataset = simple_addition,
     solver = generate_structured(
-      solver_chat = chat_anthropic(model = "claude-sonnet-5-5"),
+      solver_chat = mock_chat_template(),
       type = type_answer
     ),
     scorer = model_graded_qa()

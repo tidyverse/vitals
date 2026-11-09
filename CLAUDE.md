@@ -25,7 +25,11 @@ Importantly:
 
 ## Testing
 
-The package uses `vcr` in its testing suite to reduce costs and runtime of unit tests. Snaps and vcr outputs are generated (and read from) automatically when the test suite is ran. When writing unit testing code, do so as usual and then run the tests to generate logs.
+Tests should depend only on ellmer's exported API and providers' public response formats, never on the requests ellmer builds:
+
+* For tests that call models, use `local_mocked_llm()` with `mock_chat_template()` chats. It serves canned OpenAI chat completions over httr2 so that ellmer's real code runs offline; pass `respond` to customize replies or return `mock_tool_call()`.
+* For provider-specific behavior, build chats with `$set_turns()` (e.g. `fixture_solver()`) rather than mocking provider HTTP formats.
+* `test-live.R` runs a few tests against real providers; they skip on CRAN and when API keys are missing.
 
 ## Conventions
 

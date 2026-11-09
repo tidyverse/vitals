@@ -10,18 +10,12 @@ is_snapshot <- function() {
   identical(Sys.getenv("TESTTHAT_IS_SNAPSHOT"), "true")
 }
 
-is_replaying <- function() {
-  as.logical(Sys.getenv("VCR_IS_REPLAYING", "FALSE"))
-}
-
 key_get <- function(name, error_call = caller_env()) {
   val <- Sys.getenv(name)
   if (!identical(val, "")) {
     invisible(val)
   } else {
-    if (is_replaying()) {
-      ""
-    } else if (is_testing()) {
+    if (is_testing()) {
       testthat::skip(sprintf("%s env var is not configured", name))
     } else {
       cli::cli_abort("Can't find env var {.code {name}}.", call = error_call)

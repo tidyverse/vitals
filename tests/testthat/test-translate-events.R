@@ -1,5 +1,4 @@
 test_that("translate_turns works", {
-  skip_on_cran()
   example_sample <- example_task()$get_samples()[1, , drop = FALSE]
   timestamps <- list(started_at = Sys.time(), completed_at = Sys.time())
   chat_translated <- translate_to_events(
@@ -21,9 +20,17 @@ test_that("translate_turns works", {
   )
 })
 
-test_that("vitals writes valid eval logs (scorer tool calls, claude)", {
-  vcr::local_cassette("translate-anthropic-scorer-tool-calls")
-  key_get("ANTHROPIC_API_KEY")
+test_that("vitals writes valid eval logs (scorer tool calls)", {
+  local_mocked_llm(respond = function(prompt, body) {
+    last <- body$messages[[length(body$messages)]]
+    if (identical(last$role, "tool")) {
+      return("The sum checks out.\nGRADE: C")
+    }
+    if (grepl("GRADE: $LETTER", prompt, fixed = TRUE)) {
+      return(mock_tool_call("sum_tool", list(a = 1, b = 2)))
+    }
+    mock_respond(prompt, body)
+  })
   tmp_dir <- withr::local_tempdir()
   withr::local_envvar(list(VITALS_LOG_DIR = tmp_dir))
   withr::local_options(cli.default_handler = function(...) {})
@@ -40,9 +47,7 @@ test_that("vitals writes valid eval logs (scorer tool calls, claude)", {
   )
 
   take_sum <- tool(
-    function(a, b) {
-      list(sum = a + b)
-    },
+    function(a, b) a + b,
     name = "sum_tool",
     description = "Add two numbers together to verify arithmetic. Always use this tool.",
     arguments = list(
@@ -51,8 +56,7 @@ test_that("vitals writes valid eval logs (scorer tool calls, claude)", {
     )
   )
 
-  scorer_chat <- chat_claude(
-    model = "claude-sonnet-4-5-20250929",
+  scorer_chat <- mock_chat_template(
     system_prompt = paste(
       "You are a scorer that checks arithmetic answers.",
       "ALWAYS use the sum_tool to verify the answer before grading.",
@@ -64,9 +68,13 @@ test_that("vitals writes valid eval logs (scorer tool calls, claude)", {
 
   tsk <- Task$new(
     dataset = sum_problems,
-    solver = generate(chat_claude(model = "claude-sonnet-4-5-20250929")),
+    solver = generate(mock_chat_template()),
     scorer = model_graded_qa(scorer_chat = scorer_chat)
   )
   tsk$eval()
+
+  samples <- tsk$get_samples()
+  expect_equal(as.character(samples$score), c("C", "C", "C"))
+  expect_length(samples$scorer_chat[[1]]$get_turns(), 4)
   expect_valid_log(tsk$log())
 })

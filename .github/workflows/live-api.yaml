@@ -5,12 +5,21 @@ on:
     branches: main
   pull_request:
     branches: main
+  # catches breakage from dev ellmer even when vitals isn't changing
+  schedule:
+    - cron: "0 6 * * 1"
 
 name: live-api.yaml
 
 jobs:
   live-api:
     runs-on: ubuntu-latest
+    name: live-api (ellmer ${{ matrix.ellmer }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ellmer: [cran, dev]
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -42,7 +51,9 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+            any::rcmdcheck
+            ${{ matrix.ellmer == 'dev' && 'tidyverse/ellmer' || '' }}
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

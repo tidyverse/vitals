@@ -152,6 +152,8 @@ test_that("import_inspect_sample gives partial transcripts a response", {
 
 test_that("check_inspect_agent_deps checks docker for configured sandboxes", {
   skip_if_not_installed("reticulate")
+  # Windows searches system directories for executables regardless of PATH
+  skip_on_os("windows")
   withr::local_envvar(PATH = "")
 
   expect_snapshot(
@@ -188,7 +190,10 @@ test_that("inspect_provider_packages maps providers to python packages", {
   expect_equal(inspect_provider_packages("mistral/some-model"), "mistralai")
   expect_equal(inspect_provider_packages("groq/some-model"), "groq")
   expect_equal(inspect_provider_packages("bedrock/some-model"), "aioboto3")
-  expect_equal(inspect_provider_packages("google/vertex/some-model"), "google-genai")
+  expect_equal(
+    inspect_provider_packages("google/vertex/some-model"),
+    "google-genai"
+  )
   expect_equal(inspect_provider_packages("hf/some-model"), character(0))
 })
 

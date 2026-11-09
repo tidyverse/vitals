@@ -1,7 +1,11 @@
 translate_to_messages <- function(chat) {
   turns <- chat$get_turns(include_system_prompt = TRUE)
   model <- chat$get_model()
-  purrr::list_flatten(purrr::map(turns, translate_to_turn_messages, model = model))
+  purrr::list_flatten(purrr::map(
+    turns,
+    translate_to_turn_messages,
+    model = model
+  ))
 }
 
 # A turn usually maps to one message, but a user turn carrying the results of
@@ -39,7 +43,13 @@ tool_result_error <- function(tool_result) {
   if (is.null(tool_result@error)) {
     return(NULL)
   }
-  list(type = "unknown", message = as.character(tool_result@error))
+  list(type = "unknown", message = tool_error_string(tool_result@error))
+}
+
+# as.character() deparses the condition's call, which errors on R < 4.4
+# when the call contains S7 objects
+tool_error_string <- function(error) {
+  if (inherits(error, "condition")) conditionMessage(error) else error
 }
 
 translate_to_message <- function(turn, model) {
@@ -81,7 +91,7 @@ translate_to_message <- function(turn, model) {
 
 collapse_tool_result <- function(tool_result) {
   if (!is.null(tool_result@error)) {
-    return(as.character(tool_result@error))
+    return(tool_error_string(tool_result@error))
   }
 
   value <- tool_result@value

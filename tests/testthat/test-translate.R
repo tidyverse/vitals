@@ -286,7 +286,6 @@ test_that("repeated long content is condensed into sample attachments", {
 })
 
 test_that("score events are not condensed", {
-  skip_on_cran()
   tmp_dir <- withr::local_tempdir()
 
   log_path <- example_task()$log(tmp_dir)

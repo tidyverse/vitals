@@ -1,5 +1,4 @@
 test_that("detect_includes works", {
-  skip_on_cran()
   tsk <- example_task(scored = FALSE)
   tsk$set_scorer(detect_includes())
   tsk$score()
@@ -42,7 +41,6 @@ test_that("detect_includes works", {
 })
 
 test_that("detect_match works", {
-  skip_on_cran()
   tsk <- example_task(scored = FALSE)
   tsk$set_scorer(detect_match())
   tsk$score()
@@ -83,7 +81,6 @@ test_that("detect_match works", {
 })
 
 test_that("detect_pattern works", {
-  skip_on_cran()
   tsk <- example_task(scored = FALSE)
   tsk$set_scorer(detect_pattern("(\\d+)\\s*=\\s*(\\d+)"))
   tsk$score()
@@ -169,7 +166,6 @@ test_that("detect_pattern works", {
 })
 
 test_that("detect_exact works", {
-  skip_on_cran()
   ex_task <- example_task(scored = FALSE)
   exact_df <- tibble::tibble(
     input = ex_task$get_samples()$input,
@@ -222,7 +218,6 @@ test_that("detect_exact works", {
 })
 
 test_that("detect_answer works", {
-  skip_on_cran()
   ex_task <- example_task(scored = FALSE)
   answer_df <- tibble::tibble(
     input = ex_task$get_samples()$input,
@@ -311,8 +306,6 @@ test_that("detect_answer works", {
 })
 
 test_that("detect scorers generate explanations", {
-  skip_on_cran()
-
   simple_df <- tibble::tibble(
     input = c("Question 1", "Question 2"),
     result = c("4", "wrong answer"),

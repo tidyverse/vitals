@@ -125,7 +125,6 @@ test_that("vitals_log_read splits out scorers marked with span events", {
 })
 
 test_that("vitals_log_read reconstructs scorer chats", {
-  skip_on_cran()
   tmp_dir <- withr::local_tempdir()
 
   tsk <- example_task()
@@ -139,7 +138,7 @@ test_that("vitals_log_read reconstructs scorer chats", {
 
   expect_true("scorer_chat" %in% names(res))
   scorer <- res$scorer_chat[[1]]
-  expect_equal(scorer$get_model(), "claude-sonnet-4-5-20250929")
+  expect_equal(scorer$get_model(), "test-model")
 
   scorer_turns <- scorer$get_turns()
   expect_length(scorer_turns, 2)
@@ -150,7 +149,6 @@ test_that("vitals_log_read reconstructs scorer chats", {
 test_that("vitals_log_read errors informatively", {
   expect_snapshot(error = TRUE, vitals_log_read("no-such-file.json"))
 
-  skip_on_cran()
   tmp_dir <- withr::local_tempdir()
   log_path <- example_task()$log(tmp_dir)
   expect_snapshot(

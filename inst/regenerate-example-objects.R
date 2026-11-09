@@ -2,9 +2,6 @@
 regenerate_example_objects <- function() {
   devtools::load_all()
 
-  cli::cli_progress_step("Regenerating example task")
-  regenerate_example_task()
-
   cli::cli_progress_step("Regenerating `are` on 1 epoch")
   regenerate_are_1e()
 
@@ -17,27 +14,6 @@ regenerate_example_objects <- function() {
   regenerate_are_3e_analysis()
 
   cli::cli_progress_done()
-}
-
-# example_task -- a minimal, 2-row toy eval ---------------------------
-regenerate_example_task <- function() {
-  library(ellmer)
-  library(tibble)
-
-  simple_addition <- tibble(
-    input = c("What's 2+2?", "What's 2+3?"),
-    target = c("4", "5")
-  )
-
-  ch <- chat_claude(model = "claude-sonnet-4-5-20250929")
-  tsk <- Task$new(
-    dataset = simple_addition,
-    solver = generate(ch$set_system_prompt("Respond in the format 'a+b=c'.")),
-    scorer = model_graded_qa(scorer_chat = ch)
-  )
-
-  tsk$eval()
-  save(tsk, file = "inst/test/example-task.rda")
 }
 
 # An R Eval on 1 epoch, via the intro vignette ------------------------

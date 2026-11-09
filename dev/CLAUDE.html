@@ -61,8 +61,12 @@
 </ul></div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>The package uses <code>vcr</code> in its testing suite to reduce costs and runtime of unit tests. Snaps and vcr outputs are generated (and read from) automatically when the test suite is ran. When writing unit testing code, do so as usual and then run the tests to generate logs.</p>
-</div>
+<p>Tests should depend only on ellmer’s exported API and providers’ public response formats, never on the requests ellmer builds:</p>
+<ul><li>For tests that call models, use <code>local_mocked_llm()</code> with <code>mock_chat_template()</code> chats. It serves canned OpenAI chat completions over httr2 so that ellmer’s real code runs offline; pass <code>respond</code> to customize replies or return <code>mock_tool_call()</code>.</li>
+<li>For provider-specific behavior, build chats with <code>$set_turns()</code> (e.g. <code>fixture_solver()</code>) rather than mocking provider HTTP formats.</li>
+<li>
+<code>test-live.R</code> runs a few tests against real providers; they skip on CRAN and when API keys are missing.</li>
+</ul></div>
 <div class="section level2">
 <h2 id="conventions">Conventions<a class="anchor" aria-label="anchor" href="#conventions"></a></h2>
 <p>Do not add new code comments, and only remove existing code comments if the comment isn’t relevant anymore.</p>

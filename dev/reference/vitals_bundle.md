@@ -87,5 +87,5 @@ if (!identical(Sys.getenv("ANTHROPIC_API_KEY"), "")) {
 #> ℹ Scoring
 #> ✔ Scoring [2.3s]
 #> 
-#> ✔ Bundle /tmp/RtmpgXYOfs created!
+#> ✔ Bundle /tmp/Rtmpzzq5ks created!
 ```

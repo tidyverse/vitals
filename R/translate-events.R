@@ -367,11 +367,7 @@ create_tool_event <- function(turn, tool_result, timestamp) {
     id = tool_result@request@id,
     `function` = tool_result@request@name,
     arguments = tool_result@request@arguments,
-    result = if (!is.null(tool_result@error)) {
-      as.character(tool_result@error)
-    } else {
-      collapse_tool_result(tool_result)
-    },
+    result = collapse_tool_result(tool_result),
     events = list(),
     completed = events_timestamp(timestamp),
     working_time = attr(turn, "working_time")
@@ -743,7 +739,8 @@ add_working_start_to_turns <- function(chats, which, timestamps) {
 
     for (j in seq_along(chat_turns)) {
       attr(chat_turns[[j]], "working_start") <- current_working_start
-      current_working_start <- current_working_start + turn_duration(chat_turns[[j]])
+      current_working_start <- current_working_start +
+        turn_duration(chat_turns[[j]])
     }
 
     chat$set_turns(chat_turns)

@@ -1,3 +1,5 @@
+# vitals (development version)
+
 # vitals 0.4.1
 
 * Addresses test failures with the newly released ellmer 0.5.1.

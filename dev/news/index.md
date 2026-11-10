@@ -2,6 +2,10 @@
 
 ## vitals (development version)
 
+## vitals 0.4.1
+
+- Addresses test failures with the newly released ellmer 0.5.1.
+
 ## vitals 0.4.0
 
 CRAN release: 2026-09-02
